@@ -2,7 +2,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {css, html, CSSResultArray, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {
   selectInterventionId,
@@ -217,7 +217,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     style="z-index: ${99 - index};"
                   >
                     <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
-                      <div class="flex-1 flex-fix">
+                      <div class="flex-fix">
                         <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
                         <div class="count">
                           <div><b>${pdOutput.activities.length}</b> ${translate('ACTIVITIES')}</div>
@@ -567,7 +567,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       css`
         etools-icon[name='create'] {
@@ -696,6 +696,16 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
         etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
+        }
+        .flex-fix {
+          min-width: 0px;
+          min-height: 0px;
+          width: 100%;
+        }
+        @media (max-width: 768px) {
+          .total-result b {
+            font-size: var(--etools-font-size-18, 18px);
+          }
         }
       `
     ];

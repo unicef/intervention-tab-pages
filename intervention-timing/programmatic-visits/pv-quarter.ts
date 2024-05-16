@@ -39,7 +39,7 @@ export class PvQuarter extends LitElement {
           display: block;
           flex: 0 0 16.6667%;
           max-width: 16.6667%;
-          min-width: 170px;
+          min-width: 180px;
           max-width: 250px;
         }
 
