@@ -14,7 +14,7 @@ import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/style
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
-import { layoutStyles } from "@unicef-polymer/etools-unicef/src/styles/layout-styles";
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 /**
  * @customElement
