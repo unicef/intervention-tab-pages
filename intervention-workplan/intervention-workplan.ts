@@ -22,6 +22,7 @@ export class InterventionWorkplan extends LitElement {
         :host {
           display: flex;
           flex-direction: column;
+          --ecp-title-white-space: normal;
         }
       </style>
 
