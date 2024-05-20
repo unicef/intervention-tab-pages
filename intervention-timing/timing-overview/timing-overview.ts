@@ -3,7 +3,7 @@ import {property, customElement} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
@@ -24,7 +24,7 @@ import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/l
 @customElement('timing-overview')
 export class TimingOverview extends CommentsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, elevationStyles];
+    return [layoutStyles, elevationStyles];
   }
   render() {
     // language=HTML

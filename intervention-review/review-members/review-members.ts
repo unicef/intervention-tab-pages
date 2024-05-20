@@ -2,7 +2,7 @@ import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {EtoolsEndpoint, InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -26,7 +26,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: block;
@@ -87,26 +87,29 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             >
             </datepicker-lite>
           </div>
-          <div class="row-h flex-c align-items-center" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
-            <etools-dropdown-multi
-              label=${translate('REVIEWERS')}
-              placeholder="&#8212;"
-              .options="${this.users}"
-              .selectedValues="${this.data?.prc_officers}"
-              ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
-              option-label="name"
-              option-value="id"
-              ?trigger-value-change-event="${this.users.length}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) => {
-                this.selectedItemsChanged(detail, 'prc_officers', 'id');
-              }}"
-            >
-            </etools-dropdown-multi>
-            <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
-              ${translate('SEND_NOTIFICATIONS')}
-            </etools-button>
+          <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
+            <div class="col-6 col-sm-12">
+              <etools-dropdown-multi
+                label=${translate('REVIEWERS')}
+                placeholder="&#8212;"
+                .options="${this.users}"
+                .selectedValues="${this.data?.prc_officers}"
+                ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
+                option-label="name"
+                option-value="id"
+                ?trigger-value-change-event="${this.users.length}"
+                @etools-selected-items-changed="${({detail}: CustomEvent) => {
+                  this.selectedItemsChanged(detail, 'prc_officers', 'id');
+                }}"
+              >
+              </etools-dropdown-multi>
+              <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
+                ${translate('SEND_NOTIFICATIONS')}
+              </etools-button>
+            <div>
           </div>
-          <div class="row-h flex-c align-items-center">
+          <div class="row">
+          <div class="col-4 col-sm-12">
             <etools-dropdown
               class="col-4"
               label=${translate('OVERALL_APPROVER')}
@@ -122,9 +125,10 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               }}"
             >
             </etools-dropdown>
+            </div>
           </div>
 
-          <div class="row-padding-h">${this.renderActions(this.editMode, true)}</div>
+          <div class="row padding-v">${this.renderActions(this.editMode, true)}</div>
         </div>
       </etools-content-panel>
     `;

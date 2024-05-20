@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject} from '@unicef-polymer/etools-types';
@@ -22,7 +22,7 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 @customElement('update-fr-numbers')
 export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     // ${repeatableDataSetsStyles}

@@ -5,7 +5,7 @@ import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {html, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import isEmpty from 'lodash-es/isEmpty';
@@ -23,7 +23,7 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 @customElement('cluster-indicator')
 class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMixin(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`

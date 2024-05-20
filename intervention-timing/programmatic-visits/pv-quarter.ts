@@ -1,4 +1,4 @@
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 export class PvQuarter extends LitElement {
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         etools-icon#x {
           --etools-icon-font-size: var(--etools-font-size-16, 16px);

@@ -10,14 +10,14 @@ import './fund-reservations-display.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 
 @customElement('intervention-implementation-status')
 export class InterventionImplementationStatus extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`

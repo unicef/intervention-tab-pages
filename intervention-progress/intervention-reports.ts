@@ -21,7 +21,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {buildUrlQueryString, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
@@ -46,7 +46,7 @@ import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 @customElement('intervention-reports')
 export class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsLitMixin(LitElement)))) {
   static get styles() {
-    return [gridLayoutStylesLit, elevationStyles];
+    return [layoutStyles, elevationStyles];
   }
   render() {
     return html`

@@ -9,7 +9,6 @@ import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -22,7 +21,7 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 @customElement('fund-reservations-display')
 export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, frWarningsStyles, layoutStyles];
+    return [frWarningsStyles, layoutStyles];
   }
   render() {
     if (!this.frsDetails || !this.intervention) {

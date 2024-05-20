@@ -11,7 +11,7 @@ import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-poly
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {decimalFractionEquals0} from '@unicef-polymer/etools-utils/dist/general.util';
@@ -22,7 +22,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('intervention-summary')
 export class InterventionSummary extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, elevationStyles];
+    return [layoutStyles, elevationStyles];
   }
 
   render() {
@@ -89,8 +89,8 @@ export class InterventionSummary extends connectStore(LitElement) {
       >
       ${
         this.isUnicefUser
-          ? html` <div class="row-h flex-c">
-              <div class="col col-12 block">
+          ? html` <div class="row">
+              <div class="col-12 block">
                 <label for="cp_outputs_list" class="label-secondary-color">${translate('CP_OUTPUTS')}</label>
                 <br />
                 <div class="content" id="cp_outputs_list">
@@ -103,8 +103,8 @@ export class InterventionSummary extends connectStore(LitElement) {
           : ``
       }
 
-      <div class="row-h flex-c">
-        <div class="col col-12 block">
+      <div class="row">
+        <div class="col-12 block">
           <label for="document_title" class="label-secondary-color"
             >${translate('DOCUMENT_TITLE')}</label
           >
@@ -125,8 +125,8 @@ export class InterventionSummary extends connectStore(LitElement) {
         </div>
       </div>
 
-      <div class="row-h flex-c">
-        <div class="col col-4 block">
+      <div class="row">
+        <div class="col-4 block">
           <label for="interventions_timeline" class="label-secondary-color"
             >${translate('TIMELINE')}</label
           >
@@ -135,7 +135,7 @@ export class InterventionSummary extends connectStore(LitElement) {
             ${prettyDate(this.intervention.start)} &#8212; ${prettyDate(this.intervention.end)}
           </div>
         </div>
-        <div class="col col-4 block">
+        <div class="col-4 block">
           <label for="intervention-sections" class="label-secondary-color"
             >${translate('SECTIONS')}
           </label>
@@ -144,8 +144,8 @@ export class InterventionSummary extends connectStore(LitElement) {
         </div>
       </div>
 
-      <div class="row-h flex-c">
-        <div class="col col-4">
+      <div class="row">
+        <div class="col-4">
           <div>
             <label class="label-secondary-color"
               >${translate('TOTAL_VAL_EFF_PROG_MGMT_COST')}</label
@@ -163,7 +163,7 @@ export class InterventionSummary extends connectStore(LitElement) {
           </div>
         </div>
 
-        <div class="col col-6">
+        <div class="col-6">
           <div>
             <label class="label-secondary-color">
               ${translate('TOTAL_VALUE_UNICEF_CONTRIB_EFF')}
@@ -173,8 +173,8 @@ export class InterventionSummary extends connectStore(LitElement) {
         </div>
       </div>
 
-      <div class="row-h flex-c">
-        <div class="col col-4">
+      <div class="row">
+        <div class="col-4">
           <div>
             <label class="label-secondary-color"
               >${translate('UNICEF_CASH_CONTRIBUTION')}</label
@@ -190,7 +190,7 @@ export class InterventionSummary extends connectStore(LitElement) {
             </etools-currency>
           </div>
         </div>
-        <div class="col col-4">
+        <div class="col-4">
           <div>
             <label class="label-secondary-color">${translate('UNICEF_SUPPLY_CONTRIB')}</label>
             <etools-currency
@@ -204,7 +204,7 @@ export class InterventionSummary extends connectStore(LitElement) {
             </etools-currency>
           </div>
         </div>
-        <div class="col col-4">
+        <div class="col-4">
           <div>
             <label class="label-secondary-color">${translate('TOTAL_UNICEF_CONTRIBUTION')}</label>
             <etools-currency
@@ -219,13 +219,13 @@ export class InterventionSummary extends connectStore(LitElement) {
           </div>
         </div>
       </div>
-      <div class="row-h flex-c">
-        <div class="col col-4 block">
+      <div class="row">
+        <div class="col-4 block">
           <label class="label-secondary-color">${translate('PARTNER_HACT_RR')}</label>
           <br />
           <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
         </div>
-        <div class="col col-4 block">
+        <div class="col-4 block">
           <label class="label-secondary-color">${translate('PARTNER_PSEA_RR')}</label>
           <br />
           <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>

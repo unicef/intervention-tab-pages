@@ -1,6 +1,7 @@
 import {LitElement, TemplateResult, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -27,7 +28,7 @@ import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 export class ReviewChecklistPopup extends LitElement {
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: block;
@@ -97,10 +98,10 @@ export class ReviewChecklistPopup extends LitElement {
         dialog-title="${translate('REVIEW_CHECKLIST')}"
         ?show-spinner="${this.requestInProcess}"
       >
-        <div class="form-container">
+        <div class="row">
           ${this.isOverallReview
             ? html`
-                <div class="col col-12 pl-none">
+                <div class="col-12 pl-none">
                   <datepicker-lite
                     label="${translate('REVIEW_DATE_PRC')}"
                     .value="${this.review?.review_date}"
@@ -115,7 +116,7 @@ export class ReviewChecklistPopup extends LitElement {
           ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
             this.generateLikertScale(field as keyof InterventionReview, index)
           )}
-          <div class="col col-12 pl-none">
+          <div class="col-12 pl-none">
             <etools-textarea
               label=${translate('APPROVAL_COMMENT')}
               always-float-label
@@ -129,7 +130,7 @@ export class ReviewChecklistPopup extends LitElement {
           </div>
           ${this.isOverallReview
             ? html`
-                <div class="col col-12 pl-none" ?hidden="${!this.isOverallReview}">
+                <div class="col-12 pl-none" ?hidden="${!this.isOverallReview}">
                   <etools-textarea
                     label=${translate('ACTIONS_LIST')}
                     always-float-label

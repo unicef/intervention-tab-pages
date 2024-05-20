@@ -11,7 +11,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -50,7 +50,7 @@ const customStyles = html`
 @customElement('risks-element')
 export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {

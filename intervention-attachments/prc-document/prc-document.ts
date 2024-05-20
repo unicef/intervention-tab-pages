@@ -4,7 +4,7 @@ import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
@@ -32,7 +32,7 @@ import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/aja
 @customElement('prc-document')
 export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     // language=HTML
@@ -57,8 +57,8 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
         comment-element="prc-document"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+        <div class="row padding-v">
+          <div class="col-6">
             <!-- PRC Review Document -->
             <etools-upload
               id="reviewDocUpload"

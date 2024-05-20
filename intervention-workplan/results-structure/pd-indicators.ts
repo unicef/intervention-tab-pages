@@ -1,7 +1,7 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
@@ -312,7 +312,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ActivitiesAndIndicatorsStyles,
       css`

@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -12,7 +12,7 @@ import {translate} from 'lit-translate';
 @customElement('cluster-indicator-disaggregations')
 export class ClusterIndicatorDisaggregations extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -36,14 +36,14 @@ export class ClusterIndicatorDisaggregations extends LitElement {
       <div ?hidden="${!this.disaggregations.length}">
         ${this.disaggregations.map(
           (item: any) => html`
-            <div class="row-h ">
-              <div class="col col-4">
+            <div class="row">
+              <div class="col-4 col-sm-12">
                 <div class="layout-vertical">
                   <label class="label">${translate('DISAGREG_BY')}</label>
                   <label class="input-label" empty="${!item.name}">${item.name}</label>
                 </div>
               </div>
-              <div class="col col-8">
+              <div class="col-8 col-sm-12">
                 <div class="layout-vertical">
                   <label class="label">${translate('DISAGREG_GROUPS')}</label>
                   <label class="input-label" empty="${!item.choices}">${this._getGroupNames(item.choices)}</label>

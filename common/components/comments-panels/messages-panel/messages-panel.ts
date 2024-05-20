@@ -4,7 +4,7 @@ import {CommentPanelsStyles} from '../common-comments.styles';
 import './messages-panel-header';
 import './message-item';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EditComments} from '../../comments/edit-comments-base';
 import {CommentRelatedItem} from '../../comments/comments-types';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
@@ -80,7 +80,7 @@ export class MessagesPanel extends EditComments {
   static get styles() {
     // language=css
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       CommentPanelsStyles,
       css`
         :host {

@@ -16,7 +16,7 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -34,7 +34,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('special-reporting-requirements')
 export class SpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, reportingRequirementsListStyles];
+    return [layoutStyles, reportingRequirementsListStyles];
   }
   render() {
     return html`
@@ -57,8 +57,8 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
         <etools-data-table-header no-collapse no-title>
           <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
           <etools-data-table-column class="col-3">${translate('DUE_DATE')}</etools-data-table-column>
-          <etools-data-table-column class="flex-6">${translate('REPORTING_REQUIREMENT')}</etools-data-table-column>
-          <etools-data-table-column class="flex-c"></etools-data-table-column>
+          <etools-data-table-column class="col-6">${translate('REPORTING_REQUIREMENT')}</etools-data-table-column>
+          <etools-data-table-column class="col-2"></etools-data-table-column>
         </etools-data-table-header>
         ${(this.paginatedReports || []).map(
           (item: any, index: number) => html` <etools-data-table-row no-collapse secondary-bg-on-hover>
@@ -66,7 +66,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
               <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
               <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
               <div class="col-data col-6">${item.description}</div>
-              <div class="col-data flex-c actions">
+              <div class="col-data col-2 actions">
                 <etools-icon-button name="create" @click="${() => this._onEdit(index)}"></etools-icon-button>
                 <etools-icon-button name="delete" @click="${() => this._onDelete(index)}"></etools-icon-button>
               </div>

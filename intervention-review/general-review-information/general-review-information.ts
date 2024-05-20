@@ -4,7 +4,7 @@ import {EtoolsEndpoint, InterventionReview} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../../common/components/intervention/review.const';
 import {get as getTranslation} from 'lit-translate';
@@ -21,7 +21,7 @@ export class GeneralReviewInformation extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         *[hidden] {
           display: none;

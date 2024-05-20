@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import './intervention-attachment-dialog';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {
   InterventionAttachment,
@@ -36,7 +36,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   @property() attachments: InterventionAttachment[] = [];
   @property() showInvalid = true;

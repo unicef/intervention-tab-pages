@@ -1,6 +1,6 @@
 import {LitElement, html, TemplateResult, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
@@ -28,7 +28,7 @@ import {getPageDirection} from '../../utils/utils';
 export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(LitElement)) {
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       elevationStyles,
       frWarningsStyles,
       css`

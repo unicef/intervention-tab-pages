@@ -32,7 +32,7 @@ import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {contentSectionStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -47,7 +47,6 @@ import {
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
 import dayjs from 'dayjs';
-import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 /**
  * @customElement
@@ -64,7 +63,7 @@ export class InterventionResultsReported extends connectStore(
   UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {
   static get styles() {
-    return [contentSectionStylesLit, gridLayoutStylesLit, elevationStyles, frWarningsStyles, layoutStyles];
+    return [contentSectionStylesLit, layoutStyles, elevationStyles, frWarningsStyles, layoutStyles];
   }
   render() {
     return html`

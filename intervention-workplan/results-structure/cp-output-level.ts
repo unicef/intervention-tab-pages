@@ -1,7 +1,7 @@
 import {css, CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
 
 import './modals/cp-output-dialog';
@@ -117,7 +117,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ...super.styles,
       css`
