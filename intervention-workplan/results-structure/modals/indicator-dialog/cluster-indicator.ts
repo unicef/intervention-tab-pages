@@ -53,8 +53,8 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
       </style>
       ${!this.isNewIndicator
         ? html`
-            <div class="row-h flex-c">
-              <div class="col col-6">
+            <div class="row">
+              <div class="col-6 col-sm-12">
                 <div class="layout-vertical">
                   <label class="label">${translate('RESPONSE_PLAN')}</label>
                   <label class="input-label" ?empty="${!this.indicator?.response_plan_name}"
@@ -62,7 +62,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   >
                 </div>
               </div>
-              <div class="col col-6">
+              <div class="col-6 col-sm-12">
                 <div class="layout-vertical">
                   <label class="label">${translate('CLUSTER')}</label>
                   <label class="input-label" ?empty="${!this.indicator?.cluster_name}"
@@ -71,20 +71,22 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                 </div>
               </div>
             </div>
-            <div class="row-h flex-c">
-              <div class="layout-vertical">
-                <label class="label">${translate('INDICATOR')}</label>
-                <label class="input-label" ?empty="${!this.indicator?.cluster_indicator_title}"
-                  >${this.indicator?.cluster_indicator_title}</label
-                >
+            <div class="row">
+              <div class="col-12">
+                <div class="layout-vertical">
+                  <label class="label">${translate('INDICATOR')}</label>
+                  <label class="input-label" ?empty="${!this.indicator?.cluster_indicator_title}"
+                    >${this.indicator?.cluster_indicator_title}</label
+                  >
+                </div>
               </div>
             </div>
           `
         : html``}
       ${this.isNewIndicator
         ? html`
-            <div class="row-h flex-c">
-              <div class="col col-6">
+            <div class="row">
+              <div class="col-6 col-sm-12">
                 <etools-dropdown
                   id="responsePlanDropdw"
                   label=${translate('RESPONSE_PLAN')}
@@ -104,7 +106,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                 >
                 </etools-dropdown>
               </div>
-              <div class="col col-6">
+              <div class="col-6 col-sm-12">
                 <etools-dropdown
                   id="clusterDropdw"
                   label=${translate('CLUSTER')}
@@ -125,34 +127,36 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                 </etools-dropdown>
               </div>
             </div>
-            <div class="row-h flex-c">
-              <etools-dropdown
-                id="clusterIndicatorDropdw"
-                label=${translate('INDICATOR')}
-                placeholder="&#8212;"
-                .selected="${this.indicator.cluster_indicator_id}"
-                .options="${this.prpClusterIndicators}"
-                option-label="title"
-                option-value="id"
-                required
-                auto-validate
-                error-message=${translate('INDICATOR_ERR')}
-                fit-into="etools-dialog"
-                ?readonly="${this.readonly}"
-                trigger-value-change-event
-                @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                  this.indicator.cluster_indicator_id = detail.selectedItem?.id;
-                  this.prpClusterIndicator = !detail.selectedItem ? {} : detail.selectedItem;
-                  this._selectedPrpClusterIndicatorChanged(this.prpClusterIndicator);
-                }}"
-              >
-              </etools-dropdown>
+            <div class="row">
+                <div class="col-4 col-sm-12">
+                <etools-dropdown
+                  id="clusterIndicatorDropdw"
+                  label=${translate('INDICATOR')}
+                  placeholder="&#8212;"
+                  .selected="${this.indicator.cluster_indicator_id}"
+                  .options="${this.prpClusterIndicators}"
+                  option-label="title"
+                  option-value="id"
+                  required
+                  auto-validate
+                  error-message=${translate('INDICATOR_ERR')}
+                  fit-into="etools-dialog"
+                  ?readonly="${this.readonly}"
+                  trigger-value-change-event
+                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                    this.indicator.cluster_indicator_id = detail.selectedItem?.id;
+                    this.prpClusterIndicator = !detail.selectedItem ? {} : detail.selectedItem;
+                    this._selectedPrpClusterIndicatorChanged(this.prpClusterIndicator);
+                  }}"
+                >
+                </etools-dropdown>
+                </div>
             </div>
           `
         : html``}
 
-      <div class="row-h flex-c" ?hidden="${this._typeMatches(this.prpClusterIndicator, 'number')}">
-        <div class="col col-4">
+      <div class="row" ?hidden="${this._typeMatches(this.prpClusterIndicator, 'number')}">
+        <div class="col-4">
           <etools-input
             id="numeratorLbl"
             label=${translate('NUMERATOR_LABEL')}
@@ -165,7 +169,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           >
           </etools-input>
         </div>
-        <div class="col col-4">
+        <div class="col-4">
           <etools-input
             id="denomitorLbl"
             label=${translate('DENOMINATOR_LABEL')}
@@ -181,8 +185,8 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
       </div>
 
       ${this._typeMatches(this.prpClusterIndicator, 'ratio')
-        ? html` <div class="row-h flex-c">
-            <div class="col-4 layout-horizontal">
+        ? html` <div class="row">
+            <div class="col-4 layout-horizontal col-sm-12">
               <etools-input
                 id="baselineNumerator"
                 label=${translate('BASELINE')}
@@ -214,7 +218,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               >
               </etools-input>
             </div>
-            <div class="col col-4">
+            <div class="col-4 col-sm-12">
               <etools-input
                 id="targetNumerator"
                 label=${translate('TARGET')}
@@ -253,8 +257,8 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
         : html``}
       ${!this._typeMatches(this.prpClusterIndicator, 'ratio')
         ? html`
-            <div class="row-h flex-c">
-              <div class="col col-4">
+            <div class="row">
+              <div class="col-4 col-sm-12">
                 <etools-currency
                   id="baselineEl"
                   label=${translate('BASELINE')}
@@ -267,7 +271,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   ?readonly="${this.readonly}"
                 ></etools-currency>
               </div>
-              <div class="col col-4">
+              <div class="col-4 col-sm-12">
                 <etools-currency
                   id="targetEl"
                   label=${translate('TARGET')}
@@ -284,7 +288,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
             </div>
           `
         : html``}
-      <div class="row-h flex-c">
+      <div class="row">
         <div class="layout-vertical">
           <label class="label">${translate('MEANS_OF_VERIFICATION')}</label>
           <label class="input-label" ?empty="${!this.prpClusterIndicator.means_of_verification}">
@@ -292,7 +296,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           </label>
         </div>
       </div>
-      <div class="last-item row-h flex-c">
+      <div class="last-item row">
         <etools-dropdown-multi
           id="locationsDropdw"
           label=${translate('LOCATIONS')}

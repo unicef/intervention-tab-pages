@@ -53,8 +53,10 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
         )}
         </div>
 
-        <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
+        <div class="row" ?hidden="${!this._empty(this.reportingRequirements)}">
+          <div class="col-12">
           ${translate('NO_CLUSTER_HUMANITARIAN_REQUIREMENTS_SET')}
+          </div>
         </div>
       </div>
     `;

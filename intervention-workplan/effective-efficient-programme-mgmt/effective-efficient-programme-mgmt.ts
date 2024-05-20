@@ -119,38 +119,38 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         </div>
 
         <etools-data-table-header id="listHeader" .lowResolutionLayout="${this.lowResolutionLayout}" no-title>
-          <etools-data-table-column class="flex-7" field="title">
+          <etools-data-table-column class="col-5" field="title">
             ${translate('ITEM_PD_CURRENCY')}
           </etools-data-table-column>
-          <etools-data-table-column class="flex-c text-right" field="partner_contribution">
+          <etools-data-table-column class="col-2 text-right" field="partner_contribution">
             ${translate('PARTNER_CASH')}
           </etools-data-table-column>
-          <etools-data-table-column class="flex-c text-right" field="unicef_cash">
+          <etools-data-table-column class="col-2 text-right" field="unicef_cash">
             ${translate('UNICEF_CASH')}
           </etools-data-table-column>
-          <etools-data-table-column class="flex-c text-right" field="total">
+          <etools-data-table-column class="col-2 text-right" field="total">
             ${getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')'}
           </etools-data-table-column>
-          <etools-data-table-column class="actions"></etools-data-table-column>
+          <etools-data-table-column class="col-1 actions"></etools-data-table-column>
         </etools-data-table-header>
 
         ${this.formattedData.map(
           (item: any) => html` <div comment-element="eepm-${item.index}">
             <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
               <div slot="row-data" class="layout-horizontal editable-row">
-                <div class="col-data flex-7" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">
+                <div class="col-data col-5" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">
                   ${item.title}
                 </div>
-                <div class="col-data flex-c text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
+                <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
                   ${item.partner_contribution}
                 </div>
-                <div class="col-data flex-c text-right" data-col-header-label="${translate('PARTNER_CASH')}">
+                <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_CASH')}">
                   ${item.unicef_cash}
                 </div>
-                <div class="col-data flex-c text-right" data-col-header-label="${translate('TOTAL')}">
+                <div class="col-data col-2 text-right" data-col-header-label="${translate('TOTAL')}">
                   ${item.total}
                 </div>
-                <div class="actions">
+                <div class="col-1 actions">
                   <etools-icon-button
                     ?hidden="${!this.canEdit}"
                     name="create"

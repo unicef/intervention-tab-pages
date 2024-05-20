@@ -36,8 +36,8 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
         }
       </style>
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">${translate('NO_HUMANITARIAN_REPORT')}</div>
-        <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
+        <div class="row"><div class="col-12">${translate('NO_HUMANITARIAN_REPORT')}</div></div>
+        <div class="row" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
           <etools-button
             variant="text"
             class="no-marg no-pad font-14"
@@ -46,12 +46,12 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
             ${translate('ADD_REQUIREMENTS')}
           </etools-button>
         </div>
-        <div class="row-h" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
+        <div class="row" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
           ${translate('CAN_BE_MODIFIED_PROMPT')}
         </div>
       </div>
 
-      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
+      <div class="row" ?hidden="${this._empty(this.reportingRequirements)}">
         <hru-list id="hruList" .hruData="${this.paginatedReports}" .paginator="${this.paginator}" disable-sorting>
         </hru-list>
 
