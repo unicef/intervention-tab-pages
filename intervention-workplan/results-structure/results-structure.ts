@@ -704,7 +704,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         @media (max-width: 768px) {
           .total-result b {
-            font-size: var(--etools-font-size-18, 18px);
+            font-size: var(--etools-font-size-16, 16px);
           }
         }
       `

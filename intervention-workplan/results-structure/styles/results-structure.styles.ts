@@ -142,24 +142,20 @@ export const ResultStructureStyles: CSSResult = css`
   etools-icon-button.add:hover {
     color: #212121;
   }
+  @media (max-width: 576px) {
+    .total-cache .heading,
+    .total-cache .currency,
+    .data,
+    .bold-data {
+      font-size: var(--etools-font-size-14, 14px);
+      line-height: 15px;
+    }
+    .details-text {
+      font-size: var(--etools-font-size-12, 12px);
+    }
+    .total-cache .data {
+      font-size: var(--etools-font-size-16, 16px);
+      line-height: 18px;
+    }
+  }
 `;
-
-// @media (max-width: 576px) {
-//   .add-button {
-//     font-size: 12px;
-//   }
-//   .total-cache .heading,
-//   .total-cache .currency,
-//   .data,
-//   .bold-data {
-//     font-size: 12px;
-//     line-height: 15px;
-//   }
-//   .details-text {
-//     font-size: 11px;
-//   }
-//   .total-cache .data {
-//     font-size: 14px;
-//     line-height: 18px;
-//   }
-// }

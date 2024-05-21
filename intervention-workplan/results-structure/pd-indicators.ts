@@ -40,6 +40,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
+import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('pd-indicators')
@@ -52,8 +53,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Boolean}) showInactiveIndicators!: boolean;
   @property({type: Boolean}) inAmendment!: boolean;
-  @property({type: String})
-  inAmendmentDate!: string;
+  @property({type: String}) inAmendmentDate!: string;
+  @property({type: Boolean}) lowResolutionLayout = false;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -71,6 +72,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     // language=HTML
     return html`
       ${sharedStyles}
+
+      <etools-media-query
+        query="(max-width: 767px)"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <etools-data-table-row .detailsOpened="${true}" id="indicatorsRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
@@ -91,10 +99,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           ></info-icon-tooltip>
         </div>
         <div slot="row-data-details">
-          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.indicators)}">
-            <div class="left-align">${translate('INDICATOR')}</div>
-            <div class="secondary-cell right">${translate('BASELINE')}</div>
-            <div class="secondary-cell right">${translate('TARGET')}</div>
+          <div
+            class="table-row table-head align-items-center"
+            ?hidden="${isEmptyObject(this.indicators) || this.lowResolutionLayout}"
+          >
+            <div class="flex-1 left-align">${translate('INDICATOR')}</div>
+            <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
+            <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
           </div>
           ${this.indicators.length
             ? this.indicators.map(
@@ -109,6 +120,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
                     .readonly="${this.readonly}"
                     .inAmendment="${this.inAmendment}"
                     .inAmendmentDate="${this.inAmendmentDate}"
+                    .lowResolutionLayout="${this.lowResolutionLayout}"
                     ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
                     @open-edit-indicator-dialog="${(e: CustomEvent) =>
                       this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"

@@ -128,7 +128,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               </div>
             </div>
             <div class="row">
-                <div class="col-4 col-sm-12">
+              <div class="col-4 col-sm-12">
                 <etools-dropdown
                   id="clusterIndicatorDropdw"
                   label=${translate('INDICATOR')}
@@ -150,7 +150,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   }}"
                 >
                 </etools-dropdown>
-                </div>
+              </div>
             </div>
           `
         : html``}

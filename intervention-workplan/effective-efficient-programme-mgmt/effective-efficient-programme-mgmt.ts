@@ -138,18 +138,14 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           (item: any) => html` <div comment-element="eepm-${item.index}">
             <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
               <div slot="row-data" class="layout-horizontal editable-row">
-                <div class="col-data col-5" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">
-                  ${item.title}
-                </div>
+                <div class="col-data col-5" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">${item.title}</div>
                 <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
                   ${item.partner_contribution}
                 </div>
                 <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_CASH')}">
                   ${item.unicef_cash}
                 </div>
-                <div class="col-data col-2 text-right" data-col-header-label="${translate('TOTAL')}">
-                  ${item.total}
-                </div>
+                <div class="col-data col-2 text-right" data-col-header-label="${translate('TOTAL')}">${item.total}</div>
                 <div class="col-1 actions">
                   <etools-icon-button
                     ?hidden="${!this.canEdit}"
