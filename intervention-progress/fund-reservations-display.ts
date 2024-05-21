@@ -80,6 +80,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         etools-data-table-row[low-resolution-layout] *[slot='row-data-details'] > * {
           display: inline-flex !important;
         }
+        .right-align {
+          justify-content: flex-end !important;
+        }
       </style>
 
       <etools-media-query
