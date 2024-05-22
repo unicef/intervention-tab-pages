@@ -53,7 +53,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
         >
       </div>
 
-      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
+      <div class="row" ?hidden="${this._empty(this.reportingRequirements)}">
         <etools-data-table-header no-collapse no-title>
           <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
           <etools-data-table-column class="col-3">${translate('DUE_DATE')}</etools-data-table-column>

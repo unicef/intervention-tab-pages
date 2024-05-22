@@ -38,7 +38,7 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
         }
       </style>
 
-      <div class="flex-c" ?hidden="${!this.reportingRequirements.length}">
+      <div class="row" ?hidden="${!this.reportingRequirements.length}">
         <etools-data-table-header no-collapse no-title class="w100">
           <etools-data-table-column class="col-2">${translate('FREQUENCY')}</etools-data-table-column>
           <etools-data-table-column class="col-10">${translate('DUE_DATES')}</etools-data-table-column>

@@ -40,7 +40,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
         }
       </style>
 
-      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
+      <div class="row" ?hidden="${this._empty(this.reportingRequirements)}">
         <qpr-list .qprData="${this.reportingRequirements}"></qpr-list>
       </div>
 

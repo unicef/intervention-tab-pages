@@ -76,8 +76,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
-          <div class="row-h flex-c" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
+          <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
             <datepicker-lite
+                    class="col-12"
               label="${translate('MEETING_DATE')}"
               ?readonly="${this.isReadonly(this.editMode, true)}"
               .value="${this.data?.meeting_date}"

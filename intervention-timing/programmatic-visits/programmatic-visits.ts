@@ -384,7 +384,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 </div>
               </div>
               <div
-                class="col flex-c"
+                class="col row"
                 ?hidden="${this._showErrMsg(
                   item.year!,
                   item.programmatic_q1,
