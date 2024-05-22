@@ -63,7 +63,7 @@ export class InterventionResultsReported extends connectStore(
   UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {
   static get styles() {
-    return [contentSectionStylesLit, layoutStyles, elevationStyles, frWarningsStyles, layoutStyles];
+    return [contentSectionStylesLit, layoutStyles, elevationStyles, frWarningsStyles];
   }
   render() {
     return html`
@@ -119,7 +119,9 @@ export class InterventionResultsReported extends connectStore(
         .row-details-content {
           font-size: var(--etools-font-size-15, 15px);
         }
-
+        .row.padding-row {
+          padding: 16px 24px;
+        }
         @media print {
           .indicator-report {
             display: flex;
@@ -162,7 +164,13 @@ export class InterventionResultsReported extends connectStore(
           background-color: var(--primary-background-color);
         }
       </style>
-
+      <etools-media-query
+        query="(max-width: 1200px)"
+        .queryMatches="${this.lowResolutionLayout}"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <div id="progress-summary" class="content-section paper-material elevation" elevation="1">
         <div class="row">
           <div class="layout-vertical col-md-4 col-12">
@@ -251,15 +259,15 @@ export class InterventionResultsReported extends connectStore(
 
       <etools-content-panel class="content-section" panel-title="${translate('RESULTS_REPORTED_SUBTAB')}">
         <div
-          class="row-h"
+          class="row padding-row"
           ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}"
         >
-          <p>${translate('NO_RESULTS')}</p>
+          <p class="col-12">${translate('NO_RESULTS')}</p>
         </div>
         ${(this.progress.details ? this.progress.details.cp_outputs : []).map(
           (item: any) => html`
-            <div class="row-v row-second-bg">
-              <strong>${translate('CP_OUTPUT')}: ${item.title}</strong>
+            <div class="row padding-row row-second-bg">
+              <strong class="col-12">${translate('CP_OUTPUT')}: ${item.title}</strong>
             </div>
 
             <!-- RAM indicators display -->
@@ -268,21 +276,23 @@ export class InterventionResultsReported extends connectStore(
               cpId="${item.external_cp_output_id}"
             ></etools-ram-indicators>
 
-            <div class="row-h" ?hidden="${!this._emptyList(item.ll_outputs)}">
-              <p>${translate('NO_PD_OUTPUTS')}</p>
+            <div class="row padding-row" ?hidden="${!this._emptyList(item.ll_outputs)}">
+              <p class="col-12">${translate('NO_PD_OUTPUTS')}</p>
             </div>
 
             <div class="lower-results-table" ?hidden="${this._emptyList(item.ll_outputs)}">
-              <etools-data-table-header id="listHeader" no-title>
+              <etools-data-table-header id="listHeader" no-title .lowResolutionLayout="${this.lowResolutionLayout}">
                 <etools-data-table-column class="col-9">${translate('PD_OUTPUTS')}</etools-data-table-column>
                 <etools-data-table-column class="col-3">${translate('CURRENT_PROGRESS')}</etools-data-table-column>
               </etools-data-table-header>
 
               ${item.ll_outputs.map(
-                (lowerResult: any) => html`<etools-data-table-row>
+                (lowerResult: any) => html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
                   <div slot="row-data">
-                    <span class="col-data col-9"> ${lowerResult.title} </span>
-                    <span class="col-data col-3">
+                    <span class="col-data col-9" data-col-header-label="${translate('PD_OUTPUTS')}">
+                      ${lowerResult.title}
+                    </span>
+                    <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
                       <intervention-report-status
                         status="${this._getLowerResultStatus(lowerResult.id)}"
                       ></intervention-report-status>
@@ -291,16 +301,16 @@ export class InterventionResultsReported extends connectStore(
                   </div>
                   <div slot="row-data-details">
                     <div class="row-details-content flex-c">
-                      <div class="row-h" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
+                      <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
                         ${translate('NO_INDICATORS')}
                       </div>
                       ${this._getIndicatorsReports(lowerResult.id).map(
-                        (indicatorReport: any) => html`<div class="row-h indicator-report">
-                            <div class="col-data col-9">
+                        (indicatorReport: any) => html`<div class="row indicator-report">
+                            <div class="col-data col-12 col-md-9">
                               ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
                               ${indicatorReport.reportable.blueprint.title}
                             </div>
-                            <div class="col-data col-3 progress-bar">
+                            <div class="col-data col-12 col-md-3 progress-bar">
                               <etools-progress-bar
                                 class="report-progress-bar"
                                 value="${this.getProgressPercentage(
@@ -311,8 +321,8 @@ export class InterventionResultsReported extends connectStore(
                               </etools-progress-bar>
                             </div>
                           </div>
-                          <div class="row-h progress-details">
-                            <div class="layout-vertical col-5 target-details">
+                          <div class="row progress-details">
+                            <div class="layout-vertical col-12 col-md-5 target-details">
                               <indicator-report-target
                                 class="print-inline"
                                 .displayType="${indicatorReport.reportable.blueprint.display_type}"
@@ -359,6 +369,9 @@ export class InterventionResultsReported extends connectStore(
 
   @property({type: Number})
   pdProgress!: number | null;
+
+  @property({type: Boolean})
+  lowResolutionLayout = false;
 
   _progress: GenericObject = {};
 

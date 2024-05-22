@@ -29,8 +29,17 @@ export class MonitoringVisitsList extends LitElement {
         .monitoring-visits-container {
           position: relative;
         }
+        .row.padding-row {
+          padding: 16px 24px;
+        }
       </style>
-
+      <etools-media-query
+        query="(max-width: 1200px)"
+        .queryMatches="${this.lowResolutionLayout}"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <div class="monitoring-visits-container">
         <etools-loading .active="${this.showLoading}"></etools-loading>
 
@@ -39,6 +48,7 @@ export class MonitoringVisitsList extends LitElement {
             id="listHeader"
             label="Showing ${this._getVisitsCount(this.monitoringVisits.length, this.tpmActivities.length)} results"
             no-collapse
+            .lowResolutionLayout="${this.lowResolutionLayout}"
           >
             <etools-data-table-column class="col-2" field="reference_number"> Reference # </etools-data-table-column>
             <etools-data-table-column class="col-2" field="primary_traveler"> Traveler </etools-data-table-column>
@@ -50,9 +60,9 @@ export class MonitoringVisitsList extends LitElement {
 
           ${this.monitoringVisits.map(
             (visit: AnyObject) => html`
-              <etools-data-table-row no-collapse>
+              <etools-data-table-row no-collapse .lowResolutionLayout="${this.lowResolutionLayout}">
                 <div slot="row-data" class="layout-horizontal">
-                  <span class="col-data col-2">
+                  <span class="col-data col-2" data-col-header-label="Reference #">
                     <a
                       class="truncate"
                       .href="/t2f/edit-travel/${visit.trip_id}"
@@ -62,17 +72,29 @@ export class MonitoringVisitsList extends LitElement {
                       ${visit.reference_number}
                     </a>
                   </span>
-                  <span class="col-data col-2" title="${visit.primary_traveler}">
+                  <span class="col-data col-2" title="${visit.primary_traveler}" data-col-header-label="Traveler">
                     <span class="truncate"> ${visit.primary_traveler} </span>
                   </span>
-                  <span class="col-data col-2" title="${visit.travel_type}"> ${visit.travel_type} </span>
-                  <span class="col-data col-2" title="${prettyDate(visit.travel_latest_date)}">
+                  <span class="col-data col-2" title="${visit.travel_type}" data-col-header-label="Travel Type">
+                    ${visit.travel_type}
+                  </span>
+                  <span
+                    class="col-data col-2"
+                    title="${prettyDate(visit.travel_latest_date)}"
+                    data-col-header-label="End Date"
+                  >
                     ${prettyDate(visit.travel_latest_date)}
                   </span>
-                  <span class="col-data col-2" title="${this.getDisplayValue(visit.locations)}">
+                  <span
+                    class="col-data col-2"
+                    title="${this.getDisplayValue(visit.locations)}"
+                    data-col-header-label="Locations"
+                  >
                     ${this.getDisplayValue(visit.locations)}
                   </span>
-                  <span class="col-data col-2 capitalize" title="${visit.status}"> ${visit.status} </span>
+                  <span class="col-data col-2 capitalize" title="${visit.status}" data-col-header-label="Status">
+                    ${visit.status}
+                  </span>
                 </div>
               </etools-data-table-row>
             `
@@ -81,7 +103,7 @@ export class MonitoringVisitsList extends LitElement {
             (visit: AnyObject) => html`
               <etools-data-table-row no-collapse>
                 <div slot="row-data" class="layout-horizontal">
-                  <span class="col-data col-2">
+                  <span class="col-data col-2" data-col-header-label="Reference #">
                     <a
                       class="truncate"
                       .href="/tpm/visits/${visit.tpm_visit}/details"
@@ -91,27 +113,39 @@ export class MonitoringVisitsList extends LitElement {
                       ${visit.visit_reference}
                     </a>
                   </span>
-                  <span class="col-data col-2" title="${visit.tpm_partner_name}">
+                  <span class="col-data col-2" title="${visit.tpm_partner_name}" data-col-header-label="Traveler">
                     <span class="truncate"> ${visit.tpm_partner_name} </span>
                   </span>
-                  <span class="col-data col-2" title="${this.getDisplayType(visit.is_pv)}">
+                  <span
+                    class="col-data col-2"
+                    title="${this.getDisplayType(visit.is_pv)}"
+                    data-col-header-label="Travel Type"
+                  >
                     ${this.getDisplayType(visit.is_pv)}
                   </span>
-                  <span class="col-data col-2" title="${prettyDate(visit.date)}"> ${prettyDate(visit.date)} </span>
-                  <span class="col-data col-2" title="${this.getLocNames(visit.locations_details)}">
+                  <span class="col-data col-2" title="${prettyDate(visit.date)}" data-col-header-label="End Date">
+                    ${prettyDate(visit.date)}
+                  </span>
+                  <span
+                    class="col-data col-2"
+                    title="${this.getLocNames(visit.locations_details)}"
+                    data-col-header-label="Locations"
+                  >
                     ${this.getLocNames(visit.locations_details)}
                   </span>
-                  <span class="col-data col-2 capitalize" title="${visit.status}"> ${visit.status} </span>
+                  <span class="col-data col-2 capitalize" title="${visit.status}" data-col-header-label="Status">
+                    ${visit.status}
+                  </span>
                 </div>
               </etools-data-table-row>
             `
           )}
         </div>
         <div
-          class="row-h"
+          class="row padding-row"
           ?hidden="${!this._hideMonitoringVisits(this.monitoringVisits.length, this.tpmActivities.length)}"
         >
-          <p>${translate('NO_ACTIVITIES')}</p>
+          <p class="col-12">${translate('NO_ACTIVITIES')}</p>
         </div>
       </div>`;
   }
@@ -131,6 +165,8 @@ export class MonitoringVisitsList extends LitElement {
   @property({type: Array})
   tpmActivities: AnyObject[] = [];
 
+  @property({type: Boolean})
+  lowResolutionLayout = false;
   _interventionId!: string;
 
   set interventionId(interventionId) {
