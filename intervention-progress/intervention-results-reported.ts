@@ -120,6 +120,7 @@ export class InterventionResultsReported extends connectStore(
           font-size: var(--etools-font-size-15, 15px);
         }
         .row.padding-row {
+          margin: 0;
           padding: 16px 24px;
         }
         @media print {
