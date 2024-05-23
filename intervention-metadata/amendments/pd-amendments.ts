@@ -21,7 +21,6 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {get as getTranslation} from 'lit-translate/util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -31,6 +30,7 @@ import {getIntervention, setShouldReGetList} from '../../common/actions/interven
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import './amendment-difference';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 /**
  * @customElement
@@ -147,7 +147,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                       ? html`
                           <a
                             class="layout-horizontal align-items-center"
-                            href="${ROOT_PATH}interventions/${item.amended_intervention}/metadata"
+                            href="${Environment.basePath}interventions/${item.amended_intervention}/metadata"
                           >
                             ${translate('ACTIVE')} <etools-icon name="launch"></etools-icon>
                           </a>
@@ -277,7 +277,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     }).then(({response}) => {
       if (response?.id) {
         getStore().dispatch(setShouldReGetList(true));
-        history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${response.id}/metadata`);
+        history.pushState(window.history.state, '', `${Environment.basePath}interventions/${response.id}/metadata`);
         window.dispatchEvent(new CustomEvent('popstate'));
       }
     });

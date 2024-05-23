@@ -3,13 +3,13 @@ import {customElement} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './attachments-list/attachments-list';
 import './prc-document/prc-document';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 /**
  * @customElement
  */
 @customElement('intervention-attachments')
 export class InterventionAttachments extends LitElement {
-  private isEPDApp = ROOT_PATH === '/epd/';
+  private isEPDApp = Environment.basePath === '/epd/';
 
   render() {
     // language=HTML
