@@ -103,6 +103,9 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         .editable-row {
           line-height: 24px;
         }
+        .row.padding-row {
+          padding: 16px 24px;
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
@@ -199,8 +202,8 @@ export class PdAmendments extends CommentsMixin(LitElement) {
               </etools-data-table-row>
             `
           )}
-          <div class="row-h" ?hidden=${this.amendments.length}>
-            <p>${translate('NO_AMENDMENTS_ADDED')}</p>
+          <div class="row padding-row" ?hidden=${this.amendments.length}>
+            <p class="col-12">${translate('NO_AMENDMENTS_ADDED')}</p>
           </div>
         </div>
       </etools-content-panel>

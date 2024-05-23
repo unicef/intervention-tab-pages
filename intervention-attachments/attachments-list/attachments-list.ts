@@ -54,6 +54,9 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
           display: block;
           margin-bottom: 24px;
         }
+        .row.padding-row {
+          padding: 16px 24px;
+        }
       </style>
       <etools-media-query
         query="(max-width: 767px)"
@@ -87,7 +90,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
 
         ${this.attachments.length
           ? html`
-              <etools-data-table-header .lowResolutionLayout="${this.lowResolutionLayout}">
+              <etools-data-table-header no-title .lowResolutionLayout="${this.lowResolutionLayout}">
                 <etools-data-table-column class="col-2">${translate('DATE_UPLOADED')}</etools-data-table-column>
                 <etools-data-table-column class="col-3">${translate('DOC_TYPE')}</etools-data-table-column>
                 <etools-data-table-column class="col-6">${translate('DOC')}</etools-data-table-column>
@@ -140,8 +143,8 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
               )}
             `
           : html`
-              <div class="row-h">
-                <p>${translate('NO_ATTACHMENTS_ADDED')}</p>
+              <div class="row padding-row">
+                <p class="col-12">${translate('NO_ATTACHMENTS_ADDED')}</p>
               </div>
             `}
       </etools-content-panel>

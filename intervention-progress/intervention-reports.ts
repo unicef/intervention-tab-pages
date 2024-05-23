@@ -88,6 +88,9 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         .pad-bottom {
           padding-bottom: 25px;
         }
+        .rdc-title.col-12 {
+          padding: 0;
+        }
       </style>
       <etools-media-query
         query="(max-width: 767px)"

@@ -48,6 +48,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         etools-button::part(base) {
           padding: 0 10px;
         }
+        .row.row-padding {
+          padding: 16px 24px;
+        }
       `
     ];
   }
@@ -89,7 +92,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             </datepicker-lite>
           </div>
           <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
-            <div class="col-6 col-sm-12">
+            <div class="col-12">
               <etools-dropdown-multi
                 label=${translate('REVIEWERS')}
                 placeholder="&#8212;"
@@ -110,9 +113,8 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             <div>
           </div>
           <div class="row">
-          <div class="col-4 col-sm-12">
             <etools-dropdown
-              class="col-4"
+              class="col-4 col-sm-12"
               label=${translate('OVERALL_APPROVER')}
               placeholder="&#8212;"
               .options="${this.users}"
@@ -126,7 +128,6 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               }}"
             >
             </etools-dropdown>
-            </div>
           </div>
 
           <div class="row padding-v">${this.renderActions(this.editMode, true)}</div>

@@ -52,6 +52,9 @@ export class OverallApproval extends LitElement {
         .answer:not(:last-of-type) {
           margin-bottom: 20px;
         }
+        .row.row-padding {
+          padding: 16px 24px;
+        }
       `
     ];
   }
@@ -68,14 +71,14 @@ export class OverallApproval extends LitElement {
         </div>
         <etools-data-table-row class="overall-row" no-collapse details-opened>
           <div slot="row-data">
-            <div class="layout-horizontal row-padding space-between">
-              <div class="info-block">
+            <div class="row row-padding">
+              <div class="col-10">
                 <div class="label">${translate('REVIEW_DATE_PRC')}</div>
                 <div class="value">
                   ${this.review.review_date ? formatDate(this.review.review_date, 'DD MMM YYYY') : '-'}
                 </div>
               </div>
-              <div class="info-block">
+              <div class="col-2">
                 <div class="label">${translate('APPROVED_BY_PRC')}</div>
                 <div class="value">
                   ${typeof this.review.overall_approval === 'boolean'
@@ -84,19 +87,19 @@ export class OverallApproval extends LitElement {
                 </div>
               </div>
             </div>
-            <div class="info-block row-padding">
-              <div class="label">${translate('APPROVAL_COMMENT')}</div>
-              <div class="value">${this.review?.overall_comment || '-'}</div>
+            <div class="row row-padding">
+              <div class="col-12 label">${translate('APPROVAL_COMMENT')}</div>
+              <div class="col-12 value">${this.review?.overall_comment || '-'}</div>
             </div>
-            <div class="info-block row-padding">
-              <div class="label">${translate('ACTIONS_LIST')}</div>
-              <div class="value multiline">${this.review?.actions_list || '-'}</div>
+            <div class="row row-padding">
+              <div class="col-12 label">${translate('ACTIONS_LIST')}</div>
+              <div class="col-12 value multiline">${this.review?.actions_list || '-'}</div>
             </div>
-            <div class="row-padding">
+            <div class="row row-padding">
               ${Object.entries(REVIEW_QUESTIONS).map(
                 ([field]: [string, string], index: number) => html`
-                  <label class="label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
-                  <div class="answer">
+                  <label class="col-12 label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
+                  <div class="col-12 answer">
                     ${translateValue(
                       REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-',
                       'REVIEW_ANSWERS'
