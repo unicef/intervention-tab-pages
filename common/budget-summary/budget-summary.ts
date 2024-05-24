@@ -59,6 +59,9 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           margin-top: 14px;
           margin-inline-start: 30px;
         }
+        .mt-6 {
+          margin-block-start: -6px;
+        }
         .amt-data .label {
           font-weight: 400;
           font-size: var(--etools-font-size-14, 14px);
@@ -164,7 +167,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <div class="icon-wrapper">
+          <div class="icon-wrapper mt-6">
             <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
             <info-icon-tooltip .tooltipText="${translate('PRGM_EFFECTIVENESS_TOOLTIP')}"></info-icon-tooltip>
           </div>

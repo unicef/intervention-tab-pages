@@ -41,8 +41,7 @@ export class ReviewChecklistPopup extends LitElement {
           padding: 0 24px;
         }
         .likert-scale {
-          padding-top: 16px;
-          padding-bottom: 14px;
+          padding: 15px;
           border-bottom: 1px solid var(--secondary-background-color);
         }
         div[slot='buttons'] {
@@ -98,11 +97,13 @@ export class ReviewChecklistPopup extends LitElement {
         dialog-title="${translate('REVIEW_CHECKLIST')}"
         ?show-spinner="${this.requestInProcess}"
       >
+      <div class="container-dialog">
         <div class="row">
           ${this.isOverallReview
             ? html`
-                <div class="col-12 pl-none">
+                <div class="col-12">
                   <datepicker-lite
+                    class="col-md-4 col-sm-12"
                     label="${translate('REVIEW_DATE_PRC')}"
                     .value="${this.review?.review_date}"
                     selected-date-display-format="D MMM YYYY"
@@ -116,7 +117,7 @@ export class ReviewChecklistPopup extends LitElement {
           ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
             this.generateLikertScale(field as keyof InterventionReview, index)
           )}
-          <div class="col-12 pl-none">
+          <div class="col-12">
             <etools-textarea
               label=${translate('APPROVAL_COMMENT')}
               always-float-label
@@ -130,7 +131,7 @@ export class ReviewChecklistPopup extends LitElement {
           </div>
           ${this.isOverallReview
             ? html`
-                <div class="col-12 pl-none" ?hidden="${!this.isOverallReview}">
+                <div class="col-12" ?hidden="${!this.isOverallReview}">
                   <etools-textarea
                     label=${translate('ACTIONS_LIST')}
                     always-float-label
@@ -149,6 +150,7 @@ export class ReviewChecklistPopup extends LitElement {
               >
                 ${translate('APPROVED_BY_PRC')}
               </etools-checkbox>`}
+        </div>
         </div>
         <div slot="buttons">
           <etools-button variant="text" class="neutral" @click="${() => this.close()}"

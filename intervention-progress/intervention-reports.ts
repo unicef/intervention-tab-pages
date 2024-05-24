@@ -98,7 +98,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       ></etools-media-query>
       <etools-content-panel panel-title="${translate('REPORTS')}" class="pad-bottom">
         ${!this.reports.length
-          ? html` <div class="row-h">
+          ? html` <div class="row">
               <p>${translate('NO_REPORTS_YET')}</p>
             </div>`
           : html` <etools-data-table-header

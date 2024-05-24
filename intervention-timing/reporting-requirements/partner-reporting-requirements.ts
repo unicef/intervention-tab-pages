@@ -58,6 +58,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         .reporting-req-data {
           border-inline-start: 1px solid var(--darker-divider-color);
           flex: 1 1 0%;
+          margin-block-end: 24px;
         }
 
         .nav-menu {

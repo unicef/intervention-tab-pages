@@ -72,9 +72,10 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         keep-dialog-open
         spinner-text="${translate('CHECKING_FR_NUMBERS_UPDATES')}"
       >
+        <div class="container-dialog">
         ${(this.data || []).map(
           (item: AnyObject, index: number) => html`
-            <div class="row-h item-container">
+            <div class="container-dialog item-container">
               <div class="item-actions-container">
                 <div class="actions">
                   <etools-icon-button
@@ -88,7 +89,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                 </div>
               </div>
               <div class="item-content">
-                <div class="row-h">
+                <div class="row">
                   <!-- FR Number -->
                   <etools-input
                     .id="fr-nr-${index}"
@@ -109,12 +110,15 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
         <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
 
-        <div class="row-h">
+        <div class="row">
+        <div class="col-12">
           <etools-button variant="text" class="no-marg no-pad" @click="${() => this._addNewFundReservation()}">
             <etools-icon name="add"></etools-icon>
             ${translate('ADD_FR_NUM')}
           </etools-button>
         </div>
+        </div>
+      </div>
       </etools-dialog>
     `;
   }

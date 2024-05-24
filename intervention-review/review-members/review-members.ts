@@ -36,7 +36,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
           margin-inline-end: 24px;
         }
 
-        .row-h:not(:first-child) {
+        .row:not(:first-child) {
           padding-top: 0;
         }
         datepicker-lite {
@@ -48,8 +48,11 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         etools-button::part(base) {
           padding: 0 10px;
         }
-        .row.row-padding {
-          padding: 16px 24px;
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
+        .flex-1 {
+          flex: 1 1 0%;
         }
       `
     ];
@@ -78,10 +81,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
       <etools-content-panel class="content-section" panel-title="${translate('REVIEW_MEMBERS')}">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v">
-          <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
-            <datepicker-lite
-                    class="col-12"
+        <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
+            <datepicker-lite              
+              class="col-md-4 col-sm-12"
               label="${translate('MEETING_DATE')}"
               ?readonly="${this.isReadonly(this.editMode, true)}"
               .value="${this.data?.meeting_date}"
@@ -90,31 +92,35 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail, 'meeting_date')}"
             >
             </datepicker-lite>
-          </div>
+        </div>
           <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
-            <div class="col-12">
-              <etools-dropdown-multi
-                label=${translate('REVIEWERS')}
-                placeholder="&#8212;"
-                .options="${this.users}"
-                .selectedValues="${this.data?.prc_officers}"
-                ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
-                option-label="name"
-                option-value="id"
-                ?trigger-value-change-event="${this.users.length}"
-                @etools-selected-items-changed="${({detail}: CustomEvent) => {
-                  this.selectedItemsChanged(detail, 'prc_officers', 'id');
-                }}"
-              >
-              </etools-dropdown-multi>
-              <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
-                ${translate('SEND_NOTIFICATIONS')}
-              </etools-button>
-            <div>
+            <div class="col-12 layout-horizontal align-items-center">
+              <div class="flex-1">
+                <etools-dropdown-multi                 
+                  label=${translate('REVIEWERS')}
+                  placeholder="&#8212;"
+                  .options="${this.users}"
+                  .selectedValues="${this.data?.prc_officers}"
+                  ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
+                  option-label="name"
+                  option-value="id"
+                  ?trigger-value-change-event="${this.users.length}"
+                  @etools-selected-items-changed="${({detail}: CustomEvent) => {
+                    this.selectedItemsChanged(detail, 'prc_officers', 'id');
+                  }}"
+                >
+                </etools-dropdown-multi>
+              </div>
+              <div>
+                <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
+                  ${translate('SEND_NOTIFICATIONS')}
+                </etools-button>
+              </div>
+            </div>
           </div>
           <div class="row">
             <etools-dropdown
-              class="col-4 col-sm-12"
+              class="col-md-4 col-sm-12"
               label=${translate('OVERALL_APPROVER')}
               placeholder="&#8212;"
               .options="${this.users}"
@@ -130,8 +136,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             </etools-dropdown>
           </div>
 
-          <div class="row padding-v">${this.renderActions(this.editMode, true)}</div>
-        </div>
+          ${this.renderActions(this.editMode, true)}
       </etools-content-panel>
     `;
   }
