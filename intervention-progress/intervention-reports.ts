@@ -91,6 +91,9 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         .rdc-title.col-12 {
           padding: 0;
         }
+        .row.padding-row {
+          padding: 16px 24px;
+        }
       </style>
       <etools-media-query
         query="(max-width: 767px)"
@@ -98,7 +101,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       ></etools-media-query>
       <etools-content-panel panel-title="${translate('REPORTS')}" class="pad-bottom">
         ${!this.reports.length
-          ? html` <div class="row">
+          ? html` <div class="row padding-row">
               <p>${translate('NO_REPORTS_YET')}</p>
             </div>`
           : html` <etools-data-table-header
