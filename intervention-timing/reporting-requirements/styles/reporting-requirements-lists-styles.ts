@@ -21,6 +21,10 @@ export const reportingRequirementsListStyles = css`
     padding-inline-end: 48px !important;
   }
 
+  .col-data.right-align {
+    justify-content: flex-end;
+  }
+
   .actions {
     position: relative;
     visibility: hidden;

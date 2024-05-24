@@ -40,22 +40,24 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     return html`
       ${sharedStyles}
       <style>
-        ${dataTableStylesLit}
+        ${dataTableStylesLit} .mt-10 {
+          margin-block-start: 10px;
+        }
       </style>
 
-      <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
+      <div class="col-12 mt-10" ?hidden="${!this._empty(this.reportingRequirements)}">
         ${translate('NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
-      <div class="row-h" ?hidden="${!this.editMode}">
-        <etools-button variant="text" class="no-marg no-pad font-14" @click="${this._openAddDialog}"
-          >${translate('ADD_REQUIREMENTS')}</etools-button
-        >
+      <div class="col-12 mt-10" ?hidden="${!this.editMode}">
+        <etools-button variant="text" class="no-marg no-pad font-14" @click="${this._openAddDialog}">
+          ${translate('ADD_REQUIREMENTS')}
+        </etools-button>
       </div>
 
-      <div class="row" ?hidden="${this._empty(this.reportingRequirements)}">
+      <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
         <etools-data-table-header no-collapse no-title>
-          <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
+          <etools-data-table-column class="col-1 index-col">ID</etools-data-table-column>
           <etools-data-table-column class="col-3">${translate('DUE_DATE')}</etools-data-table-column>
           <etools-data-table-column class="col-6">${translate('REPORTING_REQUIREMENT')}</etools-data-table-column>
           <etools-data-table-column class="col-2"></etools-data-table-column>
@@ -63,7 +65,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
         ${(this.paginatedReports || []).map(
           (item: any, index: number) => html` <etools-data-table-row no-collapse secondary-bg-on-hover>
             <div slot="row-data" class="layout-horizontal editable-row">
-              <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
+              <div class="col-data col-1 index-col">${this._getIndex(index)}</div>
               <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
               <div class="col-data col-6">${item.description}</div>
               <div class="col-data col-2 actions">

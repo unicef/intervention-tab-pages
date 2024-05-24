@@ -172,7 +172,7 @@ export class GeneralReviewInformation extends LitElement {
         <div class="row-padding-v">
           <div ?hidden="${this.currentReview}">${translate('EMPTY_REVIEW')}</div>
 
-          <div ?hidden="${!this.currentReview}" class="container layout-horizontal">
+          <div ?hidden="${!this.currentReview}" class="layout-horizontal padding-v">
             <div class="info-block">
               <div class="label">${translate('REVIEW_CREATED')}</div>
               <div class="value">${this.reviewCreatedDate}</div>

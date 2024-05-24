@@ -45,7 +45,6 @@ export class EditHruDialog extends connectStore(LitElement) {
         #add-selected-date {
           display: inline-block;
           width: auto;
-          margin-top: 24px;
           padding-inline-end: 0;
         }
 
@@ -117,10 +116,10 @@ export class EditHruDialog extends connectStore(LitElement) {
             </div>
           </div>
           <div class="col-md-6">
-            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">${translate('NO_DATES_ADDED')}</div>
+            <div class="row" ?hidden="${!this._empty(this.hruData.length)}">${translate('NO_DATES_ADDED')}</div>
             <hru-list
               id="hruList"
-              class="flex-c"
+              class="col-12"
               with-scroll
               .hruData="${this.hruData}"
               ?hidden="${this._empty(this.hruData.length)}"

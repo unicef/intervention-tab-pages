@@ -40,7 +40,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
         }
       </style>
 
-      <div class="row" ?hidden="${this._empty(this.reportingRequirements)}">
+      <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
         <qpr-list .qprData="${this.reportingRequirements}"></qpr-list>
       </div>
 
