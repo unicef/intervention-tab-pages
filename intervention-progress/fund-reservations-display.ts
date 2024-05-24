@@ -83,6 +83,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         .right-align {
           justify-content: flex-end !important;
         }
+        .row.padding-row {
+          padding: 16px 24px;
+        }
       </style>
 
       <etools-media-query
@@ -92,7 +95,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         }}"
       ></etools-media-query>
 
-      <div class="row-h" ?hidden="${this.frsDetails.frs.length}">
+      <div class="row padding-row" ?hidden="${this.frsDetails.frs.length}">
         <p>${translate('NO_FUND_RESERVATIONS')}</p>
       </div>
 
