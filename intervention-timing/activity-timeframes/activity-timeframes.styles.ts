@@ -95,6 +95,7 @@ export const ActivityTimeframesStyles: CSSResult = css`
     font-size: var(--etools-font-size-12, 12px);
     line-height: 20px;
     color: var(--primary-text-color);
+    word-break: break-word;
   }
   .align-items-center {
     margin: 0 auto;

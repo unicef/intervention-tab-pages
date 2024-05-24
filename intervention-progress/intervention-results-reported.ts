@@ -301,7 +301,7 @@ export class InterventionResultsReported extends connectStore(
                     </span>
                   </div>
                   <div slot="row-data-details">
-                    <div class="row-details-content flex-c">
+                    <div class="row-details-content">
                       <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
                         ${translate('NO_INDICATORS')}
                       </div>

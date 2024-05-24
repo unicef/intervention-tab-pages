@@ -67,12 +67,25 @@ export class ReviewsList extends connectStore(LitElement) {
   @property() approvals: PrcOfficerReview[] = [];
   @property() readonly = false;
   @property() currentUserId!: number;
+  @property({type: Boolean})
+  lowResolutionLayout = false;
 
   render(): TemplateResult {
     return html`
       ${sharedStyles}
+      <etools-media-query
+        query="(max-width: 1200px)"
+        .queryMatches="${this.lowResolutionLayout}"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <etools-content-panel class="content-section" panel-title=${translate('PRC_MEMBER_REVIEWS')}>
-        <etools-data-table-header no-title ?no-collapse="${!this.approvals.length}">
+        <etools-data-table-header
+          no-title
+          ?no-collapse="${!this.approvals.length}"
+          .lowResolutionLayout="${this.lowResolutionLayout}"
+        >
           <etools-data-table-column class="col-3">${translate('PRC_NAME')}</etools-data-table-column>
           <etools-data-table-column class="col-2">${translate('APPROVED_BY_PRC')}</etools-data-table-column>
           <etools-data-table-column class="col-5">${translate('APPROVAL_COMMENT')}</etools-data-table-column>
@@ -80,14 +93,18 @@ export class ReviewsList extends connectStore(LitElement) {
         </etools-data-table-header>
         ${this.approvals.map(
           (approval) => html`
-            <etools-data-table-row>
+            <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
               <div slot="row-data" class="editable-row">
-                <div class="col-3">${approval.user.name}</div>
-                <div class="col-2">
+                <div class="col-data col-3" data-col-header-label="${translate('PRC_NAME')}">${approval.user.name}</div>
+                <div class="col-data col-2" data-col-header-label="${translate('APPROVED_BY_PRC')}">
                   <etools-icon name="${approval.overall_approval ? 'check' : 'close'}"></etools-icon>
                 </div>
-                <div class="col-5">${approval.overall_comment || '-'}</div>
-                <div class="col-2">${formatDate(approval.review_date as string, 'DD MMM YYYY')}</div>
+                <div class="col-data col-5" data-col-header-label="${translate('APPROVAL_COMMENT')}">
+                  ${approval.overall_comment || '-'}
+                </div>
+                <div class="col-data col-2" data-col-header-label="${translate('REVIEW_DATE_PRC')}">
+                  ${formatDate(approval.review_date as string, 'DD MMM YYYY')}
+                </div>
                 <div class="hover-block" ?hidden="${this.readonly || approval.user.id !== this.currentUserId}">
                   <etools-icon-button
                     name="create"
@@ -111,10 +128,10 @@ export class ReviewsList extends connectStore(LitElement) {
         )}
         <etools-data-table-row no-collapse ?hidden="${this.approvals.length}">
           <div slot="row-data">
-            <div class="col-3">-</div>
-            <div class="col-2">-</div>
-            <div class="col-5">-</div>
-            <div class="col-2">-</div>
+            <div class="col-data col-3" data-col-header-label="${translate('PRC_NAME')}">-</div>
+            <div class="col-data col-2" data-col-header-label="${translate('APPROVED_BY_PRC')}">-</div>
+            <div class="col-data col-5" data-col-header-label="${translate('APPROVAL_COMMENT')}">-</div>
+            <div class="col-data col-2" data-col-header-label="${translate('REVIEW_DATE_PRC')}">-</div>
           </div>
         </etools-data-table-row>
       </etools-content-panel>

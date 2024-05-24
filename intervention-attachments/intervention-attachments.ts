@@ -13,7 +13,11 @@ export class InterventionAttachments extends LitElement {
 
   render() {
     // language=HTML
-    return html` <style></style>
+    return html` <style>
+        :host {
+          --ecp-title-white-space: wrap;
+        }
+      </style>
       <attachments-list></attachments-list>
       ${!this.isEPDApp ? html`<prc-document></prc-document>` : ``}`;
   }
