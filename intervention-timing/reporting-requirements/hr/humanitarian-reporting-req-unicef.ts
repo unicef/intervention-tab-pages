@@ -56,7 +56,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
 
       <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
         <hru-list id="hruList" .hruData="${this.paginatedReports}" .paginator="${this.paginator}" disable-sorting>
-      </hru-list>
+        </hru-list>
 
         <etools-data-table-footer
           .pageSize="${this.paginator.page_size}"

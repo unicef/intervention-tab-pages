@@ -55,8 +55,8 @@ export class ClusterIndicatorDisaggregations extends LitElement {
       </div>
 
       <div class="row" ?hidden="${!this._noDisaggregations(this.disaggregations, this.disaggregations.length)}">
-      <div class="col-12">
-        <p>${translate('NO_DISAGREG_ADDED')}</p>
+        <div class="col-12">
+          <p>${translate('NO_DISAGREG_ADDED')}</p>
         </div>
       </div>
     `;

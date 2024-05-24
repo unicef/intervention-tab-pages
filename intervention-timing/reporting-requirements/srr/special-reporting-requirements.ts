@@ -40,14 +40,13 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     return html`
       ${sharedStyles}
       <style>
-        ${dataTableStylesLit}
-        .mt-10 {
+        ${dataTableStylesLit} .mt-10 {
           margin-block-start: 10px;
         }
       </style>
 
       <div class="col-12 mt-10" ?hidden="${!this._empty(this.reportingRequirements)}">
-          ${translate('NO_SPECIAL_REPORTING_REQUIREMENTS')}
+        ${translate('NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
       <div class="col-12 mt-10" ?hidden="${!this.editMode}">

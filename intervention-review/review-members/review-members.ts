@@ -82,61 +82,61 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
-            <datepicker-lite              
-              class="col-md-4 col-sm-12"
-              label="${translate('MEETING_DATE')}"
-              ?readonly="${this.isReadonly(this.editMode, true)}"
-              .value="${this.data?.meeting_date}"
-              selected-date-display-format="D MMM YYYY"
-              fire-date-has-changed
-              @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail, 'meeting_date')}"
-            >
-            </datepicker-lite>
+          <datepicker-lite
+            class="col-md-4 col-sm-12"
+            label="${translate('MEETING_DATE')}"
+            ?readonly="${this.isReadonly(this.editMode, true)}"
+            .value="${this.data?.meeting_date}"
+            selected-date-display-format="D MMM YYYY"
+            fire-date-has-changed
+            @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail, 'meeting_date')}"
+          >
+          </datepicker-lite>
         </div>
-          <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
-            <div class="col-12 layout-horizontal align-items-center">
-              <div class="flex-1">
-                <etools-dropdown-multi                 
-                  label=${translate('REVIEWERS')}
-                  placeholder="&#8212;"
-                  .options="${this.users}"
-                  .selectedValues="${this.data?.prc_officers}"
-                  ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
-                  option-label="name"
-                  option-value="id"
-                  ?trigger-value-change-event="${this.users.length}"
-                  @etools-selected-items-changed="${({detail}: CustomEvent) => {
-                    this.selectedItemsChanged(detail, 'prc_officers', 'id');
-                  }}"
-                >
-                </etools-dropdown-multi>
-              </div>
-              <div>
-                <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
-                  ${translate('SEND_NOTIFICATIONS')}
-                </etools-button>
-              </div>
+        <div class="row" ?hidden="${this.originalData?.review_type !== PRC_REVIEW}">
+          <div class="col-12 layout-horizontal align-items-center">
+            <div class="flex-1">
+              <etools-dropdown-multi
+                label=${translate('REVIEWERS')}
+                placeholder="&#8212;"
+                .options="${this.users}"
+                .selectedValues="${this.data?.prc_officers}"
+                ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
+                option-label="name"
+                option-value="id"
+                ?trigger-value-change-event="${this.users.length}"
+                @etools-selected-items-changed="${({detail}: CustomEvent) => {
+                  this.selectedItemsChanged(detail, 'prc_officers', 'id');
+                }}"
+              >
+              </etools-dropdown-multi>
+            </div>
+            <div>
+              <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
+                ${translate('SEND_NOTIFICATIONS')}
+              </etools-button>
             </div>
           </div>
-          <div class="row">
-            <etools-dropdown
-              class="col-md-4 col-sm-12"
-              label=${translate('OVERALL_APPROVER')}
-              placeholder="&#8212;"
-              .options="${this.users}"
-              .selected="${this.data?.overall_approver?.id}"
-              ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
-              option-label="name"
-              option-value="id"
-              ?trigger-value-change-event="${this.users.length}"
-              @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                this.selectedUserChanged(detail, 'overall_approver');
-              }}"
-            >
-            </etools-dropdown>
-          </div>
+        </div>
+        <div class="row">
+          <etools-dropdown
+            class="col-md-4 col-sm-12"
+            label=${translate('OVERALL_APPROVER')}
+            placeholder="&#8212;"
+            .options="${this.users}"
+            .selected="${this.data?.overall_approver?.id}"
+            ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
+            option-label="name"
+            option-value="id"
+            ?trigger-value-change-event="${this.users.length}"
+            @etools-selected-item-changed="${({detail}: CustomEvent) => {
+              this.selectedUserChanged(detail, 'overall_approver');
+            }}"
+          >
+          </etools-dropdown>
+        </div>
 
-          ${this.renderActions(this.editMode, true)}
+        ${this.renderActions(this.editMode, true)}
       </etools-content-panel>
     `;
   }
