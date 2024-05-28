@@ -263,7 +263,7 @@ export class InterventionResultsReported extends connectStore(
           class="row padding-row"
           ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}"
         >
-          <p class="col-12">${translate('NO_RESULTS')}</p>
+          <p>${translate('NO_RESULTS')}</p>
         </div>
         ${(this.progress.details ? this.progress.details.cp_outputs : []).map(
           (item: any) => html`

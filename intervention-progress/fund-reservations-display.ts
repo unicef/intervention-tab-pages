@@ -85,6 +85,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         }
         .row.padding-row {
           padding: 16px 24px;
+          margin: 0;
         }
       </style>
 

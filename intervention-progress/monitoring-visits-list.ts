@@ -31,6 +31,7 @@ export class MonitoringVisitsList extends LitElement {
         }
         .row.padding-row {
           padding: 16px 24px;
+          margin: 0;
         }
       </style>
       <etools-media-query
@@ -145,7 +146,7 @@ export class MonitoringVisitsList extends LitElement {
           class="row padding-row"
           ?hidden="${!this._hideMonitoringVisits(this.monitoringVisits.length, this.tpmActivities.length)}"
         >
-          <p class="col-12">${translate('NO_ACTIVITIES')}</p>
+          <p>${translate('NO_ACTIVITIES')}</p>
         </div>
       </div>`;
   }

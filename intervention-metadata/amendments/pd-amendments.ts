@@ -105,6 +105,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         }
         .row.padding-row {
           padding: 16px 24px;
+          margin: 0;
         }
       </style>
 
@@ -203,7 +204,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
             `
           )}
           <div class="row padding-row" ?hidden=${this.amendments.length}>
-            <p class="col-12">${translate('NO_AMENDMENTS_ADDED')}</p>
+            <p>${translate('NO_AMENDMENTS_ADDED')}</p>
           </div>
         </div>
       </etools-content-panel>

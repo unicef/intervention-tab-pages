@@ -93,6 +93,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         }
         .row.padding-row {
           padding: 16px 24px;
+          margin: 0;
         }
       </style>
       <etools-media-query

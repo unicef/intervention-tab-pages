@@ -55,6 +55,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
           margin-bottom: 24px;
         }
         .row.padding-row {
+          margin: 0;
           padding: 16px 24px;
         }
       </style>
@@ -144,7 +145,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             `
           : html`
               <div class="row padding-row">
-                <p class="col-12">${translate('NO_ATTACHMENTS_ADDED')}</p>
+                <p>${translate('NO_ATTACHMENTS_ADDED')}</p>
               </div>
             `}
       </etools-content-panel>
