@@ -45,8 +45,8 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       </div>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row"><div class="col-12">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div></div>
-        <div class="row" ?hidden="${!this.editMode}">
+        <div class="col-12">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
+        <div class="col-12" ?hidden="${!this.editMode}">
           <etools-button
             variant="text"
             class="no-marg no-pad font-14"
