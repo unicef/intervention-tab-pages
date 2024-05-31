@@ -41,6 +41,9 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           padding-bottom: 16px;
           overflow: hidden !important;
         }
+        .row {
+          margin: 0 9px !important;
+        }
       </style>
 
       <etools-dialog
