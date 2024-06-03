@@ -57,7 +57,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
         .createDisaggreg {
           color: var(--secondary-text-color);
-          padding: 8px 0;
+          padding: 8px 16px;
           font-weight: 500;
           font-size: var(--etools-font-size-16, 16px) !important;
         }

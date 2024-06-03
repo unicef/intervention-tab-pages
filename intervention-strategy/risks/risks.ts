@@ -36,10 +36,13 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 const customStyles = html`
   <style>
     .col_type {
-      width: 15%;
+      width: 20%;
     }
     .col_measures {
       width: 99%;
+    }
+    .row-actions {
+      min-width: 90px;
     }
   </style>
 `;
@@ -82,6 +85,11 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         }
         etools-table {
           padding-top: 0 !important;
+        }
+        @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+          etools-content-panel::part(ecp-content) {
+            padding-inline-start: 18px;
+          }
         }
       </style>
       <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">

@@ -76,8 +76,11 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           margin-top: 50px;
         }
 
+        .location-row {
+          display: flex;
+          flex-direction: column;
+        }
         .dropdown-row {
-          margin-top: -38px;
           display: flex;
         }
 
@@ -96,6 +99,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
         .location-icon {
           z-index: 90;
+          margin-bottom: -24px;
           padding-bottom: 0 !important;
         }
         .prevent-see-hierarchy-link-overlap {
@@ -130,18 +134,20 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         </div>
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="location-icon">
-          <label class="label"> ${translate(translatesMap.flat_locations)}</label>
-          <info-icon-tooltip
-            id="iit-locations"
-            class="iit"
-            position="right"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
-            .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
-          ></info-icon-tooltip>
-        </div>
         <div class="prevent-see-hierarchy-link-overlap"></div>
         <div class="row">
+          <div class="col-12 location-row">
+            <div class="location-icon">
+              <label class="label"> ${translate(translatesMap.flat_locations)}</label>
+              <info-icon-tooltip
+                id="iit-locations"
+                class="iit"
+                position="right"
+                ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
+                .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
+              ></info-icon-tooltip>
+            </div>
+          </div>
           <div class="col-12 dropdown-row">
             <etools-dropdown-multi
               id="locations"

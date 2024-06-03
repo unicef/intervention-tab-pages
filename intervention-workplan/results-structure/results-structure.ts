@@ -701,6 +701,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           min-width: 0px;
           min-height: 0px;
           width: 100%;
+          word-break: break-word;
         }
         @media (max-width: 768px) {
           .total-result b {

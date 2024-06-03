@@ -38,6 +38,7 @@ export class OverallApproval extends LitElement {
           font-size: var(--etools-font-size-16, 16px);
           line-height: 24px;
           color: var(--primary-text-color);
+          word-break: break-word;
         }
         .info-block {
           margin-inline-end: 1.5rem;

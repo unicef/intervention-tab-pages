@@ -76,8 +76,8 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           margin-top: 12px !important;
           margin-bottom: 12px !important;
         }
-        etools-data-table-row[low-resolution-layout] *[slot='row-data'] .col-data,
-        etools-data-table-row[low-resolution-layout] *[slot='row-data-details'] > * {
+        etools-data-table-row[low-resolution-layout] *[slot='row-data'] .col-data:not(.hidden),
+        etools-data-table-row[low-resolution-layout] *[slot='row-data-details'] > *:not(.hidden) {
           display: inline-flex !important;
         }
         .right-align {

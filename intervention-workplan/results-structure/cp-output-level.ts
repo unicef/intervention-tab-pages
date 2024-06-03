@@ -190,6 +190,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
           min-width: 0px;
           min-height: 0px;
           width: 100%;
+          word-break: break-word;
         }
         @media (max-width: 576px) {
           .cp-output-row {
