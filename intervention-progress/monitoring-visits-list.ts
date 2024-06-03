@@ -74,7 +74,7 @@ export class MonitoringVisitsList extends LitElement {
 
           ${this.monitoringActivities.map(
             (activity: AnyObject) => html`
-              <etools-data-table-row no-collapse>
+              <etools-data-table-row  .lowResolutionLayout="${this.lowResolutionLayout}" no-collapse>
                 <div slot="row-data">
                   <span class="col-data col-3">
                     <a
