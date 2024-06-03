@@ -53,7 +53,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           color: var(--secondary-text-color);
         }
         .padd-top {
-          padding-top: 17px;
+          padding-top: 4px;
         }
 
         etools-content-panel::part(ecp-content) {
