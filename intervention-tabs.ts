@@ -633,7 +633,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
     const unicefUser = get(state, 'user.data.is_unicef_user');
     if (tabIndex === -1 && unicefUser) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.ImplementationStatus);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Review,
         tabLabel: translate('REVIEW_TAB'),
