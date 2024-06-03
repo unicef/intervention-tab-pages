@@ -76,7 +76,7 @@ export class MonitoringVisitsList extends LitElement {
             (activity: AnyObject) => html`
               <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}" no-collapse>
                 <div slot="row-data">
-                  <span class="col-data col-3">
+                  <span class="col-data col-3" data-col-header-label="${translate('REFERENCE')}">
                     <a
                       class="truncate"
                       .href="/fm/activities/${activity.id}/details"
@@ -86,16 +86,24 @@ export class MonitoringVisitsList extends LitElement {
                       ${activity.reference_number}
                     </a>
                   </span>
-                  <span class="col-data col-2" title="${this.getTravelerText(activity)}">
+                  <span class="col-data col-2" data-col-header-label="${translate(
+                    'TRAVELER'
+                  )}" title="${this.getTravelerText(activity)}">
                     <span class="truncate"> ${this.getTravelerText(activity)} </span>
                   </span>
-                  <span class="col-data col-2" title="${prettyDate(activity.end_date)}">
+                  <span class="col-data col-2" data-col-header-label="${translate('END_DATE')}" title="${prettyDate(
+              activity.end_date
+            )}">
                     ${prettyDate(activity.end_date)}
                   </span>
-                  <span class="col-data col-3" title="${this.getLocationsText(activity)}">
+                  <span class="col-data col-3" data-col-header-label="${translate(
+                    'LOCATIONS'
+                  )}" title="${this.getLocationsText(activity)}">
                     ${this.getLocationsText(activity)}
                   </span>
-                  <span class="col-data col-2 capitalize" title="${activity.status}"> ${activity.status} </span>
+                  <span class="col-data col-2 data-col-header-label="${translate(
+                    'GENERAL.STATUS'
+                  )}" capitalize" title="${activity.status}"> ${activity.status} </span>
                 </div>
               </etools-data-table-row>
             `
