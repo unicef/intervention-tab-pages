@@ -105,6 +105,24 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             >
             </etools-dropdown-multi>
           </div>
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
+            <etools-dropdown-multi
+              id="cpStructures"
+              label=${translate('CP_STRUCTURES')}
+              .options="${this.cpStructures}"
+              class="w100"
+              option-label="name"
+              option-value="id"
+              .selectedValues="${this.data.country_programmes}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes) ? -1 : undefined}"
+              ?required="${this.permissions?.required.country_programmes}"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.selectedItemsChanged(detail, 'country_programmes')}"
+              trigger-value-change-event
+            >
+            </etools-dropdown-multi>
+          </div>
           ${this.permissions?.view!.unicef_focal_points
             ? html`<div class="col-xl-4 col-md-6 col-12">
                 <etools-dropdown-multi
@@ -162,24 +180,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
                 )}
               </div>
             </div>
-          </div>
-          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
-            <etools-dropdown-multi
-              id="cpStructures"
-              label=${translate('CP_STRUCTURES')}
-              .options="${this.cpStructures}"
-              class="w100"
-              option-label="name"
-              option-value="id"
-              .selectedValues="${this.data.country_programmes}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes) ? -1 : undefined}"
-              ?required="${this.permissions?.required.country_programmes}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemsChanged(detail, 'country_programmes')}"
-              trigger-value-change-event
-            >
-            </etools-dropdown-multi>
           </div>
         </div>
 
