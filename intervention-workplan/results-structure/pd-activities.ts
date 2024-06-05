@@ -72,6 +72,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           width: 40%;
           text-align: left;
         }
+        .word-break {
+          word-break: break-word;
+        }
       </style>
 
       <etools-media-query
@@ -130,14 +133,14 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                           : ``}
                         <div class="layout-horizontal">
                           <b>${activity.code}&nbsp;</b>
-                          <div>
+                          <div class="word-break">
                             <div>
                               <b
                                 >${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name ||
                                 '-'}</b
                               >
                             </div>
-                            <div class="details" ?hidden="${!activity.context_details}">
+                            <div class="details word-break" ?hidden="${!activity.context_details}">
                               ${this.truncateString(activity.context_details)}
                             </div>
                           </div>

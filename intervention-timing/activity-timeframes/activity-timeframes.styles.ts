@@ -69,7 +69,7 @@ export const ActivityTimeframesStyles: CSSResult = css`
     position: absolute;
     bottom: -1px;
     left: 0;
-    width: 90%;
+    width: 100%;
     border-top: 1px solid var(--light-divider-color);
   }
   .year {

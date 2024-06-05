@@ -52,6 +52,9 @@ const customStyles = html`
       width: 70px !important;
       color: #2b2b2b !important;
     }
+    . .word-break {
+      word-break: break-word;
+    }
   </style>
 `;
 
@@ -258,20 +261,20 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     childRow.rowHTML = html`
       <td></td>
       ${this.isUnicefUser
-        ? html`<td class="ptb-0">
+        ? html`<td class="ptb-0 word-break">
             <div class="child-row-inner-container">
               <label class="label">${translate('CP_OUTPUTS')}</label><br />
               <label>${output || '—'}</label><br />
             </div>
           </td>`
         : html``}
-      <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0">
+      <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0 word-break">
         <div class="child-row-inner-container">
           <label class="label">${translate('OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
         </div>
       </td>
-      <td colspan="2" class="ptb-0">
+      <td colspan="2" class="ptb-0 word-break">
         <div class="child-row-inner-container" ?hidden="${item.provided_by.toLowerCase() === 'partner'}">
           <label class="label"> ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
