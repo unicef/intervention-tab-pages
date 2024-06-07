@@ -13,7 +13,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
@@ -28,7 +28,7 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 @customElement('indicator-dissaggregations')
 export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -50,10 +50,20 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
         etools-input {
           width: 100%;
         }
+        .row {
+          margin: 0 15px !important;
+        }
+        .bottom {
+          padding-bottom: 80px;
+          padding-top: 20px;
+        }
+        .item-container .item-content {
+          margin-block-start: 16px;
+        }
       </style>
       <div ?hidden="${this._isEmptyList(this.data, this.data.length)}">
         ${this.data.map(
-          (item: any, index: number) => html` <div class="row-h item-container no-h-margin">
+          (item: any, index: number) => html` <div class="row item-container">
             <div class="item-actions-container">
               <div class="actions">
                 <etools-icon-button
@@ -66,8 +76,8 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
               </div>
             </div>
             <div class="item-content">
-              <div class="row-h">
-                <div class="col col-4">
+              <div class="row m-15">
+                <div class="col-md-4 col-12">
                   <etools-dropdown
                     id="disaggregate_by_${index}"
                     label=${translate('DISAGGREGATE_BY')}
@@ -83,7 +93,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                   >
                   </etools-dropdown>
                 </div>
-                <div class="col col-8">
+                <div class="col-md-8 col-12">
                   <etools-input
                     id="disaggregationGroups_${index}"
                     readonly
@@ -98,24 +108,26 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
         )}
       </div>
 
-      <div class="row-padding-v" ?hidden="${!this._isEmptyList(this.data, this.data.length)}">
+      <div class="row m-15" ?hidden="${!this._isEmptyList(this.data, this.data.length)}">
         <p>${translate('NO_DISAGGREGATIONS_ADDED')}</p>
       </div>
 
-      <div class="row-padding-v" style="margin-bottom:80px;">
-        <etools-button
-          variant="text"
-          class="no-marg no-pad"
-          @click="${this._addNewDisaggregation}"
-          ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
-          title=${translate('ADD_DISAGGREGATION')}
-          >${translate('ADD_DISAGREG')}
-        </etools-button>
-        <info-icon-tooltip
-          id="iit-disaggreg"
-          .tooltipText="${translate('DISAGGREGATION_TOOLTIP')}"
-          ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
-        ></info-icon-tooltip>
+      <div class="row bottom">
+        <div class="col-12">
+          <etools-button
+            variant="text"
+            class="no-marg no-pad"
+            @click="${this._addNewDisaggregation}"
+            ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
+            title=${translate('ADD_DISAGGREGATION')}
+            >${translate('ADD_DISAGREG')}
+          </etools-button>
+          <info-icon-tooltip
+            id="iit-disaggreg"
+            .tooltipText="${translate('DISAGGREGATION_TOOLTIP')}"
+            ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
+          ></info-icon-tooltip>
+        </div>
       </div>
     `;
   }

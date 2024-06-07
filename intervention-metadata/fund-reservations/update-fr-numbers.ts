@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject} from '@unicef-polymer/etools-types';
@@ -22,7 +22,7 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 @customElement('update-fr-numbers')
 export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     // ${repeatableDataSetsStyles}
@@ -72,48 +72,52 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         keep-dialog-open
         spinner-text="${translate('CHECKING_FR_NUMBERS_UPDATES')}"
       >
-        ${(this.data || []).map(
-          (item: AnyObject, index: number) => html`
-            <div class="row-h item-container">
-              <div class="item-actions-container">
-                <div class="actions">
-                  <etools-icon-button
-                    class="action delete"
-                    @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
-                    .data-args="${index}"
-                    name="cancel"
-                    ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.data.length)}"
-                  >
-                  </etools-icon-button>
+        <div class="container-dialog">
+          ${(this.data || []).map(
+            (item: AnyObject, index: number) => html`
+              <div class="container-dialog item-container">
+                <div class="item-actions-container">
+                  <div class="actions">
+                    <etools-icon-button
+                      class="action delete"
+                      @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
+                      .data-args="${index}"
+                      name="cancel"
+                      ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.data.length)}"
+                    >
+                    </etools-icon-button>
+                  </div>
+                </div>
+                <div class="item-content">
+                  <div class="row">
+                    <!-- FR Number -->
+                    <etools-input
+                      .id="fr-nr-${index}"
+                      label=${translate('FR_NUMBER')}
+                      .value="${item.fr_number}"
+                      placeholder="&#8212;"
+                      allowed-pattern="[0-9]"
+                      required
+                      error-message=${translate('FILL_FR_NUMBER')}
+                      @value-changed="${({detail}: CustomEvent) => this._frNrValueChanged(item, detail)}"
+                    >
+                    </etools-input>
+                  </div>
                 </div>
               </div>
-              <div class="item-content">
-                <div class="row-h">
-                  <!-- FR Number -->
-                  <etools-input
-                    .id="fr-nr-${index}"
-                    label=${translate('FR_NUMBER')}
-                    .value="${item.fr_number}"
-                    placeholder="&#8212;"
-                    allowed-pattern="[0-9]"
-                    required
-                    error-message=${translate('FILL_FR_NUMBER')}
-                    @value-changed="${({detail}: CustomEvent) => this._frNrValueChanged(item, detail)}"
-                  >
-                  </etools-input>
-                </div>
-              </div>
+            `
+          )}
+
+          <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
+
+          <div class="row">
+            <div class="col-12">
+              <etools-button variant="text" class="no-marg no-pad" @click="${() => this._addNewFundReservation()}">
+                <etools-icon name="add"></etools-icon>
+                ${translate('ADD_FR_NUM')}
+              </etools-button>
             </div>
-          `
-        )}
-
-        <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
-
-        <div class="row-h">
-          <etools-button variant="text" class="no-marg no-pad" @click="${() => this._addNewFundReservation()}">
-            <etools-icon name="add"></etools-icon>
-            ${translate('ADD_FR_NUM')}
-          </etools-button>
+          </div>
         </div>
       </etools-dialog>
     `;

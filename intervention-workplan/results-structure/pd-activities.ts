@@ -1,7 +1,7 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
 import {property, customElement, queryAll} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
@@ -29,6 +29,8 @@ import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query.js';
+
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
@@ -59,6 +61,28 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     // language=HTML
     return html`
       ${sharedStyles}
+      <style>
+        div[lowresolutionlayout] {
+          flex-direction: column;
+        }
+        div[lowresolutionlayout] > .secondary-cell {
+          max-width: 100%;
+        }
+        .cellLabel {
+          width: 40%;
+          text-align: left;
+        }
+        .word-break {
+          word-break: break-word;
+        }
+      </style>
+
+      <etools-media-query
+        query="(max-width: 767px)"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <etools-data-table-row .detailsOpened="${true}" id="activitiesRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
@@ -74,12 +98,15 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
-          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.activities)}">
-            <div class="flex-1 left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
-            <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
-            <div class="flex-1 secondary-cell right">${translate('PARTNER_CASH')}</div>
-            <div class="flex-1 secondary-cell right">${translate('UNICEF_CASH')}</div>
-            <div class="flex-1 secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>
+          <div
+            class="table-row table-head align-items-center"
+            ?hidden="${isEmptyObject(this.activities) || this.lowResolutionLayout}"
+          >
+            <div class="left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
+            <div class="secondary-cell center">${translate('TIME_PERIODS')}</div>
+            <div class="secondary-cell right">${translate('PARTNER_CASH')}</div>
+            <div class="secondary-cell right">${translate('UNICEF_CASH')}</div>
+            <div class="secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>
           </div>
 
           ${this.activities.length
@@ -89,6 +116,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     class="table-row editable-row"
                     related-to="activity-${activity.id}"
                     related-to-description="${activity.name}"
+                    ?lowResolutionLayout="${this.lowResolutionLayout}"
                     comments-container
                     ?hidden="${this._hideActivity(activity, this.showInactive)}"
                     @sl-show="${(event: CustomEvent) => {
@@ -98,53 +126,98 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                       (event.currentTarget as HTMLElement)!.classList.remove('active')}"
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
-                    <div class="flex-1 left-align layout-horizontal">
-                      <b>${activity.code}&nbsp;</b>
-                      <div>
-                        <div>
-                          <b
-                            >${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name ||
-                            '-'}</b
+                    <div class="left-align layout-horizontal">
+                      <div class="layout-horizontal w100">
+                        ${this.lowResolutionLayout
+                          ? html`<div class="cellLabel">${translate('ACTIVITY_NAME')}</div>`
+                          : ``}
+                        <div class="layout-horizontal">
+                          <b>${activity.code}&nbsp;</b>
+                          <div class="word-break">
+                            <div>
+                              <b
+                                >${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name ||
+                                '-'}</b
+                              >
+                            </div>
+                            <div class="details word-break" ?hidden="${!activity.context_details}">
+                              ${this.truncateString(activity.context_details)}
+                            </div>
+                          </div>
+                          <div
+                            class="item-link"
+                            ?hidden="${!activity.items?.length}"
+                            @click="${() => this.openDialog(activity, this.readonly)}"
                           >
+                            (${activity.items?.length}) items
+                          </div>
                         </div>
-                        <div class="details" ?hidden="${!activity.context_details}">
-                          ${this.truncateString(activity.context_details)}
-                        </div>
-                      </div>
-                      <div
-                        class="item-link"
-                        ?hidden="${!activity.items?.length}"
-                        @click="${() => this.openDialog(activity, this.readonly)}"
-                      >
-                        (${activity.items?.length}) items
                       </div>
                     </div>
 
                     <!--    Time intervals    -->
-                    <div class="flex-1 secondary-cell center">
-                      <time-intervals
-                        .quarters="${this.quarters}"
-                        .selectedTimeFrames="${activity.time_frames}"
-                        without-popup
-                      ></time-intervals>
+                    <div class="secondary-cell center">
+                      ${this.lowResolutionLayout
+                        ? html`<div class="layout-horizontal w100">
+                            <div class="cellLabel">${translate('TIME_PERIODS')}</div>
+                            <div>
+                              <time-intervals
+                                .quarters="${this.quarters}"
+                                .selectedTimeFrames="${activity.time_frames}"
+                                without-popup
+                              >
+                              </time-intervals>
+                            </div>
+                          </div>`
+                        : html` <time-intervals
+                            .quarters="${this.quarters}"
+                            .selectedTimeFrames="${activity.time_frames}"
+                            without-popup
+                          ></time-intervals>`}
                     </div>
 
                     <!--    CSO Cash    -->
-                    <div class="flex-1 secondary-cell right">
-                      ${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}
+                    <div class="secondary-cell right">
+                      ${this.lowResolutionLayout
+                        ? html` <div class="layout-horizontal w100">
+                            <div class="cellLabel">${translate('PARTNER_CASH')}</div>
+                            <div>${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}</div>
+                          </div>`
+                        : html`${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}`}
                     </div>
 
                     <!--    UNICEF Cash    -->
-                    <div class="flex-1 secondary-cell right">
-                      ${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}
+                    <div class="secondary-cell right">
+                      ${this.lowResolutionLayout
+                        ? html` <div class="layout-horizontal w100">
+                            <div class="cellLabel">${translate('UNICEF_CASH')}</div>
+                            <div></div>
+                          </div>`
+                        : html`${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}`}
                     </div>
 
                     <!--    Total    -->
-                    <div class="flex-1 secondary-cell right">
+                    <div class="secondary-cell right">
                       <!--       TODO: use field from backend         -->
-                      <b>
-                        ${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
-                      </b>
+                      ${this.lowResolutionLayout
+                        ? html` <div class="layout-horizontal w100">
+                            <div class="cellLabel">${translate('GENERAL.TOTAL')}</div>
+                            <div>
+                              <b>
+                                ${displayCurrencyAmount(
+                                  String(this.getTotal(activity.cso_cash, activity.unicef_cash)),
+                                  '0',
+                                  2
+                                )}
+                              </b>
+                              <div></div>
+                            </div>
+                          </div>`
+                        : html`${displayCurrencyAmount(
+                            String(this.getTotal(activity.cso_cash, activity.unicef_cash)),
+                            '0',
+                            2
+                          )}`}
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
@@ -205,6 +278,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
   @queryAll('#view-menu-button')
   actionsMenuBtns!: SlDropdown[];
+
+  @property({type: Boolean})
+  lowResolutionLayout = false;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -268,7 +344,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ActivitiesAndIndicatorsStyles,
       ...super.styles,

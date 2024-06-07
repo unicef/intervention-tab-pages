@@ -11,7 +11,7 @@ import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 /**
@@ -20,13 +20,17 @@ import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 @customElement('monitoring-visits-list')
 export class MonitoringVisitsList extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`${sharedStyles}
       <style>
         ${dataTableStylesLit} .monitoring-visits-container {
           position: relative;
+        }
+        .row.padding-row {
+          padding: 16px 24px;
+          margin: 0;
         }
         .capitalize {
           text-transform: capitalize;
@@ -36,7 +40,13 @@ export class MonitoringVisitsList extends LitElement {
           padding-block-end: 4px;
         }
       </style>
-
+      <etools-media-query
+        query="(max-width: 1200px)"
+        .queryMatches="${this.lowResolutionLayout}"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <div class="monitoring-visits-container">
         <etools-loading .active="${this.showLoading}"></etools-loading>
 
@@ -45,6 +55,7 @@ export class MonitoringVisitsList extends LitElement {
             id="listHeader"
             label="${translate('SHOWING_RESULTS', {count: this.monitoringActivities.length})}"
             no-collapse
+            .lowResolutionLayout="${this.lowResolutionLayout}"
           >
             <etools-data-table-column class="col-3" field="reference_number"
               >${translate('REFERENCE')}</etools-data-table-column
@@ -63,9 +74,9 @@ export class MonitoringVisitsList extends LitElement {
 
           ${this.monitoringActivities.map(
             (activity: AnyObject) => html`
-              <etools-data-table-row no-collapse>
+              <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}" no-collapse>
                 <div slot="row-data">
-                  <span class="col-data col-3">
+                  <span class="col-data col-3" data-col-header-label="${translate('REFERENCE')}">
                     <a
                       class="truncate"
                       .href="/fm/activities/${activity.id}/details"
@@ -75,22 +86,40 @@ export class MonitoringVisitsList extends LitElement {
                       ${activity.reference_number}
                     </a>
                   </span>
-                  <span class="col-data col-2" title="${this.getTravelerText(activity)}">
+                  <span
+                    class="col-data col-2"
+                    title="${this.getTravelerText(activity)}"
+                    data-col-header-label="${translate('TRAVELER')}"
+                  >
                     <span class="truncate"> ${this.getTravelerText(activity)} </span>
                   </span>
-                  <span class="col-data col-2" title="${prettyDate(activity.end_date)}">
+                  <span
+                    class="col-data col-2"
+                    title="${prettyDate(activity.end_date)}"
+                    data-col-header-label="${translate('END_DATE')}"
+                  >
                     ${prettyDate(activity.end_date)}
                   </span>
-                  <span class="col-data col-3" title="${this.getLocationsText(activity)}">
+                  <span
+                    class="col-data col-3"
+                    data-col-header-label="${translate('LOCATIONS')}"
+                    title="${this.getLocationsText(activity)}"
+                  >
                     ${this.getLocationsText(activity)}
                   </span>
-                  <span class="col-data col-2 capitalize" title="${activity.status}"> ${activity.status} </span>
+                  <span
+                    class="col-data col-2 capitalize"
+                    title="${activity.status}"
+                    data-col-header-label="${translate('GENERAL.STATUS')}"
+                  >
+                    ${activity.status}
+                  </span>
                 </div>
               </etools-data-table-row>
             `
           )}
         </div>
-        <div class="row-h" ?hidden="${this.monitoringActivities.length}">
+        <div class="row padding-row" ?hidden="${this.monitoringActivities.length}">
           <p>${translate('NO_ACTIVITIES')}</p>
         </div>
       </div>`;
@@ -108,6 +137,8 @@ export class MonitoringVisitsList extends LitElement {
   @property({type: Array})
   monitoringActivities: AnyObject[] = [];
 
+  @property({type: Boolean})
+  lowResolutionLayout = false;
   _interventionId!: string;
 
   set interventionId(interventionId) {

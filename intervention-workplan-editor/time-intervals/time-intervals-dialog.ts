@@ -9,12 +9,12 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ActivityTimeFrames} from '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 @customElement('time-intervals-dialog')
 export class TimeIntervalsDialog extends LitElement {
   static get styles(): CSSResultArray {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   @property() readonly: boolean | undefined = false;
   @property() selectedTimeFrames: number[] = [];

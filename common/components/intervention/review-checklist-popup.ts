@@ -1,6 +1,7 @@
 import {LitElement, TemplateResult, html, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -27,7 +28,7 @@ import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 export class ReviewChecklistPopup extends LitElement {
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: block;
@@ -40,8 +41,7 @@ export class ReviewChecklistPopup extends LitElement {
           padding: 0 24px;
         }
         .likert-scale {
-          padding-top: 16px;
-          padding-bottom: 14px;
+          padding: 15px;
           border-bottom: 1px solid var(--secondary-background-color);
         }
         div[slot='buttons'] {
@@ -97,57 +97,60 @@ export class ReviewChecklistPopup extends LitElement {
         dialog-title="${translate('REVIEW_CHECKLIST')}"
         ?show-spinner="${this.requestInProcess}"
       >
-        <div class="form-container">
-          ${this.isOverallReview
-            ? html`
-                <div class="col col-12 pl-none">
-                  <datepicker-lite
-                    label="${translate('REVIEW_DATE_PRC')}"
-                    .value="${this.review?.review_date}"
-                    selected-date-display-format="D MMM YYYY"
-                    fire-date-has-changed
-                    @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail)}"
-                  >
-                  </datepicker-lite>
-                </div>
-              `
-            : ''}
-          ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
-            this.generateLikertScale(field as keyof InterventionReview, index)
-          )}
-          <div class="col col-12 pl-none">
-            <etools-textarea
-              label=${translate('APPROVAL_COMMENT')}
-              always-float-label
-              class="w100"
-              placeholder="&#8212;"
-              max-rows="4"
-              .value="${this.review.overall_comment || ''}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'overall_comment')}"
-            >
-            </etools-textarea>
-          </div>
-          ${this.isOverallReview
-            ? html`
-                <div class="col col-12 pl-none" ?hidden="${!this.isOverallReview}">
-                  <etools-textarea
-                    label=${translate('ACTIONS_LIST')}
-                    always-float-label
-                    class="w100"
-                    placeholder="&#8212;"
-                    max-rows="4"
-                    .value="${this.review.actions_list || ''}"
-                    @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'actions_list')}"
-                  >
-                  </etools-textarea>
-                </div>
-              `
-            : html` <etools-checkbox
-                ?checked="${this.review?.overall_approval}"
-                @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
+        <div class="container-dialog">
+          <div class="row">
+            ${this.isOverallReview
+              ? html`
+                  <div class="col-12">
+                    <datepicker-lite
+                      class="col-md-4 col-sm-12"
+                      label="${translate('REVIEW_DATE_PRC')}"
+                      .value="${this.review?.review_date}"
+                      selected-date-display-format="D MMM YYYY"
+                      fire-date-has-changed
+                      @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail)}"
+                    >
+                    </datepicker-lite>
+                  </div>
+                `
+              : ''}
+            ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
+              this.generateLikertScale(field as keyof InterventionReview, index)
+            )}
+            <div class="col-12">
+              <etools-textarea
+                label=${translate('APPROVAL_COMMENT')}
+                always-float-label
+                class="w100"
+                placeholder="&#8212;"
+                max-rows="4"
+                .value="${this.review.overall_comment || ''}"
+                @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'overall_comment')}"
               >
-                ${translate('APPROVED_BY_PRC')}
-              </etools-checkbox>`}
+              </etools-textarea>
+            </div>
+            ${this.isOverallReview
+              ? html`
+                  <div class="col-12" ?hidden="${!this.isOverallReview}">
+                    <etools-textarea
+                      label=${translate('ACTIONS_LIST')}
+                      always-float-label
+                      class="w100"
+                      placeholder="&#8212;"
+                      max-rows="4"
+                      .value="${this.review.actions_list || ''}"
+                      @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'actions_list')}"
+                    >
+                    </etools-textarea>
+                  </div>
+                `
+              : html` <etools-checkbox
+                  ?checked="${this.review?.overall_approval}"
+                  @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
+                >
+                  ${translate('APPROVED_BY_PRC')}
+                </etools-checkbox>`}
+          </div>
         </div>
         <div slot="buttons">
           <etools-button variant="text" class="neutral" @click="${() => this.close()}"

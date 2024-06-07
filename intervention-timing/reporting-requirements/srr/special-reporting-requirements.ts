@@ -16,7 +16,7 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -34,39 +34,63 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('special-reporting-requirements')
 export class SpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, reportingRequirementsListStyles];
+    return [layoutStyles, reportingRequirementsListStyles];
   }
   render() {
     return html`
       ${sharedStyles}
       <style>
-        ${dataTableStylesLit}
+        ${dataTableStylesLit} .mt-10 {
+          margin-block-start: 10px;
+        }
+        .word-break {
+          word-break: break-word;
+        }
+        .actions:before {
+          visibility: hidden;
+        }
       </style>
+      <etools-media-query
+        query="(max-width: 1000px)"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
 
-      <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
+      <div class="col-12 mt-10" ?hidden="${!this._empty(this.reportingRequirements)}">
         ${translate('NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
-      <div class="row-h" ?hidden="${!this.editMode}">
-        <etools-button variant="text" class="no-marg no-pad font-14" @click="${this._openAddDialog}"
-          >${translate('ADD_REQUIREMENTS')}</etools-button
-        >
+      <div class="col-12 mt-10" ?hidden="${!this.editMode}">
+        <etools-button variant="text" class="no-marg no-pad font-14" @click="${this._openAddDialog}">
+          ${translate('ADD_REQUIREMENTS')}
+        </etools-button>
       </div>
 
-      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
-        <etools-data-table-header no-collapse no-title>
-          <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
+      <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
+        <etools-data-table-header no-collapse no-title .lowResolutionLayout="${this.lowResolutionLayout}">
+          <etools-data-table-column class="col-1 index-col">${translate('ID')}</etools-data-table-column>
           <etools-data-table-column class="col-3">${translate('DUE_DATE')}</etools-data-table-column>
-          <etools-data-table-column class="flex-6">${translate('REPORTING_REQUIREMENT')}</etools-data-table-column>
-          <etools-data-table-column class="flex-c"></etools-data-table-column>
+          <etools-data-table-column class="col-6">${translate('REPORTING_REQUIREMENT')}</etools-data-table-column>
+          <etools-data-table-column class="col-2"></etools-data-table-column>
         </etools-data-table-header>
         ${(this.paginatedReports || []).map(
-          (item: any, index: number) => html` <etools-data-table-row no-collapse secondary-bg-on-hover>
+          (item: any, index: number) => html` <etools-data-table-row
+            no-collapse
+            secondary-bg-on-hover
+            .lowResolutionLayout="${this.lowResolutionLayout}"
+          >
             <div slot="row-data" class="layout-horizontal editable-row">
-              <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
-              <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
-              <div class="col-data col-6">${item.description}</div>
-              <div class="col-data flex-c actions">
+              <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
+                ${this._getIndex(index)}
+              </div>
+              <div class="col-data col-3 word-break" data-col-header-label="${translate('DUE_DATE')}">
+                ${this.getDateDisplayValue(item.due_date)}
+              </div>
+              <div class="col-data col-6 word-break" data-col-header-label="${translate('REPORTING_REQUIREMENT')}">
+                ${item.description}
+              </div>
+              <div class="col-data col-2 actions">
                 <etools-icon-button name="create" @click="${() => this._onEdit(index)}"></etools-icon-button>
                 <etools-icon-button name="delete" @click="${() => this._onDelete(index)}"></etools-icon-button>
               </div>
@@ -95,6 +119,9 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
 
   @property({type: Number})
   _itemToDeleteIndex = -1;
+
+  @property({type: Boolean})
+  lowResolutionLayout = false;
 
   connectedCallback() {
     super.connectedCallback();

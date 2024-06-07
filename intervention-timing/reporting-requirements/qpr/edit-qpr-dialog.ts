@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
@@ -32,7 +32,7 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(LitElement) {
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         etools-button#addReq,
         etools-button#regen {
@@ -60,7 +60,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         .label {
           font-size: var(--etools-font-size-14, 14px);
           color: var(--primary-text-color);
-          margin-bottom: 24px;
+          margin-bottom: 8px;
         }
 
         etools-dialog::part(panel) {
@@ -73,6 +73,16 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         }
         #regenerate-info {
           margin-inline-end: 24px;
+        }
+        .layout-vertical {
+          padding: 8px 0px;
+        }
+        .layout-vertical {
+          padding-inline-start: 24px;
+        }
+        .custom-margin {
+          margin: 0px !important;
+          margin-left: -24px !important;
         }
       </style>
 
@@ -89,31 +99,34 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         ?show-spinner="${this.requestInProgress}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
-        <div class="layout-horizontal">
-          <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
-          <etools-button id="addReq" variant="text" class="no-marg no-pad font-14" @click="${this._addNewQpr}"
-            >${translate('ADD_REQUIREMENT')}</etools-button
-          >
+        <div class="row">
+          <div class="col-12">
+            <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
+            <etools-button id="addReq" variant="text" class="no-marg no-pad font-14" @click="${this._addNewQpr}"
+              >${translate('ADD_REQUIREMENT')}</etools-button
+            >
+          </div>
+          <div class="col-12" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
+            <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
+            <etools-button
+              id="regen"
+              variant="text"
+              class="no-marg no-pad font-14"
+              @click="${this.regenerateReportingRequirements}"
+              >${translate('REGENERATE')}</etools-button
+            >
+          </div>
+          <div class="col-12">
+            <qpr-list
+              id="qprList"
+              with-scroll
+              .qprData="${this.qprData}"
+              always-show-row-actions
+              ?editMode="${true}"
+              @delete-qpr="${(event: CustomEvent) => this._deleteQprDatesSet(event)}"
+            ></qpr-list>
+          </div>
         </div>
-        <div class="layout-horizontal" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
-          <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
-          <etools-button
-            id="regen"
-            variant="text"
-            class="no-marg no-pad font-14"
-            @click="${this.regenerateReportingRequirements}"
-            >${translate('REGENERATE')}</etools-button
-          >
-        </div>
-
-        <qpr-list
-          id="qprList"
-          with-scroll
-          .qprData="${this.qprData}"
-          always-show-row-actions
-          ?editMode="${true}"
-          @delete-qpr="${(event: CustomEvent) => this._deleteQprDatesSet(event)}"
-        ></qpr-list>
       </etools-dialog>
 
       <!-- add or edit a QPR row -->
@@ -122,19 +135,20 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         size="lg"
         dialog-title=${translate('EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS')}
         ?opened="${this.addOrModifyQprDialogOpened}"
-        no-padding
         @confirm-btn-clicked="${() => this._updateQprData()}"
         @close="${() => this.handleAddOrModifyQprDialogClosed()}"
         keep-dialog-open
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
-        <div class="row-h" ?hidden="${this._hideEditedIndexInfo(this._qprDatesSetEditedIndex)}">
-          ${translate('EDITING_ID')} ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
+        <div class="row" ?hidden="${this._hideEditedIndexInfo(this._qprDatesSetEditedIndex)}">
+          <div class="layout-vertical">
+            ${translate('EDITING_ID')} ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
+          </div>
         </div>
 
-        <div class="row-h">
-          <div class="col layout-vertical">
+        <div class="row custom-margin">
+          <div class="layout-vertical">
             <label class="label" for="startDate">${translate(translatesMap.start_date)}</label>
             <calendar-lite
               id="startDate"
@@ -145,7 +159,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             >
             </calendar-lite>
           </div>
-          <div class="col layout-vertical">
+          <div class="layout-vertical">
             <label class="label" for="endDate">${translate('END_DATE')}</label>
             <calendar-lite
               id="endDate"
@@ -156,7 +170,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             >
             </calendar-lite>
           </div>
-          <div class="col layout-vertical">
+          <div class="layout-vertical">
             <label class="label" for="dueDate">${translate('DUE_DATE')}</label>
             <calendar-lite
               id="dueDate"

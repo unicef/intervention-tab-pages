@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
@@ -34,7 +34,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('gender-equity-rating')
 export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     if (!this.data || !this.ratings || !this.permissions) {
@@ -52,7 +52,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         .pl-none {
           padding-inline-start: 0px !important;
         }
-        
+
         sl-radio {
           margin-inline-end: 20px;
         }
@@ -64,8 +64,8 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           --iit-icon-size: 18px;
         }
         #iit-ger {
-          --iit-margin: 8px 0 8px -15px;
-          --iit-icon-size: 24px;
+          --iit-margin: 0 0 0 4px;
+          --iit-icon-size: 22px;
         }
       </style>
 
@@ -89,13 +89,14 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           </etools-icon-button>
         </div>
 
-        <div class="row-padding-v pb-20">
-          <div class="w100">
+        <div class="row pb-20">
+          <div class="col-12">
             <label class="label">${translate(translatesMap.gender_rating)}</label>
             <info-icon-tooltip id="iit-gender" ?hidden=${!this.editMode}
               .tooltipText=${translate('GENDER_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
+          <div class="col-12">
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
             this.data.gender_rating,
@@ -103,7 +104,8 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.ratings,
             this.permissions?.edit.gender_rating
           )}
-          <div class="col col-12 pl-none">
+          </div>
+          <div class="col-12">
             <etools-textarea
               label=${translate(translatesMap.gender_narrative)}
               always-float-label
@@ -122,13 +124,14 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           </div>
         </div>
 
-        <div class="row-padding-v pb-20">
-          <div class="w100">
+        <div class="row pb-20">
+          <div class="col-12">
             <label class="label">${translate(translatesMap.equity_rating)}</label>
             <info-icon-tooltip id="iit-equity" ?hidden=${!this.editMode}
               .tooltipText=${translate('EQUITY_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
+          <div class="col-12">
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
             this.data.equity_rating,
@@ -136,7 +139,8 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.ratings,
             this.permissions?.edit.equity_rating
           )}
-          <div class="col col-12 pl-none">
+          </div>
+          <div class="col-12">
             <etools-textarea
               label=${translate(translatesMap.equity_narrative)}
               always-float-label
@@ -155,13 +159,14 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           </div>
         </div>
 
-        <div class="row-padding-v pb-20">
-          <div class="w100">
+        <div class="row pb-20">
+          <div class="col-12">
             <label class="label">${translate(translatesMap.sustainability_rating)}</label>
             <info-icon-tooltip id="iit-sust" ?hidden=${!this.editMode}
               .tooltipText=${translate('SUSTAINABILITY_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
+          <div class="col-12">
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
             this.data.sustainability_rating,
@@ -169,7 +174,8 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.ratings,
             this.permissions?.edit.sustainability_rating
           )}
-          <div class="col col-12 pl-none">
+          </div>
+          <div class="col-12">
             <etools-textarea
               label=${translate(translatesMap.sustainability_narrative)}
               always-float-label

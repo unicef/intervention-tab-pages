@@ -9,7 +9,7 @@ import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-type
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 
@@ -24,7 +24,7 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 @customElement('humanitarian-reporting-req-cluster')
 export class HumanitarianReportingReqCluster extends EndpointsLitMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -38,23 +38,25 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
         }
       </style>
 
-      <div class="flex-c" ?hidden="${!this.reportingRequirements.length}">
+      <div class="row" ?hidden="${!this.reportingRequirements.length}">
         <etools-data-table-header no-collapse no-title class="w100">
           <etools-data-table-column class="col-2">${translate('FREQUENCY')}</etools-data-table-column>
-          <etools-data-table-column class="flex-c">${translate('DUE_DATES')}</etools-data-table-column>
+          <etools-data-table-column class="col-10">${translate('DUE_DATES')}</etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
           (item: any) => html` <etools-data-table-row no-collapse>
             <div slot="row-data">
               <span class="col-data col-2">${this.getFrequencyForDisplay(item.frequency)}</span>
-              <span class="col-data flex-c">${this.getDatesForDisplay(item.cs_dates)}</span>
+              <span class="col-data col-10">${this.getDatesForDisplay(item.cs_dates)}</span>
             </div>
           </etools-data-table-row>`
         )}
         </div>
 
-        <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
+        <div class="row" ?hidden="${!this._empty(this.reportingRequirements)}">
+          <div class="col-12">
           ${translate('NO_CLUSTER_HUMANITARIAN_REQUIREMENTS_SET')}
+          </div>
         </div>
       </div>
     `;

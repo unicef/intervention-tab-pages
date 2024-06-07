@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {
   selectNonFinancialContribution,
   selectNonFinancialContributionPermissions
@@ -33,7 +33,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('non-financial-contribution')
 export class NonFinancialContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -60,6 +60,9 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
           --iit-icon-size: 18px;
           --iit-margin: 0 0 4px 4px;
         }
+        .row {
+          padding-bottom: 16px;
+        }
       </style>
 
       <etools-content-panel
@@ -69,8 +72,8 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v">
-          <div>
+        <div class="row">
+          <div class="col-12">
             <label class="label">${translate(translatesMap.ip_program_contribution)}</label>
             <info-icon-tooltip
               id="iit-non-fin"
@@ -79,20 +82,22 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
-          <etools-textarea
-            class="w100"
-            id="ip_program_contribution"
-            no-label-float
-            placeholder="—"
-            .value="${this.data.ip_program_contribution}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
-            ?required="${this.permissions?.required.ip_program_contribution}"
-            maxlength="5000"
-            rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
-          >
-          </etools-textarea>
+          <div class="col-12">
+            <etools-textarea
+              class="w100"
+              id="ip_program_contribution"
+              no-label-float
+              placeholder="—"
+              .value="${this.data.ip_program_contribution}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
+              ?required="${this.permissions?.required.ip_program_contribution}"
+              maxlength="5000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
+            >
+            </etools-textarea>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

@@ -4,7 +4,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
@@ -29,7 +29,7 @@ import {isActiveTab} from '../../../../utils/utils';
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     if (!this.data) {
@@ -47,7 +47,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         }
 
         .indicator-content {
-          margin: 0px 24px 40px 24px;
+          margin: 14px 24px 40px 24px;
           border: solid 1px rgba(0, 0, 0, 0.4);
           overflow-x: hidden; /*To avoid horizontal scroll in IE11 */
         }
@@ -57,7 +57,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
         .createDisaggreg {
           color: var(--secondary-text-color);
-          padding: 8px 0;
+          padding: 8px 16px;
           font-weight: 500;
           font-size: var(--etools-font-size-16, 16px) !important;
         }
@@ -76,6 +76,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           outline: 0;
           opacity: 1;
           font-weight: 700;
+        }
+        .m-15 {
+          margin: 0 15px !important;
         }
       </style>
 
@@ -101,8 +104,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         ></etools-tabs-lit>
 
         <div name="details" ?hidden="${!isActiveTab(this.activeTab, 'details')}">
-          <div class="row-h flex-c">
-            <div class="col col-4">
+          <div class="row m-15">
+            <div class="col-md-4 col-12">
               <etools-dropdown
                 id="sectionDropdw"
                 label=${translate(translatesMap.section)}
@@ -122,8 +125,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               >
               </etools-dropdown>
             </div>
+            <div class="col-12" ?hidden="${!this.isCluster}">${translate('CLUSTER_INDICATOR')}</div>
           </div>
-          <div class="row-h" ?hidden="${!this.isCluster}">${translate('CLUSTER_INDICATOR')}</div>
           <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
             ${!this.isCluster
               ? html` <non-cluster-indicator

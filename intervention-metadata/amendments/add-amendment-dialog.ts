@@ -8,7 +8,7 @@ import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -28,7 +28,7 @@ import {resetInvalidElement} from '../../utils/utils';
 @customElement('add-amendment-dialog')
 export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`${sharedStyles}
@@ -40,6 +40,9 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           padding-top: 0 !important;
           padding-bottom: 16px;
           overflow: hidden !important;
+        }
+        .row {
+          margin: 0 9px !important;
         }
       </style>
 
@@ -55,9 +58,10 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         ?show-spinner="${this.savingInProcess}"
       >
         ${this.renderKindDropdown()}
-        <div class="row-h flex-c">
+        <div class="row">
           <!-- Amendment Type -->
           <etools-dropdown-multi
+            class="col-12"
             id="amendment-types"
             label="${translate('AMENDMENT_TYPES')}"
             placeholder="&#8212;"
@@ -77,12 +81,13 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           >
           </etools-dropdown-multi>
         </div>
-        <div class="row-h flex-c" ?hidden="${!this.data.types || !this.data.types!.length}">
-          <etools-warn-message-lit .messages="${this.warnMessages}"></etools-warn-message-lit>
+        <div class="row" ?hidden="${!this.data.types || !this.data.types!.length}">
+          <etools-warn-message-lit class="col-12" .messages="${this.warnMessages}"></etools-warn-message-lit>
         </div>
         </div>
-        <div class="row-h" ?hidden="${!this.showOtherInput}">
+        <div class="row" ?hidden="${!this.showOtherInput}">
           <etools-input
+            class="col-12"
             id="other"
             placeholder="&#8212;"
             label="${translate('OTHER')}"

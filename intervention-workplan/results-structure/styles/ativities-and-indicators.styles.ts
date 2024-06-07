@@ -68,6 +68,9 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   .secondary-cell.right {
     justify-content: right;
   }
+  .flex-1 {
+    flex: 1 1 0% !important;
+  }
   div.left-align {
     text-align: left;
   }

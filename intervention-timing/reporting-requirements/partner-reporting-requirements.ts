@@ -8,8 +8,8 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
 import get from 'lodash-es/get';
@@ -38,7 +38,7 @@ import {isActiveTab} from '../../utils/utils';
 @customElement('partner-reporting-requirements')
 export class PartnerReportingRequirements extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -57,11 +57,13 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         .reporting-req-data {
           border-inline-start: 1px solid var(--darker-divider-color);
+          flex: 1 1 0%;
+          margin-block-end: 24px;
         }
 
         .nav-menu {
           background: var(--primary-background-color);
-          min-width: 290px;
+          min-width: 320px;
           margin-top: 9px;
           margin-bottom: 8px;
         }
@@ -77,6 +79,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           text-transform: capitalize;
           cursor: pointer;
           height: 45px;
+          text-wrap: nowrap;
         }
 
         .nav-menu-item[selected] {
@@ -112,123 +115,146 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         :host-context([dir='rtl']) info-icon-tooltip {
           --iit-margin: 0 0 0 5px;
         }
+        .d-flex {
+          display: flex;
+        }
+        @media (max-width: 768px) {
+          .reports-menu {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+            border-bottom: 1px solid var(--darker-divider-color);
+          }
+          .nav-menu-item {
+            width: 100%;
+          }
+          .d-flex {
+            flex-wrap: wrap;
+          }
+          .reporting-req-data {
+            border-inline-start: none;
+          }
+        }
       </style>
       <etools-content-panel
         show-expand-btn
         class="content-section"
         panel-title=${translate(translatesMap.reporting_requirements)}
       >
-        <div class="flex-c layout-horizontal">
-          <div class="reports-menu nav-menu">
-            <div
-              name="qtyProgress"
-              title=${translate('QUARTERLY_PROGRESS_REPORTS')}
-              class="nav-menu-item qpr"
-              ?selected="${this.isSelected('qtyProgress')}"
-              @click="${this.selectType}"
-              tabindex="0"
-              id="clickable"
-            >
-              <info-icon-tooltip
-                id="iit-qpr"
-                ?hidden="${this.isReadonly}"
-                .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
-              ></info-icon-tooltip>
-              <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
-              <etools-icon-button
-                class="edit-rep-req"
-                name="create"
-                @click="${this._openQprEditDialog}"
-                ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
-              ></etools-icon-button>
+        <div class="row">
+          <div class="col-12 d-flex">
+            <div class="reports-menu nav-menu">
+              <div
+                name="qtyProgress"
+                title=${translate('QUARTERLY_PROGRESS_REPORTS')}
+                class="nav-menu-item qpr"
+                ?selected="${this.isSelected('qtyProgress')}"
+                @click="${this.selectType}"
+                tabindex="0"
+                id="clickable"
+              >
+                <info-icon-tooltip
+                  id="iit-qpr"
+                  ?hidden="${this.isReadonly}"
+                  .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
+                ></info-icon-tooltip>
+                <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
+                <etools-icon-button
+                  class="edit-rep-req"
+                  name="create"
+                  @click="${this._openQprEditDialog}"
+                  ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
+                ></etools-icon-button>
+              </div>
+              <div
+                name="humanitarianUnicef"
+                title=${translate('HUMANITARIAN_REPORTS_UNICEF')}
+                class="nav-menu-item"
+                ?selected="${this.isSelected('humanitarianUnicef')}"
+                @click="${this.selectType}"
+                tabindex="0"
+                id="clickable"
+              >
+                <info-icon-tooltip
+                  id="iit-hrr"
+                  ?hidden="${this.isReadonly}"
+                  .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
+                ></info-icon-tooltip>
+                <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
+                <etools-icon-button
+                  class="edit-rep-req"
+                  name="create"
+                  @click="${this._openHruEditDialog}"
+                  ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
+                ></etools-icon-button>
+              </div>
+              ${this.getHumanitarianLink(this.hrClusterRequirementsCount)}
+              <div
+                name="special"
+                title=${translate('SPECIAL_REPORT')}
+                class="nav-menu-item"
+                ?selected="${this.isSelected('special')}"
+                @click="${this.selectType}"
+                tabindex="0"
+                id="clickable"
+              >
+                <info-icon-tooltip
+                  id="iit-sp"
+                  ?hidden="${this.isReadonly}"
+                  .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"
+                ></info-icon-tooltip>
+                ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
+              </div>
             </div>
-            <div
-              name="humanitarianUnicef"
-              title=${translate('HUMANITARIAN_REPORTS_UNICEF')}
-              class="nav-menu-item"
-              ?selected="${this.isSelected('humanitarianUnicef')}"
-              @click="${this.selectType}"
-              tabindex="0"
-              id="clickable"
-            >
-              <info-icon-tooltip
-                id="iit-hrr"
-                ?hidden="${this.isReadonly}"
-                .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
-              ></info-icon-tooltip>
-              <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
-              <etools-icon-button
-                class="edit-rep-req"
-                name="create"
-                @click="${this._openHruEditDialog}"
-                ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
-              ></etools-icon-button>
+            <div class="reporting-req-data">
+              <quarterly-reporting-requirements
+                ?hidden="${!isActiveTab(this.selectedReportType, 'qtyProgress')}"
+                id="qpr"
+                name="qtyProgress"
+                .interventionId="${this.interventionId}"
+                .interventionStart="${this.interventionStart}"
+                .interventionEnd="${this.interventionEnd}"
+                .requirementsCount="${this.qprRequirementsCount}"
+                .interventionStatus="${this.intervention?.status}"
+                .editMode="${!this.isReadonly}"
+                @count-changed=${(e: CustomEvent) => this.updateQPRCount(e.detail)}
+              >
+              </quarterly-reporting-requirements>
+
+              <humanitarian-reporting-req-unicef
+                ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianUnicef')}"
+                id="hru"
+                name="humanitarianUnicef"
+                .interventionId="${this.interventionId}"
+                .interventionStart="${this.interventionStart}"
+                .requirementsCount="${this.hrUnicefRequirementsCount}"
+                .expectedResults="${this.expectedResults}"
+                .editMode="${!this.isReadonly}"
+                @count-changed=${(e: CustomEvent) => this.updateHRUCount(e.detail)}
+              >
+              </humanitarian-reporting-req-unicef>
+
+              <humanitarian-reporting-req-cluster
+                ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianCluster')}"
+                name="humanitarianCluster"
+                .interventionId="${this.interventionId}"
+                .requirementsCount="${this.hrClusterRequirementsCount}"
+                .expectedResults="${this.expectedResults}"
+                @count-changed=${(e: CustomEvent) => this.updateHRCCount(e.detail)}
+              >
+              </humanitarian-reporting-req-cluster>
+
+              <special-reporting-requirements
+                ?hidden="${!isActiveTab(this.selectedReportType, 'special')}"
+                name="special"
+                .interventionId="${this.interventionId}"
+                .requirementsCount="${this.specialRequirementsCount}"
+                .editMode="${!this.isReadonly}"
+                @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
+              >
+              </special-reporting-requirements>
             </div>
-            ${this.getHumanitarianLink(this.hrClusterRequirementsCount)}
-            <div
-              name="special"
-              title=${translate('SPECIAL_REPORT')}
-              class="nav-menu-item"
-              ?selected="${this.isSelected('special')}"
-              @click="${this.selectType}"
-              tabindex="0"
-              id="clickable"
-            >
-              <info-icon-tooltip
-                id="iit-sp"
-                ?hidden="${this.isReadonly}"
-                .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"
-              ></info-icon-tooltip>
-              ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
-            </div>
-          </div>
-          <div class="flex-c reporting-req-data">
-            <quarterly-reporting-requirements
-              ?hidden="${!isActiveTab(this.selectedReportType, 'qtyProgress')}"
-              id="qpr"
-              name="qtyProgress"
-              .interventionId="${this.interventionId}"
-              .interventionStart="${this.interventionStart}"
-              .interventionEnd="${this.interventionEnd}"
-              .requirementsCount="${this.qprRequirementsCount}"
-              .interventionStatus="${this.intervention?.status}"
-              .editMode="${!this.isReadonly}"
-              @count-changed=${(e: CustomEvent) => this.updateQPRCount(e.detail)}
-            >
-            </quarterly-reporting-requirements>
-
-            <humanitarian-reporting-req-unicef
-              ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianUnicef')}"
-              id="hru"
-              name="humanitarianUnicef"
-              .interventionId="${this.interventionId}"
-              .interventionStart="${this.interventionStart}"
-              .requirementsCount="${this.hrUnicefRequirementsCount}"
-              .expectedResults="${this.expectedResults}"
-              .editMode="${!this.isReadonly}"
-              @count-changed=${(e: CustomEvent) => this.updateHRUCount(e.detail)}
-            >
-            </humanitarian-reporting-req-unicef>
-
-            <humanitarian-reporting-req-cluster
-              ?hidden="${!isActiveTab(this.selectedReportType, 'humanitarianCluster')}"
-              name="humanitarianCluster"
-              .interventionId="${this.interventionId}"
-              .requirementsCount="${this.hrClusterRequirementsCount}"
-              .expectedResults="${this.expectedResults}"
-              @count-changed=${(e: CustomEvent) => this.updateHRCCount(e.detail)}
-            >
-            </humanitarian-reporting-req-cluster>
-
-            <special-reporting-requirements
-              ?hidden="${!isActiveTab(this.selectedReportType, 'special')}"
-              name="special"
-              .interventionId="${this.interventionId}"
-              .requirementsCount="${this.specialRequirementsCount}"
-              .editMode="${!this.isReadonly}"
-              @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
-            >
-            </special-reporting-requirements>
           </div>
         </div>
       </etools-content-panel>

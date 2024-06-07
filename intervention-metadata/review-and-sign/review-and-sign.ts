@@ -11,7 +11,7 @@ import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
@@ -45,7 +45,7 @@ import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/aja
 @customElement('review-and-sign')
 export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     if (!this.data || !this.permissions) {
@@ -99,8 +99,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6 layout-vertical">
+        <div class="row">
+          <div class="col-md-6 col-12">
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
               id="signedByAuthorizedOfficer"
@@ -137,7 +137,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
                 : html``
             }
           </div>
-          <div class="col col-6">
+          <div class="col-md-6 col-12">
             <!-- Signed by Partner Date -->
             <datepicker-lite
               id="signedByPartnerDateField"
@@ -156,15 +156,13 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             >
             </datepicker-lite>
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col-md-6 col-12">
             <!-- Signed by UNICEF Authorized Officer -->
             <div class="input-container">
                 <span class="input-value">${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
             </div>
           </div>
-          <div class="col col-6">
+          <div class="col-md-6 col-12">
             <!-- Signed by UNICEF Date -->
             <datepicker-lite
               id="signedByUnicefDateField"
@@ -182,11 +180,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               selected-date-display-format="D MMM YYYY"
             >
             </datepicker-lite>
-          </div>
-        </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6 layout-vertical">
+           </div>
+          <div class="col-md-6 col-12">
             <!-- Signed by UNICEF -->
             <etools-dropdown
               id="signedByUnicef"
@@ -220,9 +215,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
                 : html``
             }
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-8">
+          <div class="col-md-9 col-12">
             <!-- Signed PD/SPD -->
             <etools-upload
               id="signedIntervFile"
@@ -242,9 +235,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             >
             </etools-upload>
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-8">
+          <div class="col-md-9 col-12">
             <!-- TERMINATION DOC -->
             <etools-upload
               id="terminationDoc"

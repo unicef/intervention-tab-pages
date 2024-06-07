@@ -46,7 +46,6 @@ import {
 import {AnyObject, EtoolsEndpoint, GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
 import {RootState} from '../common/types/store.types';
 
@@ -55,6 +54,7 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 @customElement('intervention-actions')
 export class InterventionActions extends connectStore(LitElement) {
@@ -83,7 +83,7 @@ export class InterventionActions extends connectStore(LitElement) {
   @property({type: Number})
   commonDataLoadedTimestamp = 0;
 
-  private isEPDApp = ROOT_PATH === '/epd/';
+  private isEPDApp = Environment.basePath === '/epd/';
 
   connectedCallback() {
     super.connectedCallback();
@@ -319,7 +319,7 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private redirectToTabPage(id: number | null, tabName: string) {
-    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${id}/${tabName}`);
+    history.pushState(window.history.state, '', `${Environment.basePath}interventions/${id}/${tabName}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 

@@ -18,7 +18,7 @@ import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparis
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit.js';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
@@ -32,7 +32,7 @@ import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist
 @customElement('edit-hru-dialog')
 export class EditHruDialog extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -45,7 +45,6 @@ export class EditHruDialog extends connectStore(LitElement) {
         #add-selected-date {
           display: inline-block;
           width: auto;
-          margin-top: 24px;
           padding-inline-end: 0;
         }
 
@@ -92,23 +91,35 @@ export class EditHruDialog extends connectStore(LitElement) {
         </div>
         <div>${translate('HUMANITARIAN_REPORT_PROMPT')}</div>
 
-        <div class="layout-horizontal row-padding-v">
-          <div class="col layout-vertical col-6">
-            <calendar-lite
-              id="datepicker"
-              min-date="${this.repStartDate}"
-              .date="${this.selectedDate ? this.selectedDate : ''}"
-              @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
-              format="YYYY-MM-DD"
-              hide-header
-            >
-            </calendar-lite>
+        <div class="row padding-v">
+          <div class="col-md-6">
+            <div class="w100">
+              <calendar-lite
+                id="datepicker"
+                min-date="${this.repStartDate}"
+                .date="${this.selectedDate ? this.selectedDate : ''}"
+                @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
+                format="YYYY-MM-DD"
+                hide-header
+              >
+              </calendar-lite>
+            </div>
+            <div class="padding-v w100">
+              <etools-button
+                variant="text"
+                class="no-marg no-pad font-14"
+                id="add-selected-date"
+                @click="${() => this._addToList()}"
+              >
+                ${translate('ADD_SELECTED_DATE')}
+              </etools-button>
+            </div>
           </div>
-          <div class="col col-6">
-            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">${translate('NO_DATES_ADDED')}</div>
+          <div class="col-md-6">
+            <div class="row" ?hidden="${!this._empty(this.hruData.length)}">${translate('NO_DATES_ADDED')}</div>
             <hru-list
               id="hruList"
-              class="flex-c"
+              class="col-12"
               with-scroll
               .hruData="${this.hruData}"
               ?hidden="${this._empty(this.hruData.length)}"
@@ -116,18 +127,6 @@ export class EditHruDialog extends connectStore(LitElement) {
               @delete-hru="${this._deleteHruDate}"
             >
             </hru-list>
-          </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col layout-vertical col-3">
-            <etools-button
-              variant="text"
-              class="no-marg no-pad font-14"
-              id="add-selected-date"
-              @click="${() => this._addToList()}"
-            >
-              ${translate('ADD_SELECTED_DATE')}
-            </etools-button>
           </div>
         </div>
       </etools-dialog>

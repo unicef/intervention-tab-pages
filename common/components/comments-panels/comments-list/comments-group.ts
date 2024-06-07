@@ -1,6 +1,6 @@
 import {css, LitElement, html, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {translate} from 'lit-translate';
 import {CommentRelatedItem} from '../../comments/comments-types';
 import dayjs from 'dayjs';
@@ -46,7 +46,7 @@ export class CommentsGroup extends LitElement {
   static get styles() {
     // language=css
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: flex;

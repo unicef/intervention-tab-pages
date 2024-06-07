@@ -27,7 +27,6 @@ import {EnvFlags, EtoolsEndpoint, ExpectedResult, Intervention} from '@unicef-po
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
 import CONSTANTS, {TABS} from './common/constants';
@@ -46,6 +45,7 @@ import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/aja
 import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
 import {isActiveTab} from './utils/utils';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 /**
  * @LitElement
  * @customElement
@@ -288,7 +288,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
         ${translate('AMENDMENT_MODE_TEXT')}
-        <a href="${ROOT_PATH}interventions/${this.intervention?.original_intervention}/metadata">
+        <a href="${Environment.basePath}interventions/${this.intervention?.original_intervention}/metadata">
           ${translate('ORIGINAL_VERSION')}
         </a>
       </div>
@@ -381,7 +381,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   // id from route params
   private interventionId: string | null = null;
 
-  private isEPDApp = ROOT_PATH === '/epd/';
+  private isEPDApp = Environment.basePath === '/epd/';
 
   connectedCallback() {
     super.connectedCallback();

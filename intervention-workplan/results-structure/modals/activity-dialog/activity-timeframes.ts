@@ -4,7 +4,7 @@ import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../uti
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 @customElement('activity-time-frames')
@@ -12,7 +12,7 @@ export class ActivityTimeFrames extends LitElement {
   static get styles(): CSSResultArray {
     // language=css
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: flex;
@@ -41,7 +41,6 @@ export class ActivityTimeFrames extends LitElement {
           padding: 5px;
           box-sizing: border-box;
           margin: 5px;
-          height: 42px;
           border-radius: 10px;
         }
         .time-frame.selected {
@@ -120,7 +119,7 @@ export class ActivityTimeFrames extends LitElement {
         ${this._timeFrames.map(
           ([year, frames]: any) => html`
             <div class="light-gray-container">
-              <div class="layout-horizontal center-align title year row-h">${year}</div>
+              <div class="layout-horizontal center-align title year">${year}</div>
               <div class="layout-horizontal center-align">
                 ${frames.map(
                   (frame: ActivityTime, index: number) => html`

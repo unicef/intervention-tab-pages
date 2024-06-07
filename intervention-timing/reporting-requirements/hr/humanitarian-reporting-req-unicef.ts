@@ -8,8 +8,7 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
@@ -24,7 +23,7 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 @customElement('humanitarian-reporting-req-unicef')
 export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -35,10 +34,13 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
         *[hidden] {
           display: none !important;
         }
+        .mt-12 {
+          margin-block-start: 20px;
+        }
       </style>
-      <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">${translate('NO_HUMANITARIAN_REPORT')}</div>
-        <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
+      <div class="mt-12" ?hidden="${!this._empty(this.reportingRequirements)}">
+        <div class="col-12">${translate('NO_HUMANITARIAN_REPORT')}</div>
+        <div class="col-12" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
           <etools-button
             variant="text"
             class="no-marg no-pad font-14"
@@ -47,12 +49,12 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
             ${translate('ADD_REQUIREMENTS')}
           </etools-button>
         </div>
-        <div class="row-h" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
+        <div class="col-12" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
           ${translate('CAN_BE_MODIFIED_PROMPT')}
         </div>
       </div>
 
-      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
+      <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
         <hru-list id="hruList" .hruData="${this.paginatedReports}" .paginator="${this.paginator}" disable-sorting>
         </hru-list>
 

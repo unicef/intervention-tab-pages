@@ -3,8 +3,8 @@ import {customElement, property} from 'lit/decorators.js';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -34,7 +34,7 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 @customElement('other-metadata')
 export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -91,9 +91,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
       <etools-content-panel show-expand-btn panel-title=${translate('OTHER')} comment-element="other-metadata">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal row-padding-v">
+        <div class="row">
           <!--   Document Type   -->
-          <div class="col col-4">
+          <div class="col-md-4 col-12">
             <etools-dropdown
               id="documentType"
               label=${translate('DOC_TYPE')}
@@ -120,42 +120,38 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             >
             </etools-dropdown>
           </div>
-          <div class="col-8">
-            <div class="row">
-              <!--   SPD is Humanitarian   -->
-              <div ?hidden="${!this.isSPD}">
-                <sl-switch
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
-                  ?checked="${this.data.humanitarian_flag}"
-                  @sl-change="${(e: CustomEvent) => {
-                    this.data.contingency_pd = false;
-                    this.valueChanged({value: (e.target as SlSwitch).checked}, 'humanitarian_flag');
-                  }}"
-                >
-                  ${translate('SPD_HUMANITARIAN')}
-                </sl-switch>
-              </div>
-
-              <!--   Contingency Document   -->
-              <div ?hidden="${!this.data.humanitarian_flag}">
-                <sl-switch
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
-                  ?checked="${this.data.contingency_pd}"
-                  @sl-change="${(e: CustomEvent) => {
-                    this.valueChanged({value: (e.target as SlSwitch).checked}, 'contingency_pd');
-                    if (!(e.target as SlSwitch).checked) {
-                      this.data.activation_protocol = '';
-                    }
-                  }}"
-                >
-                  ${translate('CONTINGENCY_DOC')}
-                </sl-switch>
-              </div>
-            </div>
+          <!--   SPD is Humanitarian   -->
+          <div class="col-md-8 col-12">
+            <sl-switch
+              ?hidden="${!this.isSPD}"
+              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
+              ?checked="${this.data.humanitarian_flag}"
+              @sl-change="${(e: CustomEvent) => {
+                this.data.contingency_pd = false;
+                this.valueChanged({value: (e.target as SlSwitch).checked}, 'humanitarian_flag');
+              }}"
+            >
+              ${translate('SPD_HUMANITARIAN')}
+            </sl-switch>
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
-          <div class="col col-10">
+
+          <!--   Contingency Document   -->
+          <div class="col-md-4 col-12" ?hidden="${!this.data.humanitarian_flag}">
+            <sl-switch
+              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
+              ?checked="${this.data.contingency_pd}"
+              @sl-change="${(e: CustomEvent) => {
+                this.valueChanged({value: (e.target as SlSwitch).checked}, 'contingency_pd');
+                if (!(e.target as SlSwitch).checked) {
+                  this.data.activation_protocol = '';
+                }
+              }}"
+            >
+              ${translate('CONTINGENCY_DOC')}
+            </sl-switch>
+          </div>
+
+          <div class="col-12" ?hidden="${!this.data.contingency_pd}">
             <etools-textarea
               class="w100"
               label=${translate('ACTIVATION_PROTOCOL')}
@@ -169,9 +165,8 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             >
             </etools-textarea>
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-4">
+
+          <div class="col-md-4 col-12">
             <etools-dropdown
               id="currencyDd"
               option-value="value"
@@ -193,7 +188,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             >
             </etools-dropdown>
           </div>
-          <div class="col col-6" style="padding-inline-start: 40px;">
+          <div class="col-md-6 col-12">
             <etools-input
               id="unppNumber"
               pattern="CEF/[a-zA-Z]{3}/\\d{4}/\\d{3}"
@@ -206,25 +201,23 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               @value-changed="${({detail}: CustomEvent) => this.cfeiValueChanged(detail, 'cfei_number')}"
             ></etools-input>
           </div>
+          <div class="col-12" ?hidden="${!this.permissions?.view?.confidential}">
+            <sl-switch
+              id="confidential"
+              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
+              ?checked="${this.data.confidential}"
+              @sl-change="${(e: CustomEvent) =>
+                this.valueChanged({value: (e.target! as SlSwitch).checked}, 'confidential')}}"
+            >
+              ${translate('CONFIDENTIAL')}
+            </sl-switch>
+            <info-icon-tooltip
+              id="iit-confidential"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
+              .tooltipText="${translate('CONFIDENTIAL_INFO')}"
+            ></info-icon-tooltip>
+          </div>
         </div>
-
-        <div class="layout-horizontal confidential-row" ?hidden="${!this.permissions?.view?.confidential}">
-          <sl-switch
-            id="confidential"
-            ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
-            ?checked="${this.data.confidential}"
-            @sl-change="${(e: CustomEvent) =>
-              this.valueChanged({value: (e.target! as SlSwitch).checked}, 'confidential')}}"
-          >
-            ${translate('CONFIDENTIAL')}
-          </sl-switch>
-          <info-icon-tooltip
-            id="iit-confidential"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
-            .tooltipText="${translate('CONFIDENTIAL_INFO')}"
-          ></info-icon-tooltip>
-        </div>
-
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
