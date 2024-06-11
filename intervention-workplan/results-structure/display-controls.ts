@@ -64,7 +64,7 @@ export class DisplayControls extends LitElement {
   protected render(): TemplateResult {
     return html`
       <style>
-        @media (max-width: 768px) {
+        @media (max-width: 1080px) {
           .editorLink {
             display: none;
           }

@@ -43,17 +43,23 @@ const customStyles = html`
   <style>
     .col_title {
       width: 99%;
+      min-width: 70px;
     }
     .col_nowrap {
       width: 1%;
       white-space: nowrap;
     }
-    .expand-cell etools-icon {
-      width: 70px !important;
-      color: #2b2b2b !important;
-    }
-    . .word-break {
+    .word-break {
       word-break: break-word;
+    }
+    @media (min-width: 760px) and (max-width: 1000px) {
+      .row-actions .actions {
+        left: 0;
+      }
+      table td,
+      table th {
+        padding: 0.5rem !important;
+      }
     }
   </style>
 `;
@@ -202,7 +208,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       label: translate('ITEM_ALL_PRICES') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      cssClass: 'col_title'
+      cssClass: 'col_title word-break'
     },
     {
       label: translate('NUMBER_UNITS') as unknown as string,
