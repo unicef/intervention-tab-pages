@@ -8,7 +8,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {
   EtoolsTableColumn,
   EtoolsTableColumnType,
@@ -43,14 +43,23 @@ const customStyles = html`
   <style>
     .col_title {
       width: 99%;
+      min-width: 70px;
     }
     .col_nowrap {
       width: 1%;
       white-space: nowrap;
     }
-    .expand-cell etools-icon {
-      width: 70px !important;
-      color: #2b2b2b !important;
+    .word-break {
+      word-break: break-word;
+    }
+    @media (min-width: 760px) and (max-width: 1000px) {
+      .row-actions .actions {
+        left: 0;
+      }
+      table td,
+      table th {
+        padding: 0.5rem !important;
+      }
     }
   </style>
 `;
@@ -58,7 +67,7 @@ const customStyles = html`
 @customElement('supply-agreements')
 export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     if (!this.supply_items) {
@@ -73,12 +82,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           margin-bottom: 24px;
           --etools-table-col-font-size: var(--etools-font-size-16, 16px);
         }
-
-        .mr-20 {
-          margin-inline-end: 20px;
-        }
-        .pad-right {
-          padding-inline-end: 6px;
+        .headerLabel {
+          padding-inline-end: 4px;
         }
         #uploadHelpPanel {
           margin-block-end: 0;
@@ -87,12 +92,25 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           display: flex;
           align-items: center;
         }
+        .afterTitle {
+          padding-block-start: 4px;
+        }
+        .h-padding {
+          padding-inline-start: 24px;
+          padding-inline-end: 24px;
+        }
         etools-icon-button[name='file-upload'] {
           color: var(--primary-text-color);
         }
         #iit-ger {
           --iit-margin: 8px 0 8px -15px;
           --iit-icon-size: 24px;
+        }
+        etools-content-panel::part(ecp-header) {
+          --ecp-header-height: auto;
+        }
+        etools-table {
+          padding-top: 0 !important;
         }
       </style>
 
@@ -114,7 +132,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
               ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
             >
           </span>
-
+        </div>
+        <div slot="panel-btns">
           <etools-info-tooltip
             custom-icon
             position="left"
@@ -138,8 +157,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           >
           </etools-icon-button>
         </div>
-        <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
-          ${this.getUploadHelpElement()}
+        <div class="row" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
+          <div class="col-12">${this.getUploadHelpElement()}</div>
         </div>
 
         <etools-table
@@ -154,8 +173,10 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .showEdit=${this.permissions.edit.supply_items}
           .showDelete=${this.permissions.edit.supply_items}
         ></etools-table>
-        <div class="row-h" ?hidden="${this.supply_items?.length}">
-          <p>${translate('NO_SUPPLY_CONTRIBUTION')}</p>
+        <div class="row" ?hidden="${this.supply_items?.length}">
+          <div class="col-12">
+            <p class="h-padding">${translate('NO_SUPPLY_CONTRIBUTION')}</p>
+          </div>
         </div>
       </etools-content-panel>
 
@@ -187,7 +208,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       label: translate('ITEM_ALL_PRICES') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      cssClass: 'col_title'
+      cssClass: 'col_title word-break'
     },
     {
       label: translate('NUMBER_UNITS') as unknown as string,
@@ -246,20 +267,20 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     childRow.rowHTML = html`
       <td></td>
       ${this.isUnicefUser
-        ? html`<td class="ptb-0">
+        ? html`<td class="ptb-0 word-break">
             <div class="child-row-inner-container">
               <label class="label">${translate('CP_OUTPUTS')}</label><br />
               <label>${output || '—'}</label><br />
             </div>
           </td>`
         : html``}
-      <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0">
+      <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0 word-break">
         <div class="child-row-inner-container">
           <label class="label">${translate('OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
         </div>
       </td>
-      <td colspan="2" class="ptb-0">
+      <td colspan="2" class="ptb-0 word-break">
         <div class="child-row-inner-container" ?hidden="${item.provided_by.toLowerCase() === 'partner'}">
           <label class="label"> ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
@@ -285,6 +306,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
   getUploadHelpElement() {
     const paragraph = document.createElement('p');
+    paragraph.classList.add('h-padding');
     paragraph.innerHTML = this.getUploadHelpText();
     return paragraph;
   }

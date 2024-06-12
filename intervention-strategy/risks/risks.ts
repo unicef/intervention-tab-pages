@@ -11,7 +11,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -36,10 +36,13 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 const customStyles = html`
   <style>
     .col_type {
-      width: 15%;
+      width: 20%;
     }
     .col_measures {
       width: 99%;
+    }
+    .row-actions {
+      min-width: 90px;
     }
   </style>
 `;
@@ -50,7 +53,7 @@ const customStyles = html`
 @customElement('risks-element')
 export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -72,12 +75,21 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         #mitigationMeasures {
           width: 100%;
         }
-        .row-h {
+        .p-20 {
           overflow: hidden;
           padding: 20px;
         }
         info-icon-tooltip {
-          --iit-margin: 8px 0 8px -15px;
+          --iit-margin: 0 0 0 4px;
+          --iit-icon-size: 22px;
+        }
+        etools-table {
+          padding-top: 0 !important;
+        }
+        @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+          etools-content-panel::part(ecp-content) {
+            padding-inline-start: 18px;
+          }
         }
       </style>
       <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">
@@ -108,7 +120,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .showDelete=${this.canEditAtLeastOneField}
         >
         </etools-table>
-        <div class="row-h" ?hidden="${this.data?.length}">
+        <div class="row p-20" ?hidden="${this.data?.length}">
           <p>${translate('NO_RISK_ADDED')}</p>
         </div>
       </etools-content-panel>

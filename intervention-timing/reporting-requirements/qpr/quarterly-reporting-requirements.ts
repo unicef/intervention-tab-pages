@@ -10,7 +10,7 @@ import './edit-qpr-dialog';
 import './qpr-list';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -29,7 +29,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   ReportingRequirementsCommonMixin(LitElement)
 ) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -40,13 +40,13 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
         }
       </style>
 
-      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
+      <div class="col-12" ?hidden="${this._empty(this.reportingRequirements)}">
         <qpr-list .qprData="${this.reportingRequirements}"></qpr-list>
       </div>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
-        <div class="row-h" ?hidden="${!this.editMode}">
+        <div class="col-12">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
+        <div class="col-12" ?hidden="${!this.editMode}">
           <etools-button
             variant="text"
             class="no-marg no-pad font-14"

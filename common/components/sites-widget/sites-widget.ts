@@ -4,7 +4,7 @@ import {repeat} from 'lit/directives/repeat.js';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {IMarker, MapHelper, MarkerDataObj} from './map-mixin';
 import {LocationWidgetStyles} from './location-widget.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -32,7 +32,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   private MapHelper!: MapHelper;
 
   static get styles(): CSSResultArray {
-    return [elevationStyles, gridLayoutStylesLit, LocationWidgetStyles, leafletStyles];
+    return [elevationStyles, layoutStyles, LocationWidgetStyles, leafletStyles];
   }
   get itemStyle(): string {
     // language=CSS

@@ -114,6 +114,7 @@ export class EditorTable extends CommentsMixin(
           display: -webkit-box;
           -webkit-line-clamp: 4;
           -webkit-box-orient: vertical;
+          word-break: break-word;
         }
         .truncate-single-line {
           max-height: 42px;

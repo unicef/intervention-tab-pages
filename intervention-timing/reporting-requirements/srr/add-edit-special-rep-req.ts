@@ -15,7 +15,7 @@ import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import dayjs from 'dayjs';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
@@ -26,7 +26,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 @customElement('add-edit-special-rep-req')
 export class AddEditSpecialRepReq extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     if (!this.item) {
@@ -38,18 +38,18 @@ export class AddEditSpecialRepReq extends LitElement {
         :host {
           display: block;
         }
-
         etools-input {
           width: 100%;
         }
-
         label {
           margin-bottom: 24px;
           font-size: var(--etools-font-size-14, 14px);
         }
-
         calendar-lite {
           position: relative;
+        }
+        .mt-24 {
+          margin-top: 24px;
         }
       </style>
 
@@ -63,8 +63,8 @@ export class AddEditSpecialRepReq extends LitElement {
         @close="${() => this._onClose()}"
         keep-dialog-open
       >
-        <div class="row-h">
-          <div class="col layout-vertical col-5">
+        <div class="row">
+          <div class="col-12 layout-vertical">
             <label for="startDate">${translate('REPORT_DUE_DATE')}</label>
             <calendar-lite
               id="startDate"
@@ -76,15 +76,15 @@ export class AddEditSpecialRepReq extends LitElement {
               hide-header
             ></calendar-lite>
           </div>
-        </div>
-        <div class="row-h">
-          <etools-input
-            label=${translate('REPORTING_REQUIREMENT')}
-            placeholder="&#8212;"
-            value="${this.item.description ? this.item.description : ''}"
-            @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"
-          >
-          </etools-input>
+          <div class="col-12 mt-24">
+            <etools-input
+              label=${translate('REPORTING_REQUIREMENT')}
+              placeholder="&#8212;"
+              value="${this.item.description ? this.item.description : ''}"
+              @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"
+            >
+            </etools-input>
+          </div>
         </div>
       </etools-dialog>
     `;

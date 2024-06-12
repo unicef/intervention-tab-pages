@@ -1,6 +1,6 @@
 import {LitElement, html, TemplateResult, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
@@ -28,7 +28,7 @@ import {getPageDirection} from '../../utils/utils';
 export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(LitElement)) {
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       elevationStyles,
       frWarningsStyles,
       css`
@@ -59,6 +59,9 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           margin-top: 14px;
           margin-inline-start: 30px;
         }
+        .mt-6 {
+          margin-block-start: -6px;
+        }
         .amt-data .label {
           font-weight: 400;
           font-size: var(--etools-font-size-14, 14px);
@@ -77,9 +80,29 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           line-height: 25px;
           margin-inline-end: 6px;
         }
-        .icon-wrapper {
-          flex-wrap: nowrap;
-          padding-top: 0 !important;
+        @media (max-width: 768px) {
+          section {
+            padding-inline: 15px 15px;
+          }
+          .information-cells {
+            flex-direction: column-reverse;
+          }
+          .amt-data {
+            margin-inline-start: 4px;
+          }
+          .amt-data .input-label span {
+            font-size: var(--etools-font-size-12, 12px);
+            line-height: 20px;
+            margin-inline-end: 2px;
+          }
+          .amt-data .input-label {
+            font-size: var(--etools-font-size-18, 18px);
+            line-height: 24px;
+          }
+          .icon-wrapper {
+            flex-wrap: nowrap;
+            padding-top: 0 !important;
+          }
         }
       `
     ];
@@ -144,7 +167,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <div class="icon-wrapper">
+          <div class="icon-wrapper mt-6">
             <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
             <info-icon-tooltip .tooltipText="${translate('PRGM_EFFECTIVENESS_TOOLTIP')}"></info-icon-tooltip>
           </div>

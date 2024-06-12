@@ -2,7 +2,7 @@ import {LitElement, html, CSSResultArray, TemplateResult, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {translate} from 'lit-translate';
 import dayjs from 'dayjs';
 @customElement('message-item')
@@ -133,7 +133,7 @@ export class MessageItem extends LitElement {
   static get styles(): CSSResultArray {
     // language=css
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: flex;

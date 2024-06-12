@@ -2,7 +2,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {css, html, CSSResultArray, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {
   selectInterventionId,
@@ -108,14 +108,18 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     // language=HTML
     return html`
       ${sharedStyles}
+      <style>
+        etools-content-panel::part(ecp-header-title-panel) {
+          justify-content: space-between;
+        }
+      </style>
       <etools-content-panel
         show-expand-btn
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
         elevation="0"
       >
-        <div slot="panel-btns" class="layout-horizontal flex-1">
+        <div slot="after-title">
           <display-controls
-            class="flex-1"
             ?show-inactive-toggle="${this.showInactiveToggle}"
             .showIndicators="${this.showIndicators}"
             .showActivities="${this.showActivities}"
@@ -123,6 +127,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
             @show-inactive-changed="${this.inactiveChange}"
             @tab-view-changed="${this.updateTableView}"
           ></display-controls>
+        </div>
+        <div slot="panel-btns">
           <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
             <div class="heading">${translate('TOTAL')}:</div>
             <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
@@ -211,7 +217,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     style="z-index: ${99 - index};"
                   >
                     <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
-                      <div class="flex-1 flex-fix">
+                      <div class="flex-fix">
                         <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
                         <div class="count">
                           <div><b>${pdOutput.activities.length}</b> ${translate('ACTIVITIES')}</div>
@@ -561,7 +567,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       css`
         etools-icon[name='create'] {
@@ -660,15 +666,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-content-panel {
           box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.15);
         }
-        etools-content-panel::part(ecp-header-btns-wrapper) {
-          flex: 1;
-        }
         etools-content-panel::part(ecp-header) {
           border-bottom: none;
         }
         etools-content-panel::part(ecp-header) {
           position: relative;
-          height: 66px;
           padding: 13px 16px;
         }
         etools-content-panel::part(ecp-header):after {
@@ -694,6 +696,17 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
         etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
+        }
+        .flex-fix {
+          min-width: 0px;
+          min-height: 0px;
+          width: 100%;
+          word-break: break-word;
+        }
+        @media (max-width: 768px) {
+          .total-result b {
+            font-size: var(--etools-font-size-16, 16px);
+          }
         }
       `
     ];

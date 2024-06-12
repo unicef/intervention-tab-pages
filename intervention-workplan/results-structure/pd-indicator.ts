@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, css} from 'lit';
 import {property, customElement, query} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -26,6 +26,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) inAmendment!: boolean;
   @property({type: Boolean}) detailsOpened = false;
   @property({type: Number}) index?: number;
+  @property({type: Boolean}) lowResolutionLayout = false;
   @property({type: String})
   @query('#view-menu-button')
   actionsMenuBtn!: SlDropdown;
@@ -39,6 +40,12 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         .font-bold {
           font-weight: bold;
         }
+        div[lowresolutionlayout] {
+          flex-direction: column;
+        }
+        div[lowresolutionlayout] .secondary-cell {
+          max-width: 60%;
+        }
       </style>
       <div
         class="table-row editable-row"
@@ -49,80 +56,90 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         @sl-show="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.add('active')}"
         @sl-hide="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.remove('active')}"
       >
-        <div class="main-info" style="padding-inline-end:10%">
+        <div class="main-info" style="padding-inline-end:10%" ?lowResolutionLayout="${this.lowResolutionLayout}">
           <!--    Indicator name    -->
-          <div class="flex-1 left-align layout-vertical start-aligned">
-            <div class="name layout-horizontal">
-              ${getIndicatorDisplayType(this.indicator.indicator)} ${this.addInactivePrefix(this.indicator)}
-              ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
-              '—'}
+          <div class="flex-1 layout-horizontal left-align">
+            <div class="left-align" ?hidden="${!this.lowResolutionLayout}">${translate('INDICATOR')}</div>
+            <div class="left-align layout-vertical start-aligned">
+              <div class="name layout-horizontal">
+                ${getIndicatorDisplayType(this.indicator.indicator)} ${this.addInactivePrefix(this.indicator)}
+                ${(this.indicator.indicator
+                  ? this.indicator.indicator.title
+                  : this.indicator.cluster_indicator_title) || '—'}
 
-              <etools-info-tooltip position="top" custom-icon offset="0">
-                <div id="hf" slot="custom-icon" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
-                <span class="no-wrap" slot="message">${translate('THIS_INDICATOR_IS_HIGH_FREQUENCY')}</span>
-              </etools-info-tooltip>
-            </div>
-            <div class="item-link indent" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
-              ${translate(this.detailsOpened ? 'HIDE' : 'SHOW')} ${this.locationNames.length} ${translate('LOCATIONS')}
-              | ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
+                <etools-info-tooltip position="top" custom-icon offset="0">
+                  <div id="hf" slot="custom-icon" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
+                  <span class="no-wrap" slot="message">${translate('THIS_INDICATOR_IS_HIGH_FREQUENCY')}</span>
+                </etools-info-tooltip>
+              </div>
+              <div class="item-link indent" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
+                ${translate(this.detailsOpened ? 'HIDE' : 'SHOW')} ${this.locationNames.length}
+                ${translate('LOCATIONS')} | ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
+              </div>
             </div>
           </div>
+
           <!--    Baseline    -->
-          <div class="flex-1 secondary-cell right">
-            ${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}
+          <div class="${this.getCSSClassByResolution(this.lowResolutionLayout)}">
+            <div class="left-align" ?hidden="${!this.lowResolutionLayout}">${translate('BASELINE')}</div>
+            <div class="secondary-cell right">
+              ${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}
+            </div>
           </div>
 
           <!--    Target    -->
-          <div class="flex-1 secondary-cell right">
-            ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
-          </div>
-
-          <div
-            class="show-actions hover-block"
-            style="z-index: ${99 - (this.index || 0)}; max-height: 59px;"
-            ?hidden="${this.commentMode}"
-          >
-            <sl-dropdown distance="-65" id="view-menu-button">
-              <etools-icon-button slot="trigger" name="more-vert"></etools-icon-button>
-              <sl-menu>
-                <sl-menu-item
-                  class="action"
-                  ?hidden="${!this._canEdit() && !this._canView()}"
-                  @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
-                >
-                  <etools-icon slot="prefix" name="${this._canEdit() ? 'create' : 'visibility'}"></etools-icon>
-                  ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
-                </sl-menu-item>
-                <sl-menu-item
-                  class="action"
-                  ?hidden="${!_canDeactivate(
-                    this.indicator,
-                    this.readonly,
-                    this.interventionStatus,
-                    this.inAmendment,
-                    this.inAmendmentDate
-                  )}"
-                  @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
-                >
-                  <etools-icon slot="prefix" name="block"></etools-icon>
-                  ${translate('DEACTIVATE')}
-                </sl-menu-item>
-                <sl-menu-item
-                  class="action delete-action"
-                  ?hidden="${!_canDelete(
-                    this.indicator,
-                    this.readonly,
-                    this.interventionStatus,
-                    this.inAmendment,
-                    this.inAmendmentDate
-                  )}"
-                  @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
-                >
-                  <etools-icon slot="prefix" name="delete"></etools-icon>
-                  ${translate('DELETE')}
-                </sl-menu-item>
-              </sl-menu>
-            </sl-dropdown>
+          <div class="${this.getCSSClassByResolution(this.lowResolutionLayout)}">
+            <div class="left-align" ?hidden="${!this.lowResolutionLayout}">${translate('TARGET')}</div>
+            <div class="secondary-cell right">
+              ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
+            </div>
+            <div
+              class="show-actions hover-block"
+              style="z-index: ${99 - (this.index || 0)}; max-height: 59px;"
+              ?hidden="${this.commentMode}"
+            >
+              <sl-dropdown distance="-65" id="view-menu-button">
+                <etools-icon-button slot="trigger" name="more-vert"></etools-icon-button>
+                <sl-menu>
+                  <sl-menu-item
+                    class="action"
+                    ?hidden="${!this._canEdit() && !this._canView()}"
+                    @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
+                  >
+                    <etools-icon slot="prefix" name="${this._canEdit() ? 'create' : 'visibility'}"></etools-icon>
+                    ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
+                  </sl-menu-item>
+                  <sl-menu-item
+                    class="action"
+                    ?hidden="${!_canDeactivate(
+                      this.indicator,
+                      this.readonly,
+                      this.interventionStatus,
+                      this.inAmendment,
+                      this.inAmendmentDate
+                    )}"
+                    @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+                  >
+                    <etools-icon slot="prefix" name="block"></etools-icon>
+                    ${translate('DEACTIVATE')}
+                  </sl-menu-item>
+                  <sl-menu-item
+                    class="action delete-action"
+                    ?hidden="${!_canDelete(
+                      this.indicator,
+                      this.readonly,
+                      this.interventionStatus,
+                      this.inAmendment,
+                      this.inAmendmentDate
+                    )}"
+                    @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
+                  >
+                    <etools-icon slot="prefix" name="delete"></etools-icon>
+                    ${translate('DELETE')}
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+            </div>
           </div>
         </div>
         <div class="details indent ${this.detailsOpened ? 'opened' : ''}" style="max-height:350px; overflow-y:auto">
@@ -202,6 +219,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   openDeletionDialog(indicatorId: string) {
     fireEvent(this, 'open-delete-confirmation', {indicatorId: indicatorId});
   }
+  getCSSClassByResolution(lowResolutionLayout: boolean): string {
+    return `flex-1 layout-horizontal right ${lowResolutionLayout ? '' : 'secondary-cell'}`;
+  }
 
   getDisaggregation(disaggregationId: string | number): TemplateResult {
     const disaggreg: Disaggregation | null =
@@ -259,7 +279,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   // language=css
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ActivitiesAndIndicatorsStyles,
       css`

@@ -21,7 +21,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {buildUrlQueryString, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
@@ -46,7 +46,7 @@ import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 @customElement('intervention-reports')
 export class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsLitMixin(LitElement)))) {
   static get styles() {
-    return [gridLayoutStylesLit, elevationStyles];
+    return [layoutStyles, elevationStyles];
   }
   render() {
     return html`
@@ -88,6 +88,13 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         .pad-bottom {
           padding-bottom: 25px;
         }
+        .rdc-title.col-12 {
+          padding: 0;
+        }
+        .row.padding-row {
+          padding: 16px 24px;
+          margin: 0;
+        }
       </style>
       <etools-media-query
         query="(max-width: 767px)"
@@ -95,7 +102,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       ></etools-media-query>
       <etools-content-panel panel-title="${translate('REPORTS')}" class="pad-bottom">
         ${!this.reports.length
-          ? html` <div class="row-h">
+          ? html` <div class="row padding-row">
               <p>${translate('NO_REPORTS_YET')}</p>
             </div>`
           : html` <etools-data-table-header
@@ -105,10 +112,10 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                   .count} results to show"
               >
                 <etools-data-table-column class="col-2">${translate('REPORT_NUM')}</etools-data-table-column>
-                <etools-data-table-column class="flex-c">${translate('PARTNER')}</etools-data-table-column>
-                <etools-data-table-column class="flex-c">${translate('REPORT_STATUS')}</etools-data-table-column>
-                <etools-data-table-column class="flex-c">${translate('DUE_DATE')}</etools-data-table-column>
-                <etools-data-table-column class="flex-c">${translate('REPORTING_PERIOD')}</etools-data-table-column>
+                <etools-data-table-column class="col-4">${translate('PARTNER')}</etools-data-table-column>
+                <etools-data-table-column class="col-2">${translate('REPORT_STATUS')}</etools-data-table-column>
+                <etools-data-table-column class="col-2">${translate('DUE_DATE')}</etools-data-table-column>
+                <etools-data-table-column class="col-2">${translate('REPORTING_PERIOD')}</etools-data-table-column>
               </etools-data-table-header>
               ${this.reports.map(
                 (report: any) => html` <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
@@ -128,27 +135,27 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                         </span>
                       </sl-tooltip>
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('PARTNER')}">
+                    <span class="col-data col-4" data-col-header-label="${translate('PARTNER')}">
                       <sl-tooltip placement="right" content="${report.partner_vendor_number}">
                         <span id="tooltip-partner-${report.id}" class="tooltip-trigger">
                           ${this._displayOrDefault(report.partner_name)}
                         </span>
                       </sl-tooltip>
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('REPORT_STATUS')}">
+                    <span class="col-data col-2" data-col-header-label="${translate('REPORT_STATUS')}">
                       <intervention-report-status status="${report.status}"></intervention-report-status>
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('DUE_DATE')}">
+                    <span class="col-data col-2" data-col-header-label="${translate('DUE_DATE')}">
                       ${this._displayOrDefault(report.due_date)}
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('REPORTING_PERIOD')}">
+                    <span class="col-data col-2" data-col-header-label="${translate('REPORTING_PERIOD')}">
                       ${this.getDisplayValue(report.reporting_period)}
                     </span>
                   </div>
 
                   <div slot="row-data-details">
                     <div class="row-details-content">
-                      <span class="rdc-title flex-c">${translate('UNICEF_FOCAL_POINTS')}</span>
+                      <span class="rdc-title col-12">${translate('UNICEF_FOCAL_POINTS')}</span>
                       <span>${this.getDisplayValue(report.unicef_focal_points)}</span>
                     </div>
                   </div>

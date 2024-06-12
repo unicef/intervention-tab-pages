@@ -3,7 +3,7 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} f
 import {property, customElement} from 'lit/decorators.js';
 import {translate} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {
   callClickOnEnterPushListener,
   callClickOnSpacePushListener
@@ -63,11 +63,18 @@ export class DisplayControls extends LitElement {
 
   protected render(): TemplateResult {
     return html`
+      <style>
+        @media (max-width: 1080px) {
+          .editorLink {
+            display: none;
+          }
+        }
+      </style>
       <sl-switch id="showInactive" ?hidden="${!this.showInactiveToggle}" @sl-change=${this.inactiveChange}>
         ${translate('SHOW_INACTIVE')}
       </sl-switch>
 
-      <div class="layout-horizontal">
+      <div class="layout-horizontal layout-wrap">
         <sl-dropdown
           distance="-30"
           id="view-menu-button"
@@ -99,7 +106,7 @@ export class DisplayControls extends LitElement {
             )}
           </sl-menu>
         </sl-dropdown>
-        <a href="interventions/${this.interventionId}/${TABS.WorkplanEditor}">
+        <a class="editorLink" href="interventions/${this.interventionId}/${TABS.WorkplanEditor}">
           <div class="editor-link">
             ${translate('ACTIVITES_EDITOR')}
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -137,7 +144,7 @@ export class DisplayControls extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: flex;

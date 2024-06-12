@@ -3,7 +3,7 @@ import {property, customElement, query} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -32,7 +32,7 @@ import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 @customElement('activity-dialog')
 export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -52,10 +52,6 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
 
         .input-level {
           padding: 25px 0;
-        }
-        .total-input,
-        etools-currency {
-          margin-inline-end: 24px;
         }
         .total {
           justify-content: flex-end;
@@ -83,36 +79,35 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         @confirm-btn-clicked="${this.onSaveClick}"
         .hideConfirmBtn="${this.readonly}"
       >
-        <div class="row-padding-v">
-          <etools-input
-            readonly
-            tabindex="-1"
-            id="title"
-            label=${translate('GENERAL.TITLE')}
-            always-float-label
-            placeholder="—"
-            .value="${this.data.title}"
-          >
-          </etools-input>
+        <div class="row">
+          <div class="col-12">
+            <etools-input
+              readonly
+              tabindex="-1"
+              id="title"
+              label=${translate('GENERAL.TITLE')}
+              always-float-label
+              placeholder="—"
+              .value="${this.data.title}"
+            >
+            </etools-input>
+          </div>
+          <div class="col-12">
+            <etools-textarea
+              id="description"
+              label=${translate('GENERAL.DESCRIPTION')}
+              readonly
+              tabindex="-1"
+              always-float-label
+              placeholder="—"
+              .value="${this.data.description}"
+            ></etools-textarea>
+          </div>
         </div>
-
-        <div class="row-padding-v">
-          <etools-textarea
-            id="description"
-            label=${translate('GENERAL.DESCRIPTION')}
-            readonly
-            tabindex="-1"
-            always-float-label
-            placeholder="—"
-            .value="${this.data.description}"
-          ></etools-textarea>
-        </div>
-
-        <div class="layout-horizontal align-items-center padd-bott">
+        <div class="row align-items-center padd-bott">
           ${!this.useInputLevel
-            ? html`
+            ? html` <div class="col-md-3 col-6">
                   <etools-currency
-                    class="col-3"
                     id="partnerContribution"
                     label=${translate('PARTNER_CASH_BUDGET')}
                     .value="${this.data[this.getPropertyName('partner')]}"
@@ -123,9 +118,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     auto-validate
                   >
                   </etools-currency>
-
+                </div>
+                <div class="col-md-3 col-6">
                   <etools-currency
-                    class="col-3"
                     id="unicefCash"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     .value="${this.data[this.getPropertyName('unicef')]}"
@@ -138,40 +133,44 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                   </etools-currency>
                 </div>`
             : html`
-                <etools-input
-                  readonly
-                  tabindex="-1"
-                  class="col-3 total-input"
-                  label=${translate('PARTNER_CASH_BUDGET')}
-                  .value="${this.getSumValue('cso_cash')}"
-                ></etools-input>
-                <etools-input
-                  readonly
-                  tabindex="-1"
-                  class="col-3 total-input"
-                  label=${translate('UNICEF_CASH_BUDGET')}
-                  .value="${this.getSumValue('unicef_cash')}"
-                ></etools-input>
+                <div class="col-md-3 col-6">
+                  <etools-input
+                    readonly
+                    tabindex="-1"
+                    label=${translate('PARTNER_CASH_BUDGET')}
+                    .value="${this.getSumValue('cso_cash')}"
+                  ></etools-input>
+                </div>
+                <div class="col-md-3 col-6">
+                  <etools-input
+                    readonly
+                    tabindex="-1"
+                    label=${translate('UNICEF_CASH_BUDGET')}
+                    .value="${this.getSumValue('unicef_cash')}"
+                  ></etools-input>
+                </div>
               `}
-          <div class="flex-auto layout-horizontal total">
+          <div class="offset-md-3 offset-sm-0 col-md-3 col-12 total">
             <etools-input
               readonly
               tabindex="-1"
-              class="col-6 general-total"
+              class="general-total"
               label="${translate('GENERAL.TOTAL')} (${this.currency})"
               .value="${this.getTotalValue()}"
             ></etools-input>
           </div>
         </div>
 
-        <div class="layout-horizontal input-level">
-          <sl-switch
-            ?checked="${this.useInputLevel}"
-            @sl-change="${this.inputLevelChange}"
-            ?disabled="${this.readonly}"
-          >
-            ${translate('USE_INPUT_LEVEL')}
-          </sl-switch>
+        <div class="row input-level">
+          <div class="col-12">
+            <sl-switch
+              ?checked="${this.useInputLevel}"
+              @sl-change="${this.inputLevelChange}"
+              ?disabled="${this.readonly}"
+            >
+              ${translate('USE_INPUT_LEVEL')}
+            </sl-switch>
+          </div>
         </div>
         <activity-items-table
           .dialogElement=${this.dialogElement}

@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
 import '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -27,7 +27,7 @@ import dayjs from 'dayjs';
 @customElement('pd-termination')
 export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -57,8 +57,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         ?disable-dismiss-btn="${this.uploadInProgress}"
         ?show-spinner="${this.savingInProcess}"
       >
-        <div class="row-h flex-c">
+        <div class="row">
           <datepicker-lite
+            class="col-12"
             id="terminationDate"
             label="${translate('TERMINATION_DATE')}"
             .value="${this.termination.date}"
@@ -72,8 +73,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
           >
           </datepicker-lite>
         </div>
-        <div class="row-h flex-c">
+        <div class="row">
           <etools-upload
+            class="col-12"
             id="terminationNotice"
             label="${translate('TERMINATION_NOTICE')}"
             accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
@@ -85,8 +87,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
             error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
           >
         </div>
-        <div class="row-h flex-c">
+        <div class="row">
           <etools-warn-message-lit
+            class="col-12"
             .messages="${this.warnMessages}"
           >
           </etools-warn-message-lit>

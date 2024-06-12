@@ -13,6 +13,7 @@ import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist
 import {CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 
@@ -36,6 +37,10 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     this.hideCpOutputs = hideCpOutputs || !pdOutput || pdOutput.cp_output;
     this.isEditDialog = Boolean(pdOutput && pdOutput.id);
     this.interventionId = interventionId;
+  }
+
+  static get styles() {
+    return [layoutStyles];
   }
 
   protected render(): TemplateResult {
@@ -72,7 +77,6 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         @close="${this.onClose}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
-        no-padding
       >
         <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
           <div><etools-icon name="warning"></etools-icon>${translate('ASSOCIATE_PROMPT')}</div>
@@ -80,45 +84,48 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             ? html` <div><br /><etools-icon name="warning"></etools-icon> ${translate('ASSOCIATE_MSG')}</div> `
             : ''}
         </div>
-        <div class="container layout vertical">
-          <etools-input
-            class="validate-input flex-1"
-            label=${translate('PD_OUTPUT_NAME')}
-            placeholder="&#8212;"
-            .value="${this.editedData.name}"
-            @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
-            required
-            auto-validate
-            ?invalid="${this.errors.name}"
-            .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
-            @focus="${() => this.resetFieldError('name')}"
-            @click="${() => this.resetFieldError('name')}"
-          ></etools-input>
-
+        <div class="row">
+          <div class="col-12">
+            <etools-input
+              class="validate-input"
+              label=${translate('PD_OUTPUT_NAME')}
+              placeholder="&#8212;"
+              .value="${this.editedData.name}"
+              @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
+              required
+              auto-validate
+              ?invalid="${this.errors.name}"
+              .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
+              @focus="${() => this.resetFieldError('name')}"
+              @click="${() => this.resetFieldError('name')}"
+            ></etools-input>
+          </div>
           ${this.hideCpOutputs
             ? ''
             : html`
-                <etools-dropdown
-                  class="validate-input flex-1"
-                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                    this.updateModelValue('cp_output', detail.selectedItem && detail.selectedItem.id)}"
-                  ?trigger-value-change-event="${!this.loadingInProcess}"
-                  .selected="${this.editedData.cp_output}"
-                  label="CP Output"
-                  placeholder="&#8212;"
-                  .options="${this.cpOutputs}"
-                  option-label="name"
-                  option-value="id"
-                  allow-outside-scroll
-                  dynamic-align
-                  auto-validate
-                  required
-                  ?invalid="${this.errors.cp_output}"
-                  .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) ||
-                  translate('GENERAL.REQUIRED_FIELD')}"
-                  @focus="${() => this.resetFieldError('cp_output')}"
-                  @click="${() => this.resetFieldError('cp_output')}"
-                ></etools-dropdown>
+                <div class="col-12">
+                  <etools-dropdown
+                    class="validate-input flex-1"
+                    @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                      this.updateModelValue('cp_output', detail.selectedItem && detail.selectedItem.id)}"
+                    ?trigger-value-change-event="${!this.loadingInProcess}"
+                    .selected="${this.editedData.cp_output}"
+                    label="CP Output"
+                    placeholder="&#8212;"
+                    .options="${this.cpOutputs}"
+                    option-label="name"
+                    option-value="id"
+                    allow-outside-scroll
+                    dynamic-align
+                    auto-validate
+                    required
+                    ?invalid="${this.errors.cp_output}"
+                    .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) ||
+                    translate('GENERAL.REQUIRED_FIELD')}"
+                    @focus="${() => this.resetFieldError('cp_output')}"
+                    @click="${() => this.resetFieldError('cp_output')}"
+                  ></etools-dropdown>
+                </div>
               `}
         </div>
       </etools-dialog>

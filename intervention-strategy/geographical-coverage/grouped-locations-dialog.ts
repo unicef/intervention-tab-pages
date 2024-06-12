@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import get from 'lodash-es/get';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -20,7 +20,7 @@ class GroupedLocations {
 @customElement('grouped-locations-dialog')
 export class GroupedLocationsDialog extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -74,19 +74,22 @@ export class GroupedLocationsDialog extends LitElement {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         @close="${() => this.onClose()}"
       >
-        <etools-dropdown
-          id="adminLevelsDropdw"
-          label=${translate('GROUP_LOCATIONS_BY')}
-          .selected="${this.adminLevel}"
-          placeholder="&#8212;"
-          .options="${this.adminLevels}"
-          option-label="name"
-          option-value="name"
-          trigger-value-change-event
-          @etools-selected-item-changed="${this.adminLevelChanged}"
-        >
-        </etools-dropdown>
-
+        <div class="row">
+          <div class="col-12">
+            <etools-dropdown
+              id="adminLevelsDropdw"
+              label=${translate('GROUP_LOCATIONS_BY')}
+              .selected="${this.adminLevel}"
+              placeholder="&#8212;"
+              .options="${this.adminLevels}"
+              option-label="name"
+              option-value="name"
+              trigger-value-change-event
+              @etools-selected-item-changed="${this.adminLevelChanged}"
+            >
+            </etools-dropdown>
+          </div>
+        </div>
         ${this._renderMessage(this.message)} ${this._renderGrouping(this.groupedLocations, this.interventionLocations)}
       </etools-dialog>
     `;
@@ -134,12 +137,12 @@ export class GroupedLocationsDialog extends LitElement {
 
   _renderGrouping(groupedLocations: GroupedLocations[], interventionLocations: LocationObject[]) {
     if (!this.adminLevel) {
-      return html`<div class="row-padding-v">
+      return html`<div class="col-12">
         ${interventionLocations.map((item: LocationObject) => html`<div class="top-padding">- ${item.name}</div>`)}
       </div>`;
     }
     return html`
-      <div class="row-padding-v">
+      <div class="col-12">
         ${groupedLocations.map(
           (item) => html`
             <div class="parent-padding">
@@ -156,7 +159,7 @@ export class GroupedLocationsDialog extends LitElement {
 
   _renderMessage(message: string) {
     if (message !== '') {
-      return html` <div class="bordered-div">${message}</div> `;
+      return html` <div class="col-12 bordered-div">${message}</div> `;
     } else {
       return html``;
     }

@@ -1,5 +1,5 @@
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {GenericObject} from '@unicef-polymer/etools-types';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 const TILE_LAYER: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_LABELS: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png';
 const arcgisWebmapId = '71608a6be8984b4694f7c613d7048114'; // Default WebMap ID
@@ -74,7 +74,7 @@ export class MapHelper {
   }
 
   initOpenStreetMap(element: HTMLElement): void {
-    L.Icon.Default.imagePath = `/${ROOT_PATH}/assets/images/`;
+    L.Icon.Default.imagePath = `${Environment.basePath}assets/images/`;
     this.map = L.map(element);
     L.tileLayer(TILE_LAYER, {pane: 'tilePane'}).addTo(this.map);
     L.tileLayer(TILE_LAYER_LABELS, {pane: 'overlayPane'}).addTo(this.map);

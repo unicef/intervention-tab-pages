@@ -1,7 +1,7 @@
 import {css, CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
 
 import './modals/cp-output-dialog';
@@ -39,14 +39,14 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                   <!--      If PD is associated with CP Output      -->
                   ${this.resultLink.cp_output
                     ? html`
-                        <div class="flex-1 flex-fix">
+                        <div class="flex-fix">
                           <div class="heading">${translate('COUNTRY_PROGRAME_OUTPUT')}</div>
                           <div class="data">
                             <b>${this.resultLink.code} - </b>&nbsp;${this.resultLink.cp_output_name}
                           </div>
                         </div>
 
-                        <div class="flex-1 flex-fix" ?hidden="${!this.showIndicators}">
+                        <div class="flex-fix" ?hidden="${!this.showIndicators}">
                           <div class="heading">${translate('RAM_INDICATORS')}</div>
                           <div class="data">
                             <ul id="ram-list">
@@ -85,7 +85,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                       `
                     : html`
                         <!--      If PD is unassociated with CP Output      -->
-                        <div class="flex-1 flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
+                        <div class="flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
                       `}
                 </div>
                 <div class="outputs-count"><b>${this.resultLink.ll_results.length}</b> ${translate('PD_OUTPUT_S')}</div>
@@ -117,7 +117,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ...super.styles,
       css`
@@ -148,6 +148,8 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
           line-height: 26px;
           padding-top: 8px;
           padding-bottom: 3px;
+          text-wrap: wrap;
+          word-wrap: break-word;
         }
         :host div.outputs-count {
           padding: 0 0 9px;
@@ -183,6 +185,17 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         }
         .editable-row:hover .hover-block {
           opacity: 1;
+        }
+        .flex-fix {
+          min-width: 0px;
+          min-height: 0px;
+          width: 100%;
+          word-break: break-word;
+        }
+        @media (max-width: 576px) {
+          .cp-output-row {
+            flex-direction: column;
+          }
         }
       `
     ];

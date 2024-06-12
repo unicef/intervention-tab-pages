@@ -13,6 +13,7 @@ import {
   validateRequiredFields,
   resetRequiredFields
 } from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment, EtoolsEndpoint} from '@unicef-polymer/etools-types';
@@ -24,13 +25,8 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
+      layoutStyles,
       css`
-        .container {
-          padding: 24px;
-        }
-        etools-dropdown {
-          width: 100%;
-        }
         etools-upload {
           margin-top: 14px;
         }
@@ -68,53 +64,56 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         @close="${this.onClose}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
-        no-padding
       >
         <etools-loading ?active="${this.savingInProcess}"></etools-loading>
-        <div class="container">
-          <!-- Document Type -->
-          <etools-dropdown
-            class="validate-input flex-1"
-            @etools-selected-item-changed="${({detail}: CustomEvent) =>
-              this.updateField('type', detail.selectedItem && detail.selectedItem.id)}"
-            ?trigger-value-change-event="${!this.savingInProcess}"
-            .selected="${this.data?.type}"
-            label=${translate('SELECT_DOC_TYPE')}
-            placeholder="—"
-            .options="${this.fileTypes}"
-            option-label="name"
-            option-value="id"
-            allow-outside-scroll
-            dynamic-align
-            required
-            ?invalid="${this.errors.type}"
-            .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
-            @focus="${() => this.resetFieldError('type', this)}"
-            @click="${() => this.resetFieldError('type', this)}"
-          ></etools-dropdown>
-
-          <!-- Attachment -->
-          <etools-upload
-            label=${translate('ATTACHMENT')}
-            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt,.xml,.xls,.xlt,.xlsx,.xlsm,.xlsb,.xltx,.xltm"
-            .showDeleteBtn="${false}"
-            ?readonly="${this.data.id}"
-            required
-            .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
-            .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
-            @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
-            ?invalid="${this.errors.attachment_document}"
-            .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
-            @focus="${() => this.resetFieldError('attachment_document', this)}"
-            @click="${() => this.resetFieldError('attachment_document', this)}"
-          ></etools-upload>
-
-          <etools-checkbox
-            ?checked="${!this.data?.active}"
-            @sl-change="${(e: any) => this.updateField('active', !e.target.checked)}"
-          >
-            ${translate('INVALID')}
-          </etools-checkbox>
+        <div class="row">
+          <div class="col-12">
+            <!-- Document Type -->
+            <etools-dropdown
+              class="validate-input flex-1"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.updateField('type', detail.selectedItem && detail.selectedItem.id)}"
+              ?trigger-value-change-event="${!this.savingInProcess}"
+              .selected="${this.data?.type}"
+              label=${translate('SELECT_DOC_TYPE')}
+              placeholder="—"
+              .options="${this.fileTypes}"
+              option-label="name"
+              option-value="id"
+              allow-outside-scroll
+              dynamic-align
+              required
+              ?invalid="${this.errors.type}"
+              .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
+              @focus="${() => this.resetFieldError('type', this)}"
+              @click="${() => this.resetFieldError('type', this)}"
+            ></etools-dropdown>
+          </div>
+          <div class="col-12">
+            <!-- Attachment -->
+            <etools-upload
+              label=${translate('ATTACHMENT')}
+              accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt,.xml,.xls,.xlt,.xlsx,.xlsm,.xlsb,.xltx,.xltm"
+              .showDeleteBtn="${false}"
+              ?readonly="${this.data.id}"
+              required
+              .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
+              .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
+              @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
+              ?invalid="${this.errors.attachment_document}"
+              .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
+              @focus="${() => this.resetFieldError('attachment_document', this)}"
+              @click="${() => this.resetFieldError('attachment_document', this)}"
+            ></etools-upload>
+          </div>
+          <div class="col-12">
+            <etools-checkbox
+              ?checked="${!this.data?.active}"
+              @sl-change="${(e: any) => this.updateField('active', !e.target.checked)}"
+            >
+              ${translate('INVALID')}
+            </etools-checkbox>
+          </div>
         </div>
       </etools-dialog>
     `;

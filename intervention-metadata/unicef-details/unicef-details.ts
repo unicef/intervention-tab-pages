@@ -9,7 +9,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.models';
@@ -34,7 +34,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 @customElement('unicef-details')
 export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     // language=HTML
@@ -53,7 +53,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           color: var(--secondary-text-color);
         }
         .padd-top {
-          padding-top: 17px;
+          padding-top: 4px;
         }
 
         etools-content-panel::part(ecp-content) {
@@ -68,8 +68,8 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-4">
+        <div class="row">
+          <div class="col-xl-4 col-md-6 col-12">
             <etools-dropdown-multi
               id="officeInput"
               label=${translate(translatesMap.offices)}
@@ -87,11 +87,11 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             >
             </etools-dropdown-multi>
           </div>
-          <div class="col col-4">
+          <div class="col-xl-4 col-md-6 col-12">
             <etools-dropdown-multi
               id="sectionInput"
               label=${translate(translatesMap.sections)}
-              class="row-padding-v"
+              class="w100"
               .options="${this.section_list}"
               option-label="name"
               option-value="id"
@@ -105,15 +105,30 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             >
             </etools-dropdown-multi>
           </div>
-          <div class="col col-4"></div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
+            <etools-dropdown-multi
+              id="cpStructures"
+              label=${translate('CP_STRUCTURES')}
+              .options="${this.cpStructures}"
+              class="w100"
+              option-label="name"
+              option-value="id"
+              .selectedValues="${this.data.country_programmes}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes) ? -1 : undefined}"
+              ?required="${this.permissions?.required.country_programmes}"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.selectedItemsChanged(detail, 'country_programmes')}"
+              trigger-value-change-event
+            >
+            </etools-dropdown-multi>
+          </div>
           ${this.permissions?.view!.unicef_focal_points
-            ? html`<div class="col col-4">
+            ? html`<div class="col-xl-4 col-md-6 col-12">
                 <etools-dropdown-multi
                   id="focalPointInput"
                   label=${translate('UNICEF_FOCAL_POINTS')}
-                  class="row-padding-v"
+                  class="w100"
                   .options="${this.users_list}"
                   option-label="name"
                   option-value="id"
@@ -139,13 +154,13 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               </div>`
             : ''}
 
-          <div class="col col-4" ?hidden="${!this.isUnicefUser}">
+          <div class="col-xl-4 col-md-6 col-12" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
               id="budgetOwnerInput"
               label=${translate('UNICEF_BUDGET_OWNER')}
               .options="${this.users_list}"
               enable-none-option
-              class="row-padding-v"
+              class="w100"
               option-label="name"
               option-value="id"
               .selected="${this.data.budget_owner?.id}"
@@ -165,24 +180,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
                 )}
               </div>
             </div>
-          </div>
-          <div class="col col-4" ?hidden="${!this.isUnicefUser}">
-            <etools-dropdown-multi
-              id="cpStructures"
-              label=${translate('CP_STRUCTURES')}
-              .options="${this.cpStructures}"
-              class="row-padding-v"
-              option-label="name"
-              option-value="id"
-              .selectedValues="${this.data.country_programmes}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes) ? -1 : undefined}"
-              ?required="${this.permissions?.required.country_programmes}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemsChanged(detail, 'country_programmes')}"
-              trigger-value-change-event
-            >
-            </etools-dropdown-multi>
           </div>
         </div>
 

@@ -4,7 +4,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import './add-amendment-dialog';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
@@ -21,7 +21,6 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {get as getTranslation} from 'lit-translate/util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -31,6 +30,8 @@ import {getIntervention, setShouldReGetList} from '../../common/actions/interven
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import './amendment-difference';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 
 /**
  * @customElement
@@ -38,14 +39,14 @@ import './amendment-difference';
 @customElement('pd-amendments')
 export class PdAmendments extends CommentsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
     return html`
       ${sharedStyles}
       <style>
-        :host {
+        ${dataTableStylesLit} :host {
           display: block;
           width: 100%;
           -webkit-box-sizing: border-box;
@@ -96,15 +97,21 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           margin: 15px 0;
           min-width: 110px;
         }
-        .static-column {
-          flex: 1;
-          max-width: 150px;
-        }
         .editable-row {
           line-height: 24px;
         }
+        .row.padding-row {
+          padding: 16px 24px;
+          margin: 0;
+        }
       </style>
-
+      <etools-media-query
+        query="(max-width: 1200px)"
+        .queryMatches="${this.lowResolutionLayout}"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
         <div slot="panel-btns">
           <etools-icon-button
@@ -116,38 +123,45 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           </etools-icon-button>
         </div>
         <div class="p-relative" id="amendments-wrapper">
-          <etools-data-table-header id="listHeader" no-title ?hidden="${!this.amendments.length}">
-            <etools-data-table-column class="static-column">${translate('REF')}</etools-data-table-column>
-            <etools-data-table-column class="static-column">${translate('KIND')}</etools-data-table-column>
-            <etools-data-table-column class="flex-1">${translate('AMENDMENT_TYPES')}</etools-data-table-column>
-            <etools-data-table-column class="static-column">
-              ${translate('SIGNED_UNICEF_DATE')}
-            </etools-data-table-column>
-            <etools-data-table-column class="static-column">
-              ${translate('SIGNED_PARTNER_DATE')}
-            </etools-data-table-column>
-            <etools-data-table-column class="static-column">${translate('STATUS')}</etools-data-table-column>
+          <etools-data-table-header
+            id="listHeader"
+            no-title
+            ?hidden="${!this.amendments.length}"
+            .lowResolutionLayout="${this.lowResolutionLayout}"
+          >
+            <etools-data-table-column class="col-2">${translate('REF')}</etools-data-table-column>
+            <etools-data-table-column class="col-1">${translate('KIND')}</etools-data-table-column>
+            <etools-data-table-column class="col-3">${translate('AMENDMENT_TYPES')}</etools-data-table-column>
+            <etools-data-table-column class="col-2"> ${translate('SIGNED_UNICEF_DATE')} </etools-data-table-column>
+            <etools-data-table-column class="col-2"> ${translate('SIGNED_PARTNER_DATE')} </etools-data-table-column>
+            <etools-data-table-column class="col-2">${translate('STATUS')}</etools-data-table-column>
           </etools-data-table-header>
 
           ${this.amendments.map(
             (item: AnyObject) => html`
-              <etools-data-table-row>
+              <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
                 <div slot="row-data" class="layout-horizontal editable-row">
-                  <div class="static-column">${item.amendment_number}</div>
+                  <div class="col-data col-2" data-col-header-label="${translate('REF')}">${item.amendment_number}</div>
 
-                  <span class="static-column">
+                  <span class="col-data col-1" data-col-header-label="${translate('KIND')}">
                     ${translate(AmendmentsKindTranslateKeys[item.kind as AmendmentsKind])}
                   </span>
-                  <span class="flex-1"> ${this._getReadonlyAmendmentTypes(item.types)} </span>
+                  <span class="col-data col-3" data-col-header-label="${translate('AMENDMENT_TYPES')}">
+                    ${this._getReadonlyAmendmentTypes(item.types)}
+                  </span>
 
-                  <span class="static-column"> ${prettyDate(item.signed_by_unicef_date) || html`&#8212;`} </span>
-                  <span class="static-column"> ${prettyDate(item.signed_by_partner_date) || html`&#8212;`} </span>
-                  <span class="static-column">
+                  <span class="col-data col-2" data-col-header-label="${translate('SIGNED_UNICEF_DATE')}">
+                    ${prettyDate(item.signed_by_unicef_date) || html`&#8212;`}
+                  </span>
+                  <span class="col-data col-2" data-col-header-label="${translate('SIGNED_PARTNER_DATE')}">
+                    ${prettyDate(item.signed_by_partner_date) || html`&#8212;`}
+                  </span>
+                  <span class="col-data col-2" data-col-header-label="${translate('STATUS')}">
                     ${item.is_active
                       ? html`
                           <a
                             class="layout-horizontal align-items-center"
-                            href="${ROOT_PATH}interventions/${item.amended_intervention}/metadata"
+                            href="${Environment.basePath}interventions/${item.amended_intervention}/metadata"
                           >
                             ${translate('ACTIVE')} <etools-icon name="launch"></etools-icon>
                           </a>
@@ -199,7 +213,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
               </etools-data-table-row>
             `
           )}
-          <div class="row-h" ?hidden=${this.amendments.length}>
+          <div class="row padding-row" ?hidden=${this.amendments.length}>
             <p>${translate('NO_AMENDMENTS_ADDED')}</p>
           </div>
         </div>
@@ -221,6 +235,9 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
   @property({type: Object})
   intervention!: AnyObject;
+
+  @property({type: Boolean})
+  lowResolutionLayout = false;
 
   stateChanged(state: RootState) {
     if (
@@ -277,7 +294,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     }).then(({response}) => {
       if (response?.id) {
         getStore().dispatch(setShouldReGetList(true));
-        history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${response.id}/metadata`);
+        history.pushState(window.history.state, '', `${Environment.basePath}interventions/${response.id}/metadata`);
         window.dispatchEvent(new CustomEvent('popstate'));
       }
     });
