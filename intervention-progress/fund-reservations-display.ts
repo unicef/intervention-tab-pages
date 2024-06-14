@@ -87,6 +87,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           padding: 16px 24px;
           margin: 0;
         }
+        .lifted-up-icon {
+          margin-block-end: 10px;
+        }
       </style>
 
       <etools-media-query
@@ -128,7 +131,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span class="col-data col-2" data-col-header-label="FR#"
                   >${fr.fr_number}
                   <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
-                    <etools-icon class="lifted-up-icon" name="external-icon"></etools-icon>
+                    <etools-icon class="lifted-up-icon" name="open-in-new"></etools-icon>
                   </a>
                 </span>
                 <span
