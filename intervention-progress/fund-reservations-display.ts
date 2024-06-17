@@ -90,6 +90,12 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         .lifted-up-icon {
           margin-block-end: 10px;
         }
+        @media (max-width: 767px) {
+          etools-data-table-row::part(edt-list-row-collapse-wrapper) {
+            font-size: 12px;
+          }
+        }
+
       </style>
 
       <etools-media-query
@@ -193,20 +199,20 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
               <div slot="row-data-details">
                 <div class="row" ?hidden="${isEmpty(fr.line_item_details)}">
                   <div simple-header class="layout-horizontal w100">
-                    <span class="col-md-4 col-sm-12">${translate('FR_LINE_ITEM')}</span>
-                    <span class="col-md-4 col-sm-12">${translate('DONOR')}</span>
-                    <span class="col-md-4 col-sm-12">${translate('GRANT')}</span>
+                    <span class="col-4">${translate('FR_LINE_ITEM')}</span>
+                    <span class="col-4">${translate('DONOR')}</span>
+                    <span class="col-4">${translate('GRANT')}</span>
                   </div>
                   ${fr.line_item_details.map(
                     (frInfo: AnyObject) => html`
                       <div simple-row class="layout-horizontal w100">
-                        <span class="col-md-4 col-sm-12">
+                        <span class="col-4">
                           <span>${fr.fr_number - frInfo.line_item}</span>
                         </span>
-                        <span class="col-md-4 col-sm-12 ${this._getOtherStyleIfNA(frInfo.donor)}">
+                        <span class="col-4 ${this._getOtherStyleIfNA(frInfo.donor)}">
                           <span>${this.getValueOrNA(frInfo.donor)}</span>
                         </span>
-                        <span class="col-md-4 col-sm-12 ${this._getOtherStyleIfNA(frInfo.grant_number)}">
+                        <span class="col-4 ${this._getOtherStyleIfNA(frInfo.grant_number)}">
                           <span>${this.getValueOrNA(frInfo.grant_number)}</span>
                         </span>
                       </div>
