@@ -95,7 +95,6 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
             font-size: 12px;
           }
         }
-
       </style>
 
       <etools-media-query
