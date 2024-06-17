@@ -13,7 +13,7 @@ export class WorkplanEditorLink extends LitElement {
         query="(max-width: 1080px)"
         @query-matches-changed="${(e: CustomEvent) => {
           this.lowResolutionLayout = e.detail.value;
-          if (this.lowResolutionLayout) {
+          if (this.lowResolutionLayout && window.location.href.includes('workplan-editor')) {
             this.goTo();
           }
         }}"
