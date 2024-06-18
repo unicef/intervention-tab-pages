@@ -231,7 +231,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         <etools-data-table-row no-collapse id="totalsRow" .lowResolutionLayout="${this.lowResolutionLayout}">
           <div slot="row-data" class="layout-horizontal">
             ${this.lowResolutionLayout ? '' : html`<span class="col-data col-1"></span>`}
-            <span class="col-data col-2 ${!this.lowResolutionLayout ? 'right-align text-right' : ''}" data-col-header-label="FR#"
+            <span
+              class="col-data col-2 ${!this.lowResolutionLayout ? 'right-align text-right' : ''}"
+              data-col-header-label="FR#"
               ><strong>${translate('TOTAL_OF_FRS')}</strong></span
             >
             <span
