@@ -40,8 +40,8 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           --list-bg-color: var(--light-theme-background-color);
         }
         #plannedUnicefCash,
-        #totalsRow {
-          --list-row-wrapper-padding-inline: 56px 24px;
+        #totalsRow::part(edt-list-row-wrapper) {
+          padding: 0px 12px 0px 36px;
         }
         #plannedUnicefCash {
           --list-bg-color: none;
@@ -55,6 +55,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           line-height: 16px;
           display: flex;
           flex-direction: column;
+          align-items: flex-end;
           justify-content: flex-end;
         }
         .unicef-cash-col label {
@@ -90,6 +91,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         .lifted-up-icon {
           margin-block-end: 10px;
         }
+        .text-right {
+          text-align: right;
+        }
         @media (max-width: 767px) {
           etools-data-table-row::part(edt-list-row-collapse-wrapper) {
             font-size: 12px;
@@ -98,7 +102,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       </style>
 
       <etools-media-query
-        query="(max-width: 767px)"
+        query="(max-width: 920px)"
         @query-matches-changed="${(e: CustomEvent) => {
           this.lowResolutionLayout = e.detail.value;
         }}"
@@ -116,11 +120,11 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           ?hidden="${!this.frsDetails || !this.frsDetails.frs.length}"
         >
           <etools-data-table-column class="col-2"> FR# </etools-data-table-column>
-          <etools-data-table-column class="col-2 right-align">
+          <etools-data-table-column class="col-1 right-align">
             ${translate('FR_POSTING_DATE')}
           </etools-data-table-column>
           <etools-data-table-column class="col-2 right-align"> ${translate('FR_CURRENCY')} </etools-data-table-column>
-          <etools-data-table-column class="col-2 right-align"> ${translate('FR_AMOUNT')} </etools-data-table-column>
+          <etools-data-table-column class="col-3 right-align"> ${translate('FR_AMOUNT')} </etools-data-table-column>
           <etools-data-table-column class="col-2 right-align">
             ${translate('ACTUAL_DISBURS')}
           </etools-data-table-column>
@@ -140,7 +144,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                   </a>
                 </span>
                 <span
-                  class="col-data col-2 ${!this.lowResolutionLayout ? 'right-align' : ''}"
+                  class="col-data col-1 ${!this.lowResolutionLayout ? 'right-align' : ''}"
                   data-col-header-label="${translate('FR_POSTING_DATE')}"
                   >${prettyDate(fr.start_date)}</span
                 >
@@ -166,7 +170,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                   </etools-info-tooltip>
                 </span>
                 <span
-                  class="col-data col-2 ${!this.lowResolutionLayout ? 'right-align' : ''}"
+                  class="col-data col-3 ${!this.lowResolutionLayout ? 'right-align' : ''}"
                   data-col-header-label="${translate('FR_AMOUNT')}"
                   >${displayCurrencyAmount(fr.total_amt_local, '0.00')}</span
                 >
@@ -226,8 +230,8 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
 
         <etools-data-table-row no-collapse id="totalsRow" .lowResolutionLayout="${this.lowResolutionLayout}">
           <div slot="row-data" class="layout-horizontal">
-            ${this.lowResolutionLayout ? '' : html`<span class="col-data col-2"></span>`}
-            <span class="col-data col-2 ${!this.lowResolutionLayout ? 'right-align' : ''}" data-col-header-label="FR#"
+            ${this.lowResolutionLayout ? '' : html`<span class="col-data col-1"></span>`}
+            <span class="col-data col-2 ${!this.lowResolutionLayout ? 'right-align text-right' : ''}" data-col-header-label="FR#"
               ><strong>${translate('TOTAL_OF_FRS')}</strong></span
             >
             <span
@@ -255,7 +259,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
               </etools-info-tooltip>
             </span>
             <span
-              class="col-data col-2 ${!this.lowResolutionLayout ? 'right-align' : ''}"
+              class="col-data col-3 ${!this.lowResolutionLayout ? 'right-align' : ''}"
               data-col-header-label="${translate('FR_AMOUNT')}"
             >
               <etools-info-tooltip
@@ -308,15 +312,15 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
 
         <etools-data-table-row no-collapse id="plannedUnicefCash">
           <div slot="row-data" class="layout-horizontal">
-            ${this.lowResolutionLayout ? '' : html`<span class="col-data col-2"></span>`}
-            <span class="col-data col-4 col-md-2 right-align unicef-cash-col">
+            ${this.lowResolutionLayout ? '' : html`<span class="col-data col-1"></span>`}
+            <span class="col-sm-4 col-md-2 unicef-cash-col text-right">
               <strong>${translate('PLANNED')}</strong><strong>${translate('UNICEF_CASH')}</strong>
             </span>
-            <span class="col-data col-4 col-md-2 right-align unicef-cash-col">
+            <span class="col-sm-4  col-md-2 unicef-cash-col">
               <label for="pd-currency">${translate('PD_CURRENCY')}</label>
               ${this.renderPdCurrency()}
             </span>
-            <span class="col-data col-4 col-md-2 right-align unicef-cash-col">
+            <span class="col-sm-4 col-md-3 unicef-cash-col">
               <label for="unicef-cash">${translate('UNICEF_CASH')}</label>
               <span id="unicef-cash"
                 >${displayCurrencyAmount(this.intervention.planned_budget.unicef_cash_local!, '0.0')}</span
