@@ -1,11 +1,10 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-loading/etools-loading';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
@@ -25,7 +24,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
 /**
  * @customElement
@@ -33,7 +32,7 @@ import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 @customElement('prc-document')
 export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
   render() {
     // language=HTML
@@ -58,8 +57,8 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
         comment-element="prc-document"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+        <div class="row padding-v">
+          <div class="col-6">
             <!-- PRC Review Document -->
             <etools-upload
               id="reviewDocUpload"
@@ -83,8 +82,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
-    .url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   data!: PrcDocumentData;

@@ -1,29 +1,27 @@
 /* eslint-disable lit/no-legacy-template-syntax */
-import {LitElement, customElement, html, property} from 'lit-element';
-import '@polymer/paper-styles/element-styles/paper-material-styles';
-import '@polymer/paper-tooltip/paper-tooltip';
-import '@unicef-polymer/etools-data-table/etools-data-table';
-import '@polymer/iron-media-query/iron-media-query';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {abortRequestByKey} from '@unicef-polymer/etools-utils/dist/etools-ajax/request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 
 import '../common/layout/status/intervention-report-status';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import get from 'lodash-es/get';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {buildUrlQueryString, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
@@ -32,9 +30,10 @@ import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {RouteDetails} from '@unicef-polymer/etools-types/dist/router.types';
 import pick from 'lodash-es/pick';
 import './reports/final-progress-report';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @mixinFunction
  * @appliesMixin PaginationMixin
@@ -47,25 +46,25 @@ import './reports/final-progress-report';
 @customElement('intervention-reports')
 export class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsLitMixin(LitElement)))) {
   static get styles() {
-    return [gridLayoutStylesLit, elevationStyles];
+    return [layoutStyles, elevationStyles];
   }
   render() {
     return html`
       ${sharedStyles}
       <style>
         ${dataTableStylesLit}:host {
-          @apply --layout-flex;
+          flex: 1;
+          flex-basis: 0.000000001px;
           width: 100%;
-
-          --paper-tooltip: {
-            text-align: center;
-            line-height: 1.4;
-          }
         }
 
         .pd-ref,
         .view-report {
-          @apply --text-btn-style;
+          color: var(--primary-color);
+          font-weight: 500;
+          text-decoration: none;
+          outline: inherit;
+          text-transform: uppercase;
         }
 
         .pd-ref {
@@ -76,9 +75,9 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           display: inline-block;
           border-radius: 1px;
           padding: 1px 6px;
-          font-size: 10px;
+          font-size: var(--etools-font-size-10, 10px);
           text-transform: uppercase;
-          background-color: var(--paper-grey-300);
+          background-color: var(--sl-color-gray-200);
           margin-inline-start: 5px;
           font-weight: bold;
         }
@@ -89,14 +88,21 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         .pad-bottom {
           padding-bottom: 25px;
         }
+        .rdc-title.col-12 {
+          padding: 0;
+        }
+        .row.padding-row {
+          padding: 16px 24px;
+          margin: 0;
+        }
       </style>
-      <iron-media-query
+      <etools-media-query
         query="(max-width: 767px)"
         @query-matches-changed="${this.resolutionChanged}"
-      ></iron-media-query>
+      ></etools-media-query>
       <etools-content-panel panel-title="${translate('REPORTS')}" class="pad-bottom">
         ${!this.reports.length
-          ? html` <div class="row-h">
+          ? html` <div class="row padding-row">
               <p>${translate('NO_REPORTS_YET')}</p>
             </div>`
           : html` <etools-data-table-header
@@ -106,53 +112,50 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                   .count} results to show"
               >
                 <etools-data-table-column class="col-2">${translate('REPORT_NUM')}</etools-data-table-column>
-                <etools-data-table-column class="flex-c">${translate('PARTNER')}</etools-data-table-column>
-                <etools-data-table-column class="flex-c">${translate('REPORT_STATUS')}</etools-data-table-column>
-                <etools-data-table-column class="flex-c">${translate('DUE_DATE')}</etools-data-table-column>
-                <etools-data-table-column class="flex-c">${translate('REPORTING_PERIOD')}</etools-data-table-column>
+                <etools-data-table-column class="col-4">${translate('PARTNER')}</etools-data-table-column>
+                <etools-data-table-column class="col-2">${translate('REPORT_STATUS')}</etools-data-table-column>
+                <etools-data-table-column class="col-2">${translate('DUE_DATE')}</etools-data-table-column>
+                <etools-data-table-column class="col-2">${translate('REPORTING_PERIOD')}</etools-data-table-column>
               </etools-data-table-header>
               ${this.reports.map(
                 (report: any) => html` <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
                   <div slot="row-data">
                     <span class="col-data col-2" data-col-header-label="${translate('REPORT_NUM')}">
-                      <span id="tooltip-trigger-${report.id}" class="tooltip-trigger">
-                        <a
-                          class="view-report"
-                          href="reports/${report.id}/progress"
-                          ?hidden="${!this._canViewReport(report.status)}"
-                        >
-                          ${this._getReportTitle(report)}
-                        </a>
-                        <span ?hidden="${this._canViewReport(report.status)}">${this._getReportTitle(report)}</span>
-                        ${report.is_final ? html`<span class="final-badge">${translate('FINAL')}</span>` : html``}
-                      </span>
-                      <paper-tooltip for="tooltip-trigger-${report.id}" position="right" fit-to-visible-bounds>
-                        ${report.programme_document.title}
-                      </paper-tooltip>
+                      <sl-tooltip placement="right" content="${report.programme_document.title}">
+                        <span id="tooltip-trigger-${report.id}" class="tooltip-trigger">
+                          <a
+                            class="view-report"
+                            href="reports/${report.id}/progress"
+                            ?hidden="${!this._canViewReport(report.status)}"
+                          >
+                            ${this._getReportTitle(report)}
+                          </a>
+                          <span ?hidden="${this._canViewReport(report.status)}">${this._getReportTitle(report)}</span>
+                          ${report.is_final ? html`<span class="final-badge">${translate('FINAL')}</span>` : html``}
+                        </span>
+                      </sl-tooltip>
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('PARTNER')}">
-                      <span id="tooltip-partner-${report.id}" class="tooltip-trigger">
-                        ${this._displayOrDefault(report.partner_name)}
-                      </span>
-
-                      <paper-tooltip for="tooltip-partner-${report.id}" position="right" fit-to-visible-bounds>
-                        ${report.partner_vendor_number}
-                      </paper-tooltip>
+                    <span class="col-data col-4" data-col-header-label="${translate('PARTNER')}">
+                      <sl-tooltip placement="right" content="${report.partner_vendor_number}">
+                        <span id="tooltip-partner-${report.id}" class="tooltip-trigger">
+                          ${this._displayOrDefault(report.partner_name)}
+                        </span>
+                      </sl-tooltip>
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('REPORT_STATUS')}">
+                    <span class="col-data col-2" data-col-header-label="${translate('REPORT_STATUS')}">
                       <intervention-report-status status="${report.status}"></intervention-report-status>
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('DUE_DATE')}">
+                    <span class="col-data col-2" data-col-header-label="${translate('DUE_DATE')}">
                       ${this._displayOrDefault(report.due_date)}
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('REPORTING_PERIOD')}">
+                    <span class="col-data col-2" data-col-header-label="${translate('REPORTING_PERIOD')}">
                       ${this.getDisplayValue(report.reporting_period)}
                     </span>
                   </div>
 
                   <div slot="row-data-details">
                     <div class="row-details-content">
-                      <span class="rdc-title flex-c">${translate('UNICEF_FOCAL_POINTS')}</span>
+                      <span class="rdc-title col-12">${translate('UNICEF_FOCAL_POINTS')}</span>
                       <span>${this.getDisplayValue(report.unicef_focal_points)}</span>
                     </div>
                   </div>
@@ -246,9 +249,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   }
 
   stateChanged(state: RootState) {
-    if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')
-    ) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'reports')) {
       return;
     }
 
@@ -346,7 +347,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         }
         EtoolsLogger.error('Reports list data request failed!', 'reports-list', error);
 
-        parseRequestErrorsAndShowAsToastMsgs(error, this);
+        parseRequestErrorsAndShowAsToastMsgs(error, this as any);
         fireEvent(this, 'global-loading', {
           active: false,
           loadingSource: 'reports-list'
@@ -367,11 +368,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
     const stringParams: string = buildUrlQueryString(this.prevQueryStringObj);
 
-    history.pushState(
-      window.history.state,
-      '',
-      `interventions/${this.interventionId}/progress/reports?${stringParams}`
-    );
+    history.pushState(window.history.state, '', `interventions/${this.interventionId}/reports?${stringParams}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 

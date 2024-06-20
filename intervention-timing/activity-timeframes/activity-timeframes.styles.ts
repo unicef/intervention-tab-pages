@@ -1,4 +1,4 @@
-import {css, CSSResult} from 'lit-element';
+import {css, CSSResult} from 'lit';
 
 // language=css
 export const ActivityTimeframesStyles: CSSResult = css`
@@ -9,6 +9,7 @@ export const ActivityTimeframesStyles: CSSResult = css`
   .time-frames {
     max-width: 1000px;
     width: 100%;
+    display: flex;
   }
   .year-divider {
     width: 100%;
@@ -68,29 +69,35 @@ export const ActivityTimeframesStyles: CSSResult = css`
     position: absolute;
     bottom: -1px;
     left: 0;
-    width: 90%;
+    width: 100%;
     border-top: 1px solid var(--light-divider-color);
   }
   .year {
     padding: 0 16px;
+    display: flex;
+    align-items: center;
   }
   .year,
   .frame-name {
     font-weight: 500;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     line-height: 22px;
     color: var(--primary-text-color);
   }
   .no-activities,
   .frame-dates {
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 16px;
     color: var(--primary-text-color);
   }
   .activity-name {
     font-weight: 500;
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 20px;
     color: var(--primary-text-color);
+    word-break: break-word;
+  }
+  .align-items-center {
+    margin: 0 auto;
   }
 `;

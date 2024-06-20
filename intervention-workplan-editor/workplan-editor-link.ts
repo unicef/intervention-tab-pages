@@ -1,11 +1,23 @@
-import {LitElement, html, CSSResult, css, customElement, TemplateResult, property} from 'lit-element';
+import {LitElement, html, CSSResult, css, TemplateResult} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 
 @customElement('workplan-editor-link')
 export class WorkplanEditorLink extends LitElement {
   @property({type: String, reflect: true}) link = '';
   @property({type: String, reflect: true}) direction: 'right' | 'left' = 'left';
+  @property({type: Boolean}) lowResolutionLayout = false;
+
   protected render(): TemplateResult {
     return html`
+      <etools-media-query
+        query="(max-width: 1080px)"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+          if (this.lowResolutionLayout && window.location.href.includes('workplan-editor')) {
+            this.goTo();
+          }
+        }}"
+      ></etools-media-query>
       <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 12L7 6.96208L12 2" stroke="#454545" stroke-width="2" stroke-linecap="square" />
         <path d="M7 12L2 6.96208L7 2" stroke="#454545" stroke-width="2" stroke-linecap="square" />
@@ -36,7 +48,7 @@ export class WorkplanEditorLink extends LitElement {
         width: min-content;
         white-space: nowrap;
         font-family: Roboto;
-        font-size: 15px;
+        font-size: var(--etools-font-size-15, 15px);
         font-weight: 500;
         line-height: 18px;
         color: #5c5c5c;

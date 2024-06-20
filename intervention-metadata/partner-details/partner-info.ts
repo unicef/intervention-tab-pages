@@ -1,22 +1,22 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerInfo.selectors';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-input/paper-input';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-loading/etools-loading';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+
 import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {patchIntervention} from '../../common/actions/interventions';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -34,7 +34,7 @@ import {translate, get as getTranslation, langChanged} from 'lit-translate';
 @customElement('partner-info')
 export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     // language=HTML
@@ -61,9 +61,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v layout-horizontal">
-          <div class="col col-7">
-            <paper-input
+        <div class="row">
+          <div class="col-md-8 col-12">
+            <etools-input
               class="w100"
               label=${translate('PARTNER_ORGANIZATION')}
               .value="${this.data?.partner}"
@@ -72,9 +72,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               always-float-label
               tabindex="-1"
             >
-            </paper-input>
+            </etools-input>
           </div>
-          <div class="col col-5">
+          <div class="col-md-4 col-12">
             <etools-dropdown
               id="agreements"
               label=${translate('AGREEMENTS')}
@@ -85,16 +85,14 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               trigger-value-change-event
               @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : 0}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : undefined}"
               required
               auto-validate
             >
             </etools-dropdown>
           </div>
-        </div>
-        <div class="row-padding-v layout-horizontal">
-          <div class="col col-7">
-            <paper-input
+          <div class="col-md-8 col-12">
+            <etools-input
               class="w100"
               label=${translate('PARTNER_VENDOR_NUMBER')}
               .value="${this.data?.partner_vendor}"
@@ -102,15 +100,13 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               readonly
               always-float-label
             >
-            </paper-input>
+            </etools-input>
           </div>
-          <div class="col col-5 layout-vertical">
-            <label for="agreementAuthOff" class="paper-label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
+          <div class="col-md-4 col-12">
+            <label for="agreementAuthOff" class="label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
             <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
-        </div>
-        <div class="row-padding-v">
-          <div class="col col-7 layout-vertical" ?hidden="${!this.permissions?.view!.partner_focal_points}">
+          <div class="col-md-8 col-12" ?hidden="${!this.permissions?.view!.partner_focal_points}">
             <etools-dropdown-multi
               label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
@@ -125,7 +121,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-dropdown-multi>
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
-              ? html`<label for="focalPointsDetails" class="paper-label">${translate('PARTNER_FOCAL_POINTS')}</label>
+              ? html`<label for="focalPointsDetails" class="label">${translate('PARTNER_FOCAL_POINTS')}</label>
                   <div id="focalPointsDetails">
                     ${this.renderReadonlyUserDetails(
                       this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []

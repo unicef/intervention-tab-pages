@@ -1,14 +1,15 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import '@polymer/paper-input/paper-textarea';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -26,26 +27,16 @@ import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/uti
 @customElement('risk-dialog')
 export class RiskDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
   render() {
     return html`
       ${sharedStyles}
-      <style>
-        paper-textarea {
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-          }
-        }
-      </style>
 
       <etools-dialog
-        no-padding
         keep-dialog-open
         id="riskDialog"
         size="md"
-        ?opened="${this.dialogOpened}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         dialog-title="${this.riskDialogTitle}"
@@ -53,8 +44,8 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveRisk()}"
       >
-        <div class="row-padding layout-horizontal">
-          <div class="col col-4">
+        <div class="row">
+          <div class="col-md-4 col-12">
             <etools-dropdown
               id="type"
               label=${translate(translatesMap.risk_type)}
@@ -64,6 +55,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               option-label="label"
               auto-validate
               required
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'risk_type', 'value')}"
               trigger-value-change-event
@@ -71,9 +63,9 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
             </etools-dropdown>
           </div>
         </div>
-        <div class="row-padding layout-horizontal">
-          <div class="col col-12">
-            <paper-textarea
+        <div class="row">
+          <div class="col-12">
+            <etools-textarea
               id="mitigationMeasures"
               class="w100"
               label=${translate(translatesMap.mitigation_measures)}
@@ -88,7 +80,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               .value="${this.originalData.mitigation_measures}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'mitigation_measures')}"
             >
-            </paper-textarea>
+            </etools-textarea>
           </div>
         </div>
       </etools-dialog>
@@ -97,26 +89,24 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
 
   @property({type: Array}) riskTypes!: LabelAndValue[];
 
-  @property({type: Boolean}) dialogOpened = true;
-
   @property({type: Boolean}) savingInProcess = false;
 
   @property() riskDialogTitle = '';
 
   @property({type: Boolean}) autoValidate = false;
 
-  private endpoint!: EtoolsRequestEndpoint;
+  private endpoint!: RequestEndpoint;
 
   firstUpdated(_changedProperties: any) {
     super.firstUpdated(_changedProperties);
-    this._handlePaperTextareaAutovalidateError();
+    this._handleEtoolsTextareaAutovalidateError();
   }
 
   /**
    * This will prevent a console error "Uncaught TypeError: Cannot read property 'textarea' of undefined"
-   * The error occurs only on first load/ hard refresh and on paper-textareas that have auto-validate
+   * The error occurs only on first load/ hard refresh and on etools-textareas that have auto-validate
    */
-  _handlePaperTextareaAutovalidateError() {
+  _handleEtoolsTextareaAutovalidateError() {
     this.autoValidate = true;
   }
 
@@ -126,7 +116,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     }
     const {item, interventionId, permissions, riskTypes} = data;
     this.originalData = item;
-    this.endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.intervention, {
+    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.intervention, {
       interventionId
     });
     this.permissions = permissions;

@@ -1,13 +1,11 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/paper-radio-group';
-import '@polymer/paper-checkbox';
-import '@unicef-polymer/etools-loading/etools-loading';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
@@ -17,7 +15,7 @@ import './financialComponent.selectors';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.models';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.selectors';
 import {patchIntervention} from '../../common/actions/interventions';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import get from 'lodash-es/get';
@@ -34,7 +32,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('financial-component')
 export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
   render() {
     // language=HTML
@@ -52,12 +50,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         .pl-none {
           padding-inline-start: 0px !important;
         }
-        paper-checkbox[disabled] {
-          --paper-checkbox-checked-color: black;
-          --paper-checkbox-unchecked-color: black;
-          --paper-checkbox-label-color: black;
-        }
-
         .padd-top {
           padding-top: 8px;
         }
@@ -76,20 +68,20 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="paper-label">${translate(translatesMap.cash_transfer_modalities)}</label>
+            <label class="label">${translate(translatesMap.cash_transfer_modalities)}</label>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v padd-bott">
+        <div class="row">
           ${this.cashTransferModalities.map(
             (option: LabelAndValue) =>
-              html`<div class="col col-3">
-                <paper-checkbox
+              html`<div class="col-lg-4 col-md-6 col-12">
+                <etools-checkbox
                   ?checked="${this.checkCashTransferModality(option.value)}"
                   ?disabled="${this.isReadonly(this.editMode, true)}"
-                  @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, option.value)}
+                  @sl-change=${(e: any) => this.updateData(e.target.checked, option.value)}
                 >
                   ${translateValue(option.label, 'CASH_TRANSFER_MODALITIES')}
-                </paper-checkbox>
+                </etools-checkbox>
               </div>`
           )}
         </div>

@@ -1,8 +1,9 @@
-import {LitElement, html, TemplateResult, customElement, CSSResultArray, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {RootState} from '../../common/types/store.types';
 import {ActivityTime, groupByYear, GroupedActivityTime, serializeTimeFrameData} from '../../utils/timeframes.helper';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {ActivityTimeframesStyles} from './activity-timeframes.styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
@@ -16,13 +17,13 @@ import {
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {repeat} from 'lit-html/directives/repeat';
+import {repeat} from 'lit/directives/repeat.js';
 
 @customElement('activity-timeframes')
 export class ActivityTimeframes extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
-    return [gridLayoutStylesLit, ActivityTimeframesStyles];
+    return [layoutStyles, ActivityTimeframesStyles];
   }
 
   @property() intervention: Intervention | null = null;
@@ -54,12 +55,12 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
               </div>
             `
           : ''}
-        <div class="layout-vertical align-items-center">
+        <div class="row align-items-center time-frames">
           ${repeat(
             timeFrames,
             (timeFrames) => timeFrames[1],
             ([year, frames]: GroupedActivityTime, index: number) => html`
-              <div class="layout-horizontal align-items-center time-frames">
+              <div class="col-12 align-items-center time-frames">
                 <!--      Year title        -->
                 <div class="year">${year}</div>
 

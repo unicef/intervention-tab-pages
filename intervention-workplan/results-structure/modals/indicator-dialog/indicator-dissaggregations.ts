@@ -1,24 +1,25 @@
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 
-import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {LitElement, html, property, customElement} from 'lit-element';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
  * @customElement
@@ -27,7 +28,7 @@ import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 @customElement('indicator-dissaggregations')
 export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
 
   render() {
@@ -46,27 +47,37 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           box-sizing: border-box;
         }
 
-        paper-input {
+        etools-input {
           width: 100%;
+        }
+        .row {
+          margin: 0 15px !important;
+        }
+        .bottom {
+          padding-bottom: 80px;
+          padding-top: 20px;
+        }
+        .item-container .item-content {
+          margin-block-start: 16px;
         }
       </style>
       <div ?hidden="${this._isEmptyList(this.data, this.data.length)}">
         ${this.data.map(
-          (item: any, index: number) => html` <div class="row-h item-container no-h-margin">
+          (item: any, index: number) => html` <div class="row item-container">
             <div class="item-actions-container">
               <div class="actions">
-                <paper-icon-button
+                <etools-icon-button
                   class="action delete"
                   ?disabled="${this.readonly}"
                   @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
                   data-args="${index}"
-                  icon="cancel"
-                ></paper-icon-button>
+                  name="cancel"
+                ></etools-icon-button>
               </div>
             </div>
             <div class="item-content">
-              <div class="row-h">
-                <div class="col col-4">
+              <div class="row m-15">
+                <div class="col-md-4 col-12">
                   <etools-dropdown
                     id="disaggregate_by_${index}"
                     label=${translate('DISAGGREGATE_BY')}
@@ -82,14 +93,14 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                   >
                   </etools-dropdown>
                 </div>
-                <div class="col col-8">
-                  <paper-input
+                <div class="col-md-8 col-12">
+                  <etools-input
                     id="disaggregationGroups_${index}"
                     readonly
                     tabindex="-1"
                     label=${translate('DISAGGREGATION_GROUPS')}
                     placeholder="&#8212;"
-                  ></paper-input>
+                  ></etools-input>
                 </div>
               </div>
             </div>
@@ -97,23 +108,26 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
         )}
       </div>
 
-      <div class="row-padding-v" ?hidden="${!this._isEmptyList(this.data, this.data.length)}">
+      <div class="row m-15" ?hidden="${!this._isEmptyList(this.data, this.data.length)}">
         <p>${translate('NO_DISAGGREGATIONS_ADDED')}</p>
       </div>
 
-      <div class="row-padding-v" style="margin-bottom:80px;">
-        <paper-button
-          class="secondary-btn"
-          @click="${this._addNewDisaggregation}"
-          ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
-          title=${translate('ADD_DISAGGREGATION')}
-          >${translate('ADD_DISAGREG')}
-        </paper-button>
-        <info-icon-tooltip
-          id="iit-disaggreg"
-          .tooltipText="${translate('DISAGGREGATION_TOOLTIP')}"
-          ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
-        ></info-icon-tooltip>
+      <div class="row bottom">
+        <div class="col-12">
+          <etools-button
+            variant="text"
+            class="no-marg no-pad"
+            @click="${this._addNewDisaggregation}"
+            ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
+            title=${translate('ADD_DISAGGREGATION')}
+            >${translate('ADD_DISAGREG')}
+          </etools-button>
+          <info-icon-tooltip
+            id="iit-disaggreg"
+            .tooltipText="${translate('DISAGGREGATION_TOOLTIP')}"
+            ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
+          ></info-icon-tooltip>
+        </div>
       </div>
     `;
   }
@@ -179,7 +193,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
   }
 
   _getDisagregGroupElem(index: number) {
-    return this.shadowRoot!.querySelector('#disaggregationGroups_' + index) as PaperInputElement;
+    return this.shadowRoot!.querySelector('#disaggregationGroups_' + index) as EtoolsInput;
   }
 
   _updateTabCounter() {
@@ -189,11 +203,11 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
   _mapSpaceToClick() {
     setTimeout(() => {
       this.shadowRoot!.querySelectorAll('etools-dropdown').forEach((el, index) => {
-        const paperEl = el.shadowRoot!.querySelector('paper-input');
-        if (paperEl) {
-          callClickOnSpacePushListener(paperEl);
+        const etoolsInputEl = el.shadowRoot!.querySelector('etools-input') as EtoolsInput;
+        if (etoolsInputEl) {
+          callClickOnSpacePushListener(etoolsInputEl);
           if (index === 0) {
-            paperEl.focus();
+            etoolsInputEl.focus();
           }
         }
       }, 200);

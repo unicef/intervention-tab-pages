@@ -1,27 +1,19 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  LitElement,
-  property,
-  PropertyValues,
-  TemplateResult
-} from 'lit-element';
+import {css, CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@unicef-polymer/etools-data-table/etools-data-table.js';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/iron-icons';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
+
 import './modals/cp-output-dialog';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {_canDelete} from '../../common/mixins/results-structure-common';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends TruncateMixin(LitElement) {
@@ -47,14 +39,14 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                   <!--      If PD is associated with CP Output      -->
                   ${this.resultLink.cp_output
                     ? html`
-                        <div class="flex-1 flex-fix">
+                        <div class="flex-fix">
                           <div class="heading">${translate('COUNTRY_PROGRAME_OUTPUT')}</div>
                           <div class="data">
                             <b>${this.resultLink.code} - </b>&nbsp;${this.resultLink.cp_output_name}
                           </div>
                         </div>
 
-                        <div class="flex-1 flex-fix" ?hidden="${!this.showIndicators}">
+                        <div class="flex-fix" ?hidden="${!this.showIndicators}">
                           <div class="heading">${translate('RAM_INDICATORS')}</div>
                           <div class="data">
                             <ul id="ram-list">
@@ -77,12 +69,9 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                           </div>
                         </div>
                         <div class="hover-block" ?hidden="${this.readonly}">
-                          <paper-icon-button
-                            icon="icons:create"
-                            @click="${this.openEditCpOutputPopup}"
-                          ></paper-icon-button>
-                          <paper-icon-button
-                            icon="icons:delete"
+                          <etools-icon-button name="create" @click="${this.openEditCpOutputPopup}"></etools-icon-button>
+                          <etools-icon-button
+                            name="delete"
                             ?hidden="${!_canDelete(
                               this.resultLink,
                               this.readonly,
@@ -91,12 +80,12 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                               this.interventionInfo.in_amendment_date!
                             )}"
                             @click="${this.openDeleteCPOutputPopup}"
-                          ></paper-icon-button>
+                          ></etools-icon-button>
                         </div>
                       `
                     : html`
                         <!--      If PD is unassociated with CP Output      -->
-                        <div class="flex-1 flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
+                        <div class="flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
                       `}
                 </div>
                 <div class="outputs-count"><b>${this.resultLink.ll_results.length}</b> ${translate('PD_OUTPUT_S')}</div>
@@ -114,7 +103,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePushListener(el));
+    this.shadowRoot!.querySelectorAll('etools-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   openEditCpOutputPopup(): void {
@@ -128,7 +117,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ...super.styles,
       css`
@@ -159,11 +148,13 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
           line-height: 26px;
           padding-top: 8px;
           padding-bottom: 3px;
+          text-wrap: wrap;
+          word-wrap: break-word;
         }
         :host div.outputs-count {
           padding: 0 0 9px;
           font-family: Roboto;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: 400;
           line-height: 16px;
           color: #212121;
@@ -194,6 +185,17 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         }
         .editable-row:hover .hover-block {
           opacity: 1;
+        }
+        .flex-fix {
+          min-width: 0px;
+          min-height: 0px;
+          width: 100%;
+          word-break: break-word;
+        }
+        @media (max-width: 576px) {
+          .cp-output-row {
+            flex-direction: column;
+          }
         }
       `
     ];

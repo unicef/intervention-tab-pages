@@ -1,4 +1,4 @@
-import {css, CSSResult} from 'lit-element';
+import {css, CSSResult} from 'lit';
 
 // language=CSS
 export const LocationWidgetStyles: CSSResult = css`
@@ -20,22 +20,21 @@ export const LocationWidgetStyles: CSSResult = css`
   }
 
   .widget-container .map-and-list {
-    position: relative;
     display: flex;
     width: 100%;
-    padding: 10px;
     max-height: 320px;
     box-sizing: border-box;
+    padding: 12px 0;
   }
 
   .widget-container .map-and-list #map {
-    flex: 1 30%;
+    width: 70%;
     height: 300px;
     margin-inline-end: 25px;
   }
 
   .widget-container .map-and-list .list {
-    flex: 1;
+    width: 30%;
     overflow: hidden;
   }
 
@@ -46,10 +45,6 @@ export const LocationWidgetStyles: CSSResult = css`
     height: calc(100% - 43px);
     position: relative;
     overflow-y: auto;
-  }
-
-  .widget-container .map-and-list .list paper-input {
-    margin-top: -20px;
   }
 
   .site-line,
@@ -118,5 +113,16 @@ export const LocationWidgetStyles: CSSResult = css`
   div:focus-visible {
     outline: none !important;
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .widget-container .map-and-list {
+      flex-wrap: wrap;
+      max-height: none;
+    }
+    .widget-container .map-and-list #map,
+    .widget-container .map-and-list .list {
+      width: 100% !important;
+    }
   }
 `;

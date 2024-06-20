@@ -1,9 +1,9 @@
-import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property, queryAll} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
+import {property, customElement, queryAll} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/iron-icons';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -12,9 +12,9 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
-import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {
   openActivityDeactivationDialog,
@@ -23,7 +23,13 @@ import {
   _canDelete
 } from '../../common/mixins/results-structure-common';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import {PaperMenuButton} from '@polymer/paper-menu-button';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
+import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query.js';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
@@ -55,28 +61,52 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     // language=HTML
     return html`
       ${sharedStyles}
+      <style>
+        div[lowresolutionlayout] {
+          flex-direction: column;
+        }
+        div[lowresolutionlayout] > .secondary-cell {
+          max-width: 100%;
+        }
+        .cellLabel {
+          width: 40%;
+          text-align: left;
+        }
+        .word-break {
+          word-break: break-word;
+        }
+      </style>
+
+      <etools-media-query
+        query="(max-width: 767px)"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <etools-data-table-row .detailsOpened="${true}" id="activitiesRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <paper-icon-button
-              icon="add-box"
+            <etools-icon-button
+              name="add-box"
               slot="custom-icon"
               class="add"
-              tabindex="0"
               @click="${() => this.openDialog()}"
               ?hidden="${this.readonly}"
-            ></paper-icon-button>
+            ></etools-icon-button>
             <span class="no-wrap" slot="message">${translate('ADD_PD_ACTIVITY')}</span>
           </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
-          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.activities)}">
-            <div class="flex-1 left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
-            <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
-            <div class="flex-1 secondary-cell right">${translate('PARTNER_CASH')}</div>
-            <div class="flex-1 secondary-cell right">${translate('UNICEF_CASH')}</div>
-            <div class="flex-1 secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>
+          <div
+            class="table-row table-head align-items-center"
+            ?hidden="${isEmptyObject(this.activities) || this.lowResolutionLayout}"
+          >
+            <div class="left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
+            <div class="secondary-cell center">${translate('TIME_PERIODS')}</div>
+            <div class="secondary-cell right">${translate('PARTNER_CASH')}</div>
+            <div class="secondary-cell right">${translate('UNICEF_CASH')}</div>
+            <div class="secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>
           </div>
 
           ${this.activities.length
@@ -86,81 +116,125 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     class="table-row editable-row"
                     related-to="activity-${activity.id}"
                     related-to-description="${activity.name}"
+                    ?lowResolutionLayout="${this.lowResolutionLayout}"
                     comments-container
                     ?hidden="${this._hideActivity(activity, this.showInactive)}"
-                    @paper-dropdown-open="${(event: CustomEvent) =>
-                      (event.currentTarget as HTMLElement)!.classList.add('active')}"
-                    @paper-dropdown-close="${(event: CustomEvent) =>
+                    @sl-show="${(event: CustomEvent) => {
+                      (event.currentTarget as HTMLElement)!.classList.add('active');
+                    }}"
+                    @sl-hide="${(event: CustomEvent) =>
                       (event.currentTarget as HTMLElement)!.classList.remove('active')}"
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
-                    <div class="flex-1 left-align layout-horizontal">
-                      <b>${activity.code}&nbsp;</b>
-                      <div>
-                        <div>
-                          <b
-                            >${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name ||
-                            '-'}</b
+                    <div class="left-align layout-horizontal">
+                      <div class="layout-horizontal w100">
+                        ${this.lowResolutionLayout
+                          ? html`<div class="cellLabel">${translate('ACTIVITY_NAME')}</div>`
+                          : ``}
+                        <div class="layout-horizontal">
+                          <b>${activity.code}&nbsp;</b>
+                          <div class="word-break">
+                            <div>
+                              <b
+                                >${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name ||
+                                '-'}</b
+                              >
+                            </div>
+                            <div class="details word-break" ?hidden="${!activity.context_details}">
+                              ${this.truncateString(activity.context_details)}
+                            </div>
+                          </div>
+                          <div
+                            class="item-link"
+                            ?hidden="${!activity.items?.length}"
+                            @click="${() => this.openDialog(activity, this.readonly)}"
                           >
+                            (${activity.items?.length}) items
+                          </div>
                         </div>
-                        <div class="details" ?hidden="${!activity.context_details}">
-                          ${this.truncateString(activity.context_details)}
-                        </div>
-                      </div>
-                      <div
-                        class="item-link"
-                        ?hidden="${!activity.items?.length}"
-                        @click="${() => this.openDialog(activity, this.readonly)}"
-                      >
-                        (${activity.items?.length}) items
                       </div>
                     </div>
 
                     <!--    Time intervals    -->
-                    <div class="flex-1 secondary-cell center">
-                      <time-intervals
-                        .quarters="${this.quarters}"
-                        .selectedTimeFrames="${activity.time_frames}"
-                        without-popup
-                      ></time-intervals>
+                    <div class="secondary-cell center">
+                      ${this.lowResolutionLayout
+                        ? html`<div class="layout-horizontal w100">
+                            <div class="cellLabel">${translate('TIME_PERIODS')}</div>
+                            <div>
+                              <time-intervals
+                                .quarters="${this.quarters}"
+                                .selectedTimeFrames="${activity.time_frames}"
+                                without-popup
+                              >
+                              </time-intervals>
+                            </div>
+                          </div>`
+                        : html` <time-intervals
+                            .quarters="${this.quarters}"
+                            .selectedTimeFrames="${activity.time_frames}"
+                            without-popup
+                          ></time-intervals>`}
                     </div>
 
                     <!--    CSO Cash    -->
-                    <div class="flex-1 secondary-cell right">
-                      ${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}
+                    <div class="secondary-cell right">
+                      ${this.lowResolutionLayout
+                        ? html` <div class="layout-horizontal w100">
+                            <div class="cellLabel">${translate('PARTNER_CASH')}</div>
+                            <div>${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}</div>
+                          </div>`
+                        : html`${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}`}
                     </div>
 
                     <!--    UNICEF Cash    -->
-                    <div class="flex-1 secondary-cell right">
-                      ${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}
+                    <div class="secondary-cell right">
+                      ${this.lowResolutionLayout
+                        ? html` <div class="layout-horizontal w100">
+                            <div class="cellLabel">${translate('UNICEF_CASH')}</div>
+                            <div></div>
+                          </div>`
+                        : html`${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}`}
                     </div>
 
                     <!--    Total    -->
-                    <div class="flex-1 secondary-cell right">
+                    <div class="secondary-cell right">
                       <!--       TODO: use field from backend         -->
-                      <b>
-                        ${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
-                      </b>
+                      ${this.lowResolutionLayout
+                        ? html` <div class="layout-horizontal w100">
+                            <div class="cellLabel">${translate('GENERAL.TOTAL')}</div>
+                            <div>
+                              <b>
+                                ${displayCurrencyAmount(
+                                  String(this.getTotal(activity.cso_cash, activity.unicef_cash)),
+                                  '0',
+                                  2
+                                )}
+                              </b>
+                              <div></div>
+                            </div>
+                          </div>`
+                        : html`${displayCurrencyAmount(
+                            String(this.getTotal(activity.cso_cash, activity.unicef_cash)),
+                            '0',
+                            2
+                          )}`}
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
-                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-                        <paper-icon-button
-                          slot="dropdown-trigger"
-                          icon="icons:more-vert"
-                          tabindex="0"
-                        ></paper-icon-button>
-                        <paper-listbox slot="dropdown-content">
-                          <div
+                      <sl-dropdown distance="-40" id="view-menu-button">
+                        <etools-icon-button slot="trigger" name="more-vert" tabindex="0"></etools-icon-button>
+                        <sl-menu>
+                          <sl-menu-item
                             class="action"
                             @click="${() => this.openDialog(activity, this.readonly || !activity.is_active)}"
                           >
-                            <iron-icon
-                              icon="${this.readonly || !activity.is_active ? 'visibility' : 'create'}"
-                            ></iron-icon>
+                            <etools-icon
+                              slot="prefix"
+                              name="${this.readonly || !activity.is_active ? 'visibility' : 'create'}"
+                            ></etools-icon>
                             ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
-                          </div>
-                          <div
+                          </sl-menu-item>
+                          <sl-menu-item
                             class="action"
                             ?hidden="${!_canDeactivate(
                               activity,
@@ -172,10 +246,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <iron-icon icon="icons:block"></iron-icon>
+                            <etools-icon slot="prefix" name="block"></etools-icon>
                             ${translate('DEACTIVATE')}
-                          </div>
-                          <div
+                          </sl-menu-item>
+                          <sl-menu-item
                             class="action delete-action"
                             ?hidden="${!_canDelete(
                               activity,
@@ -187,11 +261,11 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <iron-icon icon="delete"></iron-icon>
+                            <etools-icon slot="prefix" name="delete"></etools-icon>
                             ${translate('DELETE')}
-                          </div>
-                        </paper-listbox>
-                      </paper-menu-button>
+                          </sl-menu-item>
+                        </sl-menu>
+                      </sl-dropdown>
                     </div>
                   </div>
                 `
@@ -202,8 +276,11 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     `;
   }
 
-  @queryAll('paper-menu-button#view-menu-button')
-  actionsMenuBtns!: PaperMenuButton[];
+  @queryAll('#view-menu-button')
+  actionsMenuBtns!: SlDropdown[];
+
+  @property({type: Boolean})
+  lowResolutionLayout = false;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -220,7 +297,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   }
 
   closeMenusOnScroll() {
-    this.actionsMenuBtns.forEach((p) => (p.opened = false));
+    this.actionsMenuBtns.forEach((p) => (p.open = false));
   }
 
   disconnectedCallback(): void {
@@ -267,7 +344,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ActivitiesAndIndicatorsStyles,
       ...super.styles,
@@ -280,7 +357,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         }
         .activity-data div {
           text-align: left !important;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 26px;
         }
@@ -305,6 +382,16 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         }
         etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
           border-top: none;
+        }
+        etools-icon-button[name='more-vert'] {
+          color: inherit;
+        }
+        sl-dropdown {
+          --sl-spacing-x-small: 4px;
+        }
+        sl-dropdown sl-menu-item:focus-visible::part(base) {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: var(--sl-color-neutral-1000);
         }
       `
     ];

@@ -1,12 +1,14 @@
-import {LitElement, TemplateResult, html, property, customElement, css} from 'lit-element';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {LitElement, TemplateResult, html, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate, get as getTranslation} from 'lit-translate';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';
@@ -15,17 +17,18 @@ import {updateCurrentIntervention} from '../../actions/interventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import '@polymer/paper-radio-group';
-import '@polymer/paper-checkbox/paper-checkbox';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-utils/dist/date.util';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@unicef-polymer/etools-unicef/src/etools-radio/etools-radio-group';
+import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 
 @customElement('review-checklist-popup')
 export class ReviewChecklistPopup extends LitElement {
   static get styles() {
     return [
-      gridLayoutStylesLit,
-      buttonsStyles,
+      layoutStyles,
       css`
         :host {
           display: block;
@@ -34,15 +37,11 @@ export class ReviewChecklistPopup extends LitElement {
         .pl-none {
           padding-inline-start: 0px !important;
         }
-        paper-radio-button:first-child {
-          padding-inline-start: 0px !important;
-        }
         .form-container {
           padding: 0 24px;
         }
         .likert-scale {
-          padding-top: 16px;
-          padding-bottom: 14px;
+          padding: 15px;
           border-bottom: 1px solid var(--secondary-background-color);
         }
         div[slot='buttons'] {
@@ -53,11 +52,8 @@ export class ReviewChecklistPopup extends LitElement {
           align-items: inherit;
           justify-content: flex-end;
         }
-        :host paper-button {
-          align-self: stretch;
-          font-size: 14px;
-        }
-        paper-checkbox {
+
+        etools-checkbox {
           margin: 14px 0;
         }
       `
@@ -97,72 +93,76 @@ export class ReviewChecklistPopup extends LitElement {
       <etools-dialog
         no-padding
         keep-dialog-open
-        opened
         size="lg"
         dialog-title="${translate('REVIEW_CHECKLIST')}"
         ?show-spinner="${this.requestInProcess}"
       >
-        <div class="form-container">
-          ${this.isOverallReview
-            ? html`
-                <div class="col col-12 pl-none">
-                  <datepicker-lite
-                    label="${translate('REVIEW_DATE_PRC')}"
-                    .value="${this.review?.review_date}"
-                    selected-date-display-format="D MMM YYYY"
-                    fire-date-has-changed
-                    @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail)}"
-                  >
-                  </datepicker-lite>
-                </div>
-              `
-            : ''}
-          ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
-            this.generateLikertScale(field as keyof InterventionReview, index)
-          )}
-          <div class="col col-12 pl-none">
-            <paper-textarea
-              label=${translate('APPROVAL_COMMENT')}
-              always-float-label
-              class="w100"
-              placeholder="&#8212;"
-              max-rows="4"
-              .value="${this.review.overall_comment || ''}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'overall_comment')}"
-            >
-            </paper-textarea>
-          </div>
-          ${this.isOverallReview
-            ? html`
-                <div class="col col-12 pl-none" ?hidden="${!this.isOverallReview}">
-                  <paper-textarea
-                    label=${translate('ACTIONS_LIST')}
-                    always-float-label
-                    class="w100"
-                    placeholder="&#8212;"
-                    max-rows="4"
-                    .value="${this.review.actions_list || ''}"
-                    @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'actions_list')}"
-                  >
-                  </paper-textarea>
-                </div>
-              `
-            : html` <paper-checkbox
-                ?checked="${this.review?.overall_approval}"
-                @checked-changed="${(e: CustomEvent) => this.valueChanged(e.detail.value, 'overall_approval')}"
+        <div class="container-dialog">
+          <div class="row">
+            ${this.isOverallReview
+              ? html`
+                  <div class="col-12">
+                    <datepicker-lite
+                      class="col-md-4 col-sm-12"
+                      label="${translate('REVIEW_DATE_PRC')}"
+                      .value="${this.review?.review_date}"
+                      selected-date-display-format="D MMM YYYY"
+                      fire-date-has-changed
+                      @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail)}"
+                    >
+                    </datepicker-lite>
+                  </div>
+                `
+              : ''}
+            ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
+              this.generateLikertScale(field as keyof InterventionReview, index)
+            )}
+            <div class="col-12">
+              <etools-textarea
+                label=${translate('APPROVAL_COMMENT')}
+                always-float-label
+                class="w100"
+                placeholder="&#8212;"
+                max-rows="4"
+                .value="${this.review.overall_comment || ''}"
+                @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'overall_comment')}"
               >
-                ${translate('APPROVED_BY_PRC')}
-              </paper-checkbox>`}
+              </etools-textarea>
+            </div>
+            ${this.isOverallReview
+              ? html`
+                  <div class="col-12" ?hidden="${!this.isOverallReview}">
+                    <etools-textarea
+                      label=${translate('ACTIONS_LIST')}
+                      always-float-label
+                      class="w100"
+                      placeholder="&#8212;"
+                      max-rows="4"
+                      .value="${this.review.actions_list || ''}"
+                      @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'actions_list')}"
+                    >
+                    </etools-textarea>
+                  </div>
+                `
+              : html` <etools-checkbox
+                  ?checked="${this.review?.overall_approval}"
+                  @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
+                >
+                  ${translate('APPROVED_BY_PRC')}
+                </etools-checkbox>`}
+          </div>
         </div>
         <div slot="buttons">
-          <paper-button class="cancel-btn" @click="${() => this.close()}">${translate('GENERAL.CANCEL')}</paper-button>
+          <etools-button variant="text" class="neutral" @click="${() => this.close()}"
+            >${translate('GENERAL.CANCEL')}</etools-button
+          >
           ${this.rejectPopup
-            ? html`<paper-button class="error" @click="${() => this.saveReview()}">
+            ? html`<etools-button variant="danger" @click="${() => this.saveReview()}">
                 ${translate('REJECT')}
-              </paper-button>`
-            : html`<paper-button class="primary" @click="${() => this.saveReview()}">
+              </etools-button>`
+            : html`<etools-button variant="primary" @click="${() => this.saveReview()}">
                 ${this.approvePopup ? translate('APPROVE') : translate('SAVE_REVIEW')}
-              </paper-button>`}
+              </etools-button>`}
         </div>
       </etools-dialog>
     `;
@@ -172,17 +172,17 @@ export class ReviewChecklistPopup extends LitElement {
     return html`
       <div class="likert-scale pb-20">
         <div class="w100">
-          <label class="paper-label">Q${index + 1}: ${translateValue(field, `REVIEW_QUESTIONS`)}</label>
+          <label class="label">Q${index + 1}: ${translateValue(field, `REVIEW_QUESTIONS`)}</label>
         </div>
-        <paper-radio-group
-          selected="${this.review[field] || ''}"
-          @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, field)}"
+        <etools-radio-group
+          value="${this.review[field] || ''}"
+          @sl-change="${(e: any) => this.valueChanged(e.target.value, field)}"
         >
           ${Array.from(REVIEW_ANSVERS.entries()).map(
             ([key, text]: [string, string]) =>
-              html` <paper-radio-button name="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</paper-radio-button> `
+              html` <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio> `
           )}
-        </paper-radio-group>
+        </etools-radio-group>
       </div>
     `;
   }

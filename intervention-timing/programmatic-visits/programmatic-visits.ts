@@ -1,15 +1,15 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-icon-button/paper-icon-button';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -27,7 +27,9 @@ import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/di
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import './pv-quarter';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -35,7 +37,7 @@ import './pv-quarter';
 @customElement('programmatic-visits')
 export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -62,9 +64,13 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           padding-top: 10px;
         }
 
+        etools-dropdown.year {
+          min-width: 125px;
+        }
+
         .error-msg {
           color: var(--error-color);
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -74,11 +80,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           margin-inline-start: 46px;
         }
 
-        .secondary-btn {
-          --paper-button: {
-            color: #0099ff;
-          }
-        }
         .totalContainer {
           text-align: center;
           height: 114px;
@@ -102,13 +103,16 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           margin-inline-end: 30px;
         }
         .total-lbl {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           padding-top: 15px;
           padding-bottom: 15px;
+          text-wrap: nowrap;
         }
-        paper-button iron-icon {
-          margin-inline-start: 45px;
-          margin-inline-end: 10px;
+        .extra-top-padd etools-button {
+          margin-inline-start: 20px;
+        }
+        .pl-48 {
+          padding-left: 48px !important;
         }
       </style>
 
@@ -119,14 +123,17 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
-          <paper-button
-            class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
-            @click="${this._addNewPlannedVisit}"
-          >
-            <iron-icon icon="add-box"></iron-icon>
-            ${translate('ADD_YEAR')}
-          </paper-button>
+        <div class="row extra-top-padd" ?hidden="${!this.editMode}">
+          <div class="col-12">
+            <etools-button
+              variant="text"
+              ${this._getAddBtnPadding(this.data?.length)}
+              @click="${this._addNewPlannedVisit}"
+            >
+              <etools-icon name="add-box"></etools-icon>
+              ${translate('ADD_YEAR')}
+            </etools-button>
+          </div>
         </div>
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>
@@ -283,17 +290,17 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     return html`
       ${planned_visits?.map(
         (item: PlannedVisit, index: number) => html`
-          <div class="layout-horizontal">
+          <div class="row">
             <div class="item-actions-container">
               <div class="actions">
-                <paper-icon-button
+                <etools-icon-button
                   class="action delete"
                   @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                   data-args="${index}"
                   ?disabled="${!this._canBeRemoved(index, this.editMode)}"
-                  icon="cancel"
+                  name="cancel"
                 >
-                </paper-icon-button>
+                </etools-icon-button>
               </div>
             </div>
             <div class="col-1 yearContainer">
@@ -313,59 +320,71 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
               >
               </etools-dropdown>
             </div>
-          </div>
-          <div class="row-padding-h">
-            <div class="row-h layout-wrap">
-              <pv-quarter
-                qIndex="1"
-                .item="${item}"
-                .currentCountry="${this.currentCountry}"
-                .allSites="${this.allSites}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                ?required="${item.year && this.editMode}"
-              ></pv-quarter>
-              <div class="separator"></div>
-              <pv-quarter
-                qIndex="2"
-                .item="${item}"
-                .currentCountry="${this.currentCountry}"
-                .allSites="${this.allSites}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                ?required="${item.year && this.editMode}"
-              ></pv-quarter>
-              <div class="separator"></div>
-              <pv-quarter
-                qIndex="3"
-                .item="${item}"
-                .currentCountry="${this.currentCountry}"
-                .allSites="${this.allSites}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                ?required="${item.year && this.editMode}"
-              ></pv-quarter>
-              <div class="separator"></div>
-              <pv-quarter
-                qIndex="4"
-                .item="${item}"
-                .currentCountry="${this.currentCountry}"
-                .allSites="${this.allSites}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                ?required="${item.year && this.editMode}"
-              ></pv-quarter>
-              <div class="separator"></div>
-              <div class="col-1 totalContainer bgColor">
-                <div class="total-lbl">${translate('GENERAL.TOTAL_C')} ${item.year}</div>
-                <div>
-                  ${this._getTotal(
-                    item.programmatic_q1,
-                    item.programmatic_q2,
-                    item.programmatic_q3,
-                    item.programmatic_q4
-                  )}
+
+            <div class="col-12 row layout-wrap">
+              <div class="col-10 row pl-48">
+                <div class="col layout-horizontal">
+                  <pv-quarter
+                    qIndex="1"
+                    .item="${item}"
+                    .currentCountry="${this.currentCountry}"
+                    .allSites="${this.allSites}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                    ?required="${item.year && this.editMode}"
+                  ></pv-quarter>
+                  <div class="separator"></div>
                 </div>
-                <div>${translate('VISITS')}</div>
+
+                <div class="col layout-horizontal">
+                  <pv-quarter
+                    qIndex="2"
+                    .item="${item}"
+                    .currentCountry="${this.currentCountry}"
+                    .allSites="${this.allSites}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                    ?required="${item.year && this.editMode}"
+                  ></pv-quarter>
+                  <div class="separator"></div>
+                </div>
+                <div class="col layout-horizontal">
+                  <pv-quarter
+                    qIndex="3"
+                    .item="${item}"
+                    .currentCountry="${this.currentCountry}"
+                    .allSites="${this.allSites}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                    ?required="${item.year && this.editMode}"
+                  ></pv-quarter>
+                  <div class="separator"></div>
+                </div>
+                <div class="col layout-horizontal">
+                  <pv-quarter
+                    qIndex="4"
+                    .item="${item}"
+                    .currentCountry="${this.currentCountry}"
+                    .allSites="${this.allSites}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                    ?required="${item.year && this.editMode}"
+                  ></pv-quarter>
+                  <div class="separator"></div>
+                </div>
+              </div>
+              <div class="col-2 layout-horizontal">
+                <div class="col-1 totalContainer bgColor">
+                  <div class="total-lbl">${translate('GENERAL.TOTAL_C')} ${item.year}</div>
+                  <div>
+                    ${this._getTotal(
+                      item.programmatic_q1,
+                      item.programmatic_q2,
+                      item.programmatic_q3,
+                      item.programmatic_q4
+                    )}
+                  </div>
+                  <div>${translate('VISITS')}</div>
+                </div>
               </div>
               <div
-                class="col flex-c"
+                class="col row"
                 ?hidden="${this._showErrMsg(
                   item.year!,
                   item.programmatic_q1,

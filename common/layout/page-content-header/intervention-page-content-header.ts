@@ -1,4 +1,5 @@
-import {LitElement, html, customElement, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 
 /**
  * @LitElement
@@ -24,15 +25,6 @@ export class InterventionPageContentHeader extends LitElement {
           background-color: var(--primary-background-color);
           min-height: 65px;
           border-bottom: 1px solid var(--light-divider-color);
-
-          --page-title: {
-            margin: 0;
-            font-weight: normal;
-            text-transform: capitalize;
-            font-size: 24px;
-            line-height: 18px;
-            min-height: 31px;
-          }
         }
 
         :host([is-in-amendment]) {
@@ -53,7 +45,12 @@ export class InterventionPageContentHeader extends LitElement {
         }
 
         .content-header-row h1 {
-          @apply --page-title;
+          margin: 0;
+          font-weight: normal;
+          text-transform: capitalize;
+          font-size: var(--etools-font-size-24, 24px);
+          line-height: 18px;
+          min-height: 31px;
         }
 
         .modeContainer {
@@ -97,7 +94,7 @@ export class InterventionPageContentHeader extends LitElement {
           }
 
           .content-header-row h1 {
-            font-size: 18px;
+            font-size: var(--etools-font-size-18, 18px);
           }
         }
 

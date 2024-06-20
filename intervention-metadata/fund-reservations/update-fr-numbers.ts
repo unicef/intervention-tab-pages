@@ -1,19 +1,20 @@
-import {LitElement, html, property, customElement, query} from 'lit-element';
-import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-input/paper-input';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {LitElement, html} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {PaperInputElement} from '@polymer/paper-input/paper-input';
-import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
  * @customElement
@@ -21,26 +22,14 @@ import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/
 @customElement('update-fr-numbers')
 export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
   render() {
     // ${repeatableDataSetsStyles}
     return html`
       ${sharedStyles}
       <style>
-        :host {
-          --paper-dialog-scrollable: {
-            width: 100%;
-            overflow-x: hidden;
-            overflow-y: auto;
-            max-height: 400px;
-            padding: 0;
-            margin-top: -20px;
-            box-sizing: border-box;
-          }
-        }
-
-        paper-input {
+        etools-input {
           width: 250px;
         }
 
@@ -67,6 +56,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         }
         .action.delete {
           color: var(--error-color);
+          --sl-color-primary-600: var(--error-color);
         }
       </style>
 
@@ -82,48 +72,52 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         keep-dialog-open
         spinner-text="${translate('CHECKING_FR_NUMBERS_UPDATES')}"
       >
-        ${(this.data || []).map(
-          (item: AnyObject, index: number) => html`
-            <div class="row-h item-container">
-              <div class="item-actions-container">
-                <div class="actions">
-                  <paper-icon-button
-                    class="action delete"
-                    @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
-                    .data-args="${index}"
-                    icon="cancel"
-                    ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.data.length)}"
-                  >
-                  </paper-icon-button>
+        <div class="container-dialog">
+          ${(this.data || []).map(
+            (item: AnyObject, index: number) => html`
+              <div class="container-dialog item-container">
+                <div class="item-actions-container">
+                  <div class="actions">
+                    <etools-icon-button
+                      class="action delete"
+                      @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
+                      .data-args="${index}"
+                      name="cancel"
+                      ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.data.length)}"
+                    >
+                    </etools-icon-button>
+                  </div>
+                </div>
+                <div class="item-content">
+                  <div class="row">
+                    <!-- FR Number -->
+                    <etools-input
+                      .id="fr-nr-${index}"
+                      label=${translate('FR_NUMBER')}
+                      .value="${item.fr_number}"
+                      placeholder="&#8212;"
+                      allowed-pattern="[0-9]"
+                      required
+                      error-message=${translate('FILL_FR_NUMBER')}
+                      @value-changed="${({detail}: CustomEvent) => this._frNrValueChanged(item, detail)}"
+                    >
+                    </etools-input>
+                  </div>
                 </div>
               </div>
-              <div class="item-content">
-                <div class="row-h">
-                  <!-- FR Number -->
-                  <paper-input
-                    .id="fr-nr-${index}"
-                    label=${translate('FR_NUMBER')}
-                    .value="${item.fr_number}"
-                    placeholder="&#8212;"
-                    allowed-pattern="[0-9]"
-                    required
-                    error-message=${translate('FILL_FR_NUMBER')}
-                    @value-changed="${({detail}: CustomEvent) => this._frNrValueChanged(item, detail)}"
-                  >
-                  </paper-input>
-                </div>
-              </div>
+            `
+          )}
+
+          <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
+
+          <div class="row">
+            <div class="col-12">
+              <etools-button variant="text" class="no-marg no-pad" @click="${() => this._addNewFundReservation()}">
+                <etools-icon name="add"></etools-icon>
+                ${translate('ADD_FR_NUM')}
+              </etools-button>
             </div>
-          `
-        )}
-
-        <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
-
-        <div class="row-h">
-          <paper-button class="secondary-btn" @click="${() => this._addNewFundReservation()}">
-            <iron-icon icon="add"></iron-icon>
-            ${translate('ADD_FR_NUM')}
-          </paper-button>
+          </div>
         </div>
       </etools-dialog>
     `;
@@ -152,6 +146,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
   openDialog() {
     this.frsDialog.opened = true;
+    this.disableConfirmBtn = true;
   }
 
   stopSpinner(e?: CustomEvent) {
@@ -175,9 +170,9 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
   validate() {
     let valid = true;
-    if (this.data instanceof Array && this.data.length > 0) {
+    if (this.data?.length > 0) {
       this.data.forEach((_item, index) => {
-        const lastItem = this.shadowRoot!.querySelector('#fr-nr-' + index) as PaperInputElement;
+        const lastItem = this.shadowRoot!.querySelector('#fr-nr-' + index) as EtoolsInput;
         if (lastItem && !lastItem.validate()) {
           valid = false;
         }
@@ -193,23 +188,11 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
     }
     this.data.push({fr_number: ''});
     this.data = [...this.data];
-    setTimeout(this._centerDialog.bind(this), 0);
     setTimeout(this._updateScroll.bind(this), 100);
-  }
-
-  _centerDialog() {
-    const d = this._getPaperDialog();
-    if (d) {
-      d.center();
-    }
   }
 
   _updateScroll() {
     this.frsDialog.scrollDown();
-  }
-
-  _getPaperDialog() {
-    return this.frsDialog.shadowRoot!.querySelector('paper-dialog') as PaperDialogElement;
   }
 
   _frNrValueChanged(item: AnyObject, detail: AnyObject) {

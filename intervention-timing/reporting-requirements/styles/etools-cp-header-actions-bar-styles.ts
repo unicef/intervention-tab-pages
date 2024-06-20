@@ -1,19 +1,12 @@
-import {css, unsafeCSS} from 'lit-element';
+import {css, unsafeCSS} from 'lit';
 
 export const etoolsCpHeaderActionsBarStyles = `
-    .cp-header-actions-bar {
-    @apply --layout-horizontal;
+  .cp-header-actions-bar {
+      display: flex;
   }
 
-  .cp-header-actions-bar paper-icon-button[disabled] {
+  .cp-header-actions-bar etools-icon-button[disabled] {
     visibility: hidden;
-  }
-
-  .cp-header-actions-bar paper-toggle-button {
-    --paper-toggle-button-label-color: white;
-    --paper-toggle-button-checked-bar-color: white;
-    padding-inline-end: 10px;
-    font-size: 16px;
   }
 
   .cp-header-actions-bar .separator {

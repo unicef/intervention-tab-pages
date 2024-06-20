@@ -1,7 +1,7 @@
-import {LitElement, customElement, html, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@polymer/iron-label/iron-label';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -11,10 +11,9 @@ import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-poly
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import {TABS} from '../common/constants';
 import {decimalFractionEquals0} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -23,7 +22,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('intervention-summary')
 export class InterventionSummary extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, elevationStyles];
+    return [layoutStyles, elevationStyles];
   }
 
   render() {
@@ -44,21 +43,21 @@ export class InterventionSummary extends connectStore(LitElement) {
       }
       .content {
         margin-top: 8px;
-        font-size: 14px;
+        font-size: var(--etools-font-size-14, 14px);
       }
-      iron-label {
+      label {
         color: var(--dark-secondary-text-color);
       }
       .secondary {
         color: var(--dark-secondary-text-color);
-        font-size: 14px;
+        font-size: var(--etools-font-size-14, 14px);
       }
       .label-secondary-color {
         color: var(--secondary-text-color);
-        font-size: 14px;
+        font-size: var(--etools-font-size-14, 14px);
       }
       .blue {
-        color: var(--paper-blue-500);
+        color: var(--sl-color-blue-500);
       }
       .sector-label {
         display: inline-block;
@@ -79,7 +78,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         padding: 15px 20px;
         background-color: var(--primary-background-color);
       }
-      etools-currency-amount-input {
+      etools-currency {
         width: 160px;
       }
     </style>
@@ -90,9 +89,9 @@ export class InterventionSummary extends connectStore(LitElement) {
       >
       ${
         this.isUnicefUser
-          ? html` <div class="row-h flex-c">
-              <div class="col col-12 block">
-                <iron-label for="cp_outputs_list" class="label-secondary-color">${translate('CP_OUTPUTS')}</iron-label>
+          ? html` <div class="row">
+              <div class="col-12 block">
+                <label for="cp_outputs_list" class="label-secondary-color">${translate('CP_OUTPUTS')}</label>
                 <br />
                 <div class="content" id="cp_outputs_list">
                   ${this.interventionCpOutputs.length
@@ -104,10 +103,10 @@ export class InterventionSummary extends connectStore(LitElement) {
           : ``
       }
 
-      <div class="row-h flex-c">
-        <div class="col col-12 block">
-          <iron-label for="document_title" class="label-secondary-color"
-            >${translate('DOCUMENT_TITLE')}</iron-label
+      <div class="row">
+        <div class="col-12 block">
+          <label for="document_title" class="label-secondary-color"
+            >${translate('DOCUMENT_TITLE')}</label
           >
           <br />
           <div class="content" id="document_title">${this.intervention.title}</div>
@@ -126,32 +125,32 @@ export class InterventionSummary extends connectStore(LitElement) {
         </div>
       </div>
 
-      <div class="row-h flex-c">
-        <div class="col col-4 block">
-          <iron-label for="interventions_timeline" class="label-secondary-color"
-            >${translate('TIMELINE')}</iron-label
+      <div class="row">
+        <div class="col-4 block">
+          <label for="interventions_timeline" class="label-secondary-color"
+            >${translate('TIMELINE')}</label
           >
           <br />
           <div class="content" id="interventions_timeline">
             ${prettyDate(this.intervention.start)} &#8212; ${prettyDate(this.intervention.end)}
           </div>
         </div>
-        <div class="col col-4 block">
-          <iron-label for="intervention-sections" class="label-secondary-color"
+        <div class="col-4 block">
+          <label for="intervention-sections" class="label-secondary-color"
             >${translate('SECTIONS')}
-          </iron-label>
+          </label>
           <br />
           <div class="content" id="intervention-sections">${this.inteventionSections}</div>
         </div>
       </div>
 
-      <div class="row-h flex-c">
-        <div class="col col-4">
+      <div class="row">
+        <div class="col-4">
           <div>
             <label class="label-secondary-color"
               >${translate('TOTAL_VAL_EFF_PROG_MGMT_COST')}</label
             >
-            <etools-currency-amount-input
+            <etools-currency
               class="w100"
               type="number"
               .value="${this.intervention.management_budgets?.total}"
@@ -160,11 +159,11 @@ export class InterventionSummary extends connectStore(LitElement) {
               readonly
               tabindex="-1"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
         </div>
 
-        <div class="col col-6">
+        <div class="col-6">
           <div>
             <label class="label-secondary-color">
               ${translate('TOTAL_VALUE_UNICEF_CONTRIB_EFF')}
@@ -174,13 +173,13 @@ export class InterventionSummary extends connectStore(LitElement) {
         </div>
       </div>
 
-      <div class="row-h flex-c">
-        <div class="col col-4">
+      <div class="row">
+        <div class="col-4">
           <div>
             <label class="label-secondary-color"
               >${translate('UNICEF_CASH_CONTRIBUTION')}</label
             >
-            <etools-currency-amount-input
+            <etools-currency
               .value="${this.intervention.planned_budget.unicef_cash_local}"
               type="number"
               placeholder="&#8212;"
@@ -188,13 +187,13 @@ export class InterventionSummary extends connectStore(LitElement) {
               readonly
               tabindex="-1"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
         </div>
-        <div class="col col-4">
+        <div class="col-4">
           <div>
             <label class="label-secondary-color">${translate('UNICEF_SUPPLY_CONTRIB')}</label>
-            <etools-currency-amount-input
+            <etools-currency
               .value="${this.intervention.planned_budget.in_kind_amount_local}"
               type="number"
               placeholder="&#8212;"
@@ -202,13 +201,13 @@ export class InterventionSummary extends connectStore(LitElement) {
               readonly
               tabindex="-1"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
         </div>
-        <div class="col col-4">
+        <div class="col-4">
           <div>
             <label class="label-secondary-color">${translate('TOTAL_UNICEF_CONTRIBUTION')}</label>
-            <etools-currency-amount-input
+            <etools-currency
               .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
               type="number"
               placeholder="&#8212;"
@@ -216,17 +215,17 @@ export class InterventionSummary extends connectStore(LitElement) {
               readonly
               tabindex="-1"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
         </div>
       </div>
-      <div class="row-h flex-c">
-        <div class="col col-4 block">
+      <div class="row">
+        <div class="col-4 block">
           <label class="label-secondary-color">${translate('PARTNER_HACT_RR')}</label>
           <br />
           <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
         </div>
-        <div class="col col-4 block">
+        <div class="col-4 block">
           <label class="label-secondary-color">${translate('PARTNER_PSEA_RR')}</label>
           <br />
           <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>
@@ -268,9 +267,7 @@ export class InterventionSummary extends connectStore(LitElement) {
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'summary')
-    ) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'summary')) {
       return;
     }
 

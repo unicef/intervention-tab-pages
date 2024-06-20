@@ -1,32 +1,30 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-styles/element-styles/paper-material-styles';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-data-table/etools-data-table';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
+import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/mixins/currency';
 
-import '@unicef-polymer/etools-modules-common/dist/layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
 import '../common/layout/status/intervention-report-status';
 import './reports/indicator-report-target';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {pmpCustomIcons} from './styles/pmp-icons';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import get from 'lodash-es/get';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
 import {translate} from 'lit-translate';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {currentIntervention} from '../common/selectors';
 import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
@@ -34,7 +32,7 @@ import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {contentSectionStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -48,7 +46,7 @@ import {
 } from '@unicef-polymer/etools-utils/dist/date.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 /**
  * @customElement
@@ -65,21 +63,20 @@ export class InterventionResultsReported extends connectStore(
   UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {
   static get styles() {
-    return [contentSectionStylesLit, gridLayoutStylesLit, elevationStyles, frWarningsStyles];
+    return [contentSectionStylesLit, layoutStyles, elevationStyles, frWarningsStyles];
   }
   render() {
     return html`
-      ${pmpCustomIcons}
       <style>
         ${sharedStyles}${dataTableStylesLit} #progress-summary etools-progress-bar {
           margin-top: 16px;
         }
 
-        #cash-progress etools-form-element-wrapper {
+        #cash-progress etools-input {
           width: 140px;
         }
 
-        #cash-progress etools-form-element-wrapper:first-child {
+        #cash-progress etools-input:first-child {
           margin-inline-end: 24px;
         }
 
@@ -114,21 +111,18 @@ export class InterventionResultsReported extends connectStore(
           padding-top: 0;
         }
 
-        indicator-report-target {
-          --indicator-report-target-row: {
-            padding-inline-end: 72px;
-          }
-        }
-
         etools-ram-indicators {
           border-top: 1px solid var(--list-divider-color);
           border-bottom: 1px solid var(--list-divider-color);
         }
 
         .row-details-content {
-          font-size: 15px;
+          font-size: var(--etools-font-size-15, 15px);
         }
-
+        .row.padding-row {
+          margin: 0;
+          padding: 16px 24px;
+        }
         @media print {
           .indicator-report {
             display: flex;
@@ -162,7 +156,7 @@ export class InterventionResultsReported extends connectStore(
           }
         }
 
-        etools-info-tooltip etools-form-element-wrapper {
+        etools-info-tooltip etools-input {
           width: 100% !important;
         }
 
@@ -171,26 +165,36 @@ export class InterventionResultsReported extends connectStore(
           background-color: var(--primary-background-color);
         }
       </style>
-
+      <etools-media-query
+        query="(max-width: 1200px)"
+        .queryMatches="${this.lowResolutionLayout}"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <div id="progress-summary" class="content-section paper-material elevation" elevation="1">
-        <div class="row-h">
-          <div class="layout-vertical col-4">
-            <etools-form-element-wrapper
+        <div class="row">
+          <div class="layout-vertical col-md-4 col-12">
+            <etools-input
+              readonly
+              placeholder="—"
               label="${translate('PD_DURATION')}"
               .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
-            </etools-form-element-wrapper>
+            </etools-input>
             <etools-progress-bar value="${this.pdProgress}" noDecimals></etools-progress-bar>
           </div>
-          <div class="layout-vertical col-5">
-            <div class="layout-horizontal" id="cash-progress">
+          <div class="layout-vertical col-md-5 col-12">
+            <div class="row" id="cash-progress">
               <etools-info-tooltip
                 class="fr-nr-warn col-6"
                 custom-icon
                 icon-first
                 .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement, this.progress)}"
               >
-                <etools-form-element-wrapper
+                <etools-input
+                  readonly
+                  placeholder="—"
                   slot="field"
                   label="${translate('CASH_TRANSFERED')}"
                   .value="${this._getPropertyText(this.progress.disbursement_currency)} ${displayCurrencyAmount(
@@ -199,18 +203,23 @@ export class InterventionResultsReported extends connectStore(
                     0
                   )}"
                 >
-                </etools-form-element-wrapper>
-                <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                </etools-input>
+                <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                 <span slot="message">${translate('DISBURSEMENT_AMOUNTS')}</span>
               </etools-info-tooltip>
 
-              <etools-form-element-wrapper
+              <etools-input
+                readonly
+                placeholder="—"
                 class="col-6"
                 label="${translate('UNICEF_CASH')}"
-                .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)}
-                        ${displayCurrencyAmount(this.progress.unicef_budget_cash, '0', 0)}"
+                .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)} ${displayCurrencyAmount(
+                  this.progress.unicef_budget_cash,
+                  '0',
+                  0
+                )}"
               >
-              </etools-form-element-wrapper>
+              </etools-input>
             </div>
 
             <etools-progress-bar
@@ -227,13 +236,15 @@ export class InterventionResultsReported extends connectStore(
                   .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
                 >
                   <span slot="field">${translate('NA_%')}</span>
-                  <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
+                  <etools-icon slot="custom-icon" name="not-equal"></etools-icon>
                   <span slot="message">${translate('FR_CURRENCY_NOT_MATCH')}</span>
                 </etools-info-tooltip>`
               : ``}
           </div>
-          <div class="col col-3">
-            <etools-form-element-wrapper
+          <div class="col-md-3 col-12">
+            <etools-input
+              readonly
+              placeholder="—"
               label="${translate('OVERALL_PD_SPD_RATING')}"
               .value="${this._getOverallPdStatusDate(this.latestAcceptedPr)}"
               noPlaceholder
@@ -242,46 +253,47 @@ export class InterventionResultsReported extends connectStore(
                 status="${this.latestAcceptedPr ? this.latestAcceptedPr.review_overall_status : ''}"
                 slot="prefix"
               ></intervention-report-status>
-            </etools-form-element-wrapper>
+            </etools-input>
           </div>
         </div>
       </div>
 
       <etools-content-panel class="content-section" panel-title="${translate('RESULTS_REPORTED_SUBTAB')}">
         <div
-          class="row-h"
+          class="row padding-row"
           ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}"
         >
           <p>${translate('NO_RESULTS')}</p>
         </div>
         ${(this.progress.details ? this.progress.details.cp_outputs : []).map(
           (item: any) => html`
-            <div class="row-v row-second-bg">
-              <strong>${translate('CP_OUTPUT')}: ${item.title}</strong>
+            <div class="row padding-row row-second-bg">
+              <strong class="col-12">${translate('CP_OUTPUT')}: ${item.title}</strong>
             </div>
 
             <!-- RAM indicators display -->
             <etools-ram-indicators
-              class="row-h"
               interventionId="${this.interventionId}"
               cpId="${item.external_cp_output_id}"
             ></etools-ram-indicators>
 
-            <div class="row-h" ?hidden="${!this._emptyList(item.ll_outputs)}">
-              <p>${translate('NO_PD_OUTPUTS')}</p>
+            <div class="row padding-row" ?hidden="${!this._emptyList(item.ll_outputs)}">
+              <p class="col-12">${translate('NO_PD_OUTPUTS')}</p>
             </div>
 
             <div class="lower-results-table" ?hidden="${this._emptyList(item.ll_outputs)}">
-              <etools-data-table-header id="listHeader" no-title>
+              <etools-data-table-header id="listHeader" no-title .lowResolutionLayout="${this.lowResolutionLayout}">
                 <etools-data-table-column class="col-9">${translate('PD_OUTPUTS')}</etools-data-table-column>
                 <etools-data-table-column class="col-3">${translate('CURRENT_PROGRESS')}</etools-data-table-column>
               </etools-data-table-header>
 
               ${item.ll_outputs.map(
-                (lowerResult: any) => html`<etools-data-table-row>
+                (lowerResult: any) => html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
                   <div slot="row-data">
-                    <span class="col-data col-9"> ${lowerResult.title} </span>
-                    <span class="col-data col-3">
+                    <span class="col-data col-9" data-col-header-label="${translate('PD_OUTPUTS')}">
+                      ${lowerResult.title}
+                    </span>
+                    <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
                       <intervention-report-status
                         status="${this._getLowerResultStatus(lowerResult.id)}"
                       ></intervention-report-status>
@@ -289,17 +301,17 @@ export class InterventionResultsReported extends connectStore(
                     </span>
                   </div>
                   <div slot="row-data-details">
-                    <div class="row-details-content flex-c">
-                      <div class="row-h" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
+                    <div class="row-details-content">
+                      <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
                         ${translate('NO_INDICATORS')}
                       </div>
                       ${this._getIndicatorsReports(lowerResult.id).map(
-                        (indicatorReport: any) => html`<div class="row-h indicator-report">
-                            <div class="col-data col-9">
+                        (indicatorReport: any) => html`<div class="row indicator-report">
+                            <div class="col-data col-12 col-md-9">
                               ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
                               ${indicatorReport.reportable.blueprint.title}
                             </div>
-                            <div class="col-data col-3 progress-bar">
+                            <div class="col-data col-12 col-md-3 progress-bar">
                               <etools-progress-bar
                                 class="report-progress-bar"
                                 value="${this.getProgressPercentage(
@@ -310,8 +322,8 @@ export class InterventionResultsReported extends connectStore(
                               </etools-progress-bar>
                             </div>
                           </div>
-                          <div class="row-h progress-details">
-                            <div class="layout-vertical col-5 target-details">
+                          <div class="row progress-details">
+                            <div class="layout-vertical col-12 col-md-5 target-details">
                               <indicator-report-target
                                 class="print-inline"
                                 .displayType="${indicatorReport.reportable.blueprint.display_type}"
@@ -359,6 +371,9 @@ export class InterventionResultsReported extends connectStore(
   @property({type: Number})
   pdProgress!: number | null;
 
+  @property({type: Boolean})
+  lowResolutionLayout = false;
+
   _progress: GenericObject = {};
 
   set progress(progress) {
@@ -388,12 +403,7 @@ export class InterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(
-        get(state, 'app.routeDetails'),
-        'interventions',
-        TABS.Progress,
-        TABS.ResultsReported
-      ) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.ResultsReported) ||
       !state.interventions.current
     ) {
       return;
@@ -578,7 +588,7 @@ export class InterventionResultsReported extends connectStore(
       if (dateIsBetween(startDt, endDt, today)) {
         const intervalTotalDays = dateDiff(startDt, endDt);
         const intervalDaysCompleted = dateDiff(startDt, today);
-        this.pdProgress = (intervalDaysCompleted * 100) / intervalTotalDays;
+        this.pdProgress = (intervalDaysCompleted! * 100) / intervalTotalDays!;
         return;
       }
     } catch (err) {

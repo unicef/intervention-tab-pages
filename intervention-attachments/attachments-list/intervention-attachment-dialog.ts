@@ -1,17 +1,19 @@
-import {LitElement, html, TemplateResult, property, customElement, CSSResultArray, css} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import '@unicef-polymer/etools-upload/etools-upload.js';
-import '@polymer/paper-checkbox';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {
   validateRequiredFields,
   resetRequiredFields
 } from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment, EtoolsEndpoint} from '@unicef-polymer/etools-types';
@@ -23,24 +25,18 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
+      layoutStyles,
       css`
-        .container {
-          padding: 24px;
-        }
-        etools-dropdown {
-          width: 100%;
-        }
         etools-upload {
           margin-top: 14px;
         }
-        paper-checkbox {
+        etools-checkbox {
           display: block;
           margin-top: 18px;
         }
       `
     ];
   }
-  @property() dialogOpened = true;
   @property() savingInProcess = false;
   @property() data: Partial<ReviewAttachment> = {};
 
@@ -59,71 +55,65 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
   protected render(): TemplateResult {
     return html`
       ${sharedStyles}
-      <style>
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
 
-        etools-dialog::part(ed-button-styles) {
-          margin-top: 0;
-        }
-      </style>
       <etools-dialog
         size="md"
         keep-dialog-open
-        ?opened="${this.dialogOpened}"
         dialog-title=${translate('ATTACHMENT')}
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
-        no-padding
       >
         <etools-loading ?active="${this.savingInProcess}"></etools-loading>
-        <div class="container">
-          <!-- Document Type -->
-          <etools-dropdown
-            class="validate-input flex-1"
-            @etools-selected-item-changed="${({detail}: CustomEvent) =>
-              this.updateField('type', detail.selectedItem && detail.selectedItem.id)}"
-            ?trigger-value-change-event="${!this.savingInProcess}"
-            .selected="${this.data?.type}"
-            label=${translate('SELECT_DOC_TYPE')}
-            placeholder="—"
-            .options="${this.fileTypes}"
-            option-label="name"
-            option-value="id"
-            allow-outside-scroll
-            dynamic-align
-            required
-            ?invalid="${this.errors.type}"
-            .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
-            @focus="${() => this.resetFieldError('type', this)}"
-            @click="${() => this.resetFieldError('type', this)}"
-          ></etools-dropdown>
-
-          <!-- Attachment -->
-          <etools-upload
-            label=${translate('ATTACHMENT')}
-            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt,.xml,.xls,.xlt,.xlsx,.xlsm,.xlsb,.xltx,.xltm"
-            .showDeleteBtn="${false}"
-            ?readonly="${this.data.id}"
-            required
-            .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
-            .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
-            @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
-            ?invalid="${this.errors.attachment_document}"
-            .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
-            @focus="${() => this.resetFieldError('attachment_document', this)}"
-            @click="${() => this.resetFieldError('attachment_document', this)}"
-          ></etools-upload>
-
-          <paper-checkbox
-            ?checked="${!this.data?.active}"
-            @checked-changed="${(e: CustomEvent) => this.updateField('active', !e.detail.value)}"
-          >
-            ${translate('INVALID')}
-          </paper-checkbox>
+        <div class="row">
+          <div class="col-12">
+            <!-- Document Type -->
+            <etools-dropdown
+              class="validate-input flex-1"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.updateField('type', detail.selectedItem && detail.selectedItem.id)}"
+              ?trigger-value-change-event="${!this.savingInProcess}"
+              .selected="${this.data?.type}"
+              label=${translate('SELECT_DOC_TYPE')}
+              placeholder="—"
+              .options="${this.fileTypes}"
+              option-label="name"
+              option-value="id"
+              allow-outside-scroll
+              dynamic-align
+              required
+              ?invalid="${this.errors.type}"
+              .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
+              @focus="${() => this.resetFieldError('type', this)}"
+              @click="${() => this.resetFieldError('type', this)}"
+            ></etools-dropdown>
+          </div>
+          <div class="col-12">
+            <!-- Attachment -->
+            <etools-upload
+              label=${translate('ATTACHMENT')}
+              accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt,.xml,.xls,.xlt,.xlsx,.xlsm,.xlsb,.xltx,.xltm"
+              .showDeleteBtn="${false}"
+              ?readonly="${this.data.id}"
+              required
+              .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
+              .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
+              @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
+              ?invalid="${this.errors.attachment_document}"
+              .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
+              @focus="${() => this.resetFieldError('attachment_document', this)}"
+              @click="${() => this.resetFieldError('attachment_document', this)}"
+            ></etools-upload>
+          </div>
+          <div class="col-12">
+            <etools-checkbox
+              ?checked="${!this.data?.active}"
+              @sl-change="${(e: any) => this.updateField('active', !e.target.checked)}"
+            >
+              ${translate('INVALID')}
+            </etools-checkbox>
+          </div>
         </div>
       </etools-dialog>
     `;
@@ -180,11 +170,11 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           type
         };
     const endpoint = id
-      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.updatePdAttachment, {
           id: this.interventionId,
           attachment_id: id
         })
-      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdAttachments, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdAttachments, {
           id: this.interventionId
         });
     sendRequest({

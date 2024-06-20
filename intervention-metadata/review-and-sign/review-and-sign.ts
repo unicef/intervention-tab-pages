@@ -1,17 +1,17 @@
-import {customElement, LitElement, html, property} from 'lit-element';
-import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-input/paper-input';
-import '@polymer/paper-checkbox';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@unicef-polymer/etools-upload/etools-upload';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 
-import '@unicef-polymer/etools-date-time/datepicker-lite';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
@@ -21,7 +21,7 @@ import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../commo
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import isEmpty from 'lodash-es/isEmpty';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -34,8 +34,8 @@ import {translate} from 'lit-translate';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
 /**
  * @customElement
@@ -45,7 +45,7 @@ import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 @customElement('review-and-sign')
 export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
   render() {
     if (!this.data || !this.permissions) {
@@ -63,29 +63,14 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           margin-bottom: 24px;
         }
 
-
-
-        paper-input-container{
+        input-container {
           margin-inline-start: 0px;
         }
-        paper-input {
+
+        etools-input {
           width: 100%;
         }
-        paper-checkbox {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          min-height: 24px;
-          margin-inline-start: 0px;
-        }
-        paper-checkbox[disabled] {
-          cursor: not-allowed;
-          --paper-checkbox-unchecked-color: black;
-          --paper-checkbox-label: {
-            color: var(--primary-text-color);
-            opacity: 1;
-          }
-        }
+
         datepicker-lite {
           min-width: 100%;
         }
@@ -96,6 +81,15 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        .input-container {
+          margin: 0 12px 0 0;
+          color: var(--primary-text-color, #737373);
+          padding: 8px 0;
+          display: block;
+        }
+        .input-container .input-value {
+          padding: 3px 0;
+        }
       </style>
       <etools-content-panel
         show-expand-btn class="content-section"
@@ -105,8 +99,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6 layout-vertical">
+        <div class="row">
+          <div class="col-md-6 col-12">
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
               id="signedByAuthorizedOfficer"
@@ -132,9 +126,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             </etools-dropdown>
             ${
               this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)
-                ? html`<label for="partnerAuth" class="paper-label">
-                      ${translate('SIGNED_PARTNER_AUTH_OFFICER')}
-                    </label>
+                ? html`<label for="partnerAuth" class="label"> ${translate('SIGNED_PARTNER_AUTH_OFFICER')} </label>
                     <div id="partnerAuth">
                       ${this.renderReadonlyUserDetails(
                         this.originalData?.partner_authorized_officer_signatory
@@ -145,7 +137,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
                 : html``
             }
           </div>
-          <div class="col col-6">
+          <div class="col-md-6 col-12">
             <!-- Signed by Partner Date -->
             <datepicker-lite
               id="signedByPartnerDateField"
@@ -164,17 +156,13 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             >
             </datepicker-lite>
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col-md-6 col-12">
             <!-- Signed by UNICEF Authorized Officer -->
-            <paper-input-container>
-              <div slot="input" class="paper-input-input">
-                <span class="input-value"> ${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
-              </div>
-            </paper-input-container>
+            <div class="input-container">
+                <span class="input-value">${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
+            </div>
           </div>
-          <div class="col col-6">
+          <div class="col-md-6 col-12">
             <!-- Signed by UNICEF Date -->
             <datepicker-lite
               id="signedByUnicefDateField"
@@ -192,11 +180,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               selected-date-display-format="D MMM YYYY"
             >
             </datepicker-lite>
-          </div>
-        </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6 layout-vertical">
+           </div>
+          <div class="col-md-6 col-12">
             <!-- Signed by UNICEF -->
             <etools-dropdown
               id="signedByUnicef"
@@ -221,7 +206,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             </etools-dropdown>
             ${
               this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)
-                ? html`<label for="unicefSignatory" class="paper-label">${translate('SIGNED_UNICEF')}</label>
+                ? html`<label for="unicefSignatory" class="label">${translate('SIGNED_UNICEF')}</label>
                     <div id="unicefSignatory">
                       ${this.renderReadonlyUserDetails(
                         this.originalData?.unicef_signatory ? [this.originalData?.unicef_signatory] : []
@@ -230,9 +215,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
                 : html``
             }
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-8">
+          <div class="col-md-9 col-12">
             <!-- Signed PD/SPD -->
             <etools-upload
               id="signedIntervFile"
@@ -252,9 +235,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             >
             </etools-upload>
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-8">
+          <div class="col-md-9 col-12">
             <!-- TERMINATION DOC -->
             <etools-upload
               id="terminationDoc"
@@ -271,8 +252,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
-    .url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   originalData!: ReviewData;

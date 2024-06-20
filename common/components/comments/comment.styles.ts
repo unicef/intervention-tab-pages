@@ -1,4 +1,4 @@
-import {css, CSSResult} from 'lit-element';
+import {css, CSSResult} from 'lit';
 
 // language=css
 export const CommentStyles: CSSResult = css`
@@ -34,7 +34,7 @@ export const CommentStyles: CSSResult = css`
     background-color: var(--darker-divider-color);
     color: #ffffff;
     font-weight: 500;
-    font-size: 18px;
+    font-size: var(--etools-font-size-18, 18px);
     text-transform: uppercase;
   }
   .info {
@@ -46,7 +46,7 @@ export const CommentStyles: CSSResult = css`
     justify-content: space-between;
   }
   .name {
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     line-height: 24px;
     color: var(--primary-text-color);
     padding-inline-end: 6px;
@@ -56,18 +56,18 @@ export const CommentStyles: CSSResult = css`
     padding-inline-start: 6px;
   }
   .date {
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 16px;
     color: var(--secondary-text-color);
   }
   .message {
-    font-size: 14px;
+    font-size: var(--etools-font-size-14, 14px);
     line-height: 20px;
     color: var(--secondary-text-color);
     white-space: pre-line;
   }
   .deleted-message {
-    font-size: 14px;
+    font-size: var(--etools-font-size-14, 14px);
     line-height: 20px;
     color: var(--secondary-text-color);
     font-style: italic;
@@ -84,7 +84,7 @@ export const CommentStyles: CSSResult = css`
     align-items: center;
     margin-inline-end: 30px;
     font-weight: 500;
-    font-size: 13px;
+    font-size: var(--etools-font-size-13, 13px);
     letter-spacing: 0.038em;
     color: var(--secondary-text-color);
     cursor: pointer;
@@ -97,18 +97,16 @@ export const CommentStyles: CSSResult = css`
   .actions div:hover {
     text-decoration: underline;
   }
-  iron-icon {
+  etools-icon {
     margin-inline-end: 8px;
   }
   .delete {
-    width: 15px;
-    height: 15px;
+    --etools-icon-font-size: var(--etools-font-size-15, 15px);
     color: var(--primary-shade-of-red);
   }
-  iron-icon[icon='refresh'],
+  etools-icon[name='refresh'],
   .resolve {
-    width: 18px;
-    height: 18px;
+    --etools-icon-font-size: var(--etools-font-size-18, 18px);
     color: var(--secondary-text-color);
   }
   *[hidden] {
@@ -122,7 +120,7 @@ export const CommentStyles: CSSResult = css`
     cursor: pointer;
     text-decoration: underline;
   }
-  iron-icon[icon='refresh'] {
+  etools-icon[name='refresh'] {
     margin-inline-end: 2px;
   }
   *:focus-visible {

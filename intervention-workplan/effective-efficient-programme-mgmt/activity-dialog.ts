@@ -1,12 +1,13 @@
-import {LitElement, html, property, customElement, query} from 'lit-element';
-import '@polymer/paper-input/paper-input';
-import '@polymer/paper-input/paper-textarea';
-import '@unicef-polymer/etools-currency-amount-input';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {LitElement, html} from 'lit';
+import {property, customElement, query} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -18,11 +19,12 @@ import {getTotalCashFormatted} from '../../common/components/activity/get-total.
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 
 /**
  * @customElement
@@ -30,7 +32,7 @@ import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-
 @customElement('activity-dialog')
 export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
 
   render() {
@@ -44,33 +46,24 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         .layout-horizontal {
           overflow: hidden;
         }
-        etools-dialog::part(ed-paper-dialog) {
-          width: 98vw !important;
-          max-width: 1200px;
+        etools-dialog::part(panel) {
+          width: 1200px;
         }
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
+
         .input-level {
           padding: 25px 0;
         }
-        .total-input,
-        etools-currency-amount-input {
-          margin-inline-end: 24px;
-        }
         .total {
           justify-content: flex-end;
-        }
-        .total-input,
-        .total paper-input {
-          --paper-input-container-color: transparent;
-          --paper-input-container-focus-color: transparent;
         }
         .general-total {
           min-width: 155px;
         }
         .padd-bott {
           padding-bottom: 10px;
+        }
+        sl-switch {
+          padding-inline-start: 2px;
         }
       </style>
 
@@ -81,42 +74,40 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         dialog-title=${this.readonly ? translate('VIEW_ACTIVITY') : translate('EDIT_ACTIVITY')}
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
-        ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${this.onSaveClick}"
         .hideConfirmBtn="${this.readonly}"
       >
-        <div class="row-padding-v">
-          <paper-input
-            readonly
-            tabindex="-1"
-            id="title"
-            label=${translate('GENERAL.TITLE')}
-            always-float-label
-            placeholder="—"
-            .value="${this.data.title}"
-          >
-          </paper-input>
+        <div class="row">
+          <div class="col-12">
+            <etools-input
+              readonly
+              tabindex="-1"
+              id="title"
+              label=${translate('GENERAL.TITLE')}
+              always-float-label
+              placeholder="—"
+              .value="${this.data.title}"
+            >
+            </etools-input>
+          </div>
+          <div class="col-12">
+            <etools-textarea
+              id="description"
+              label=${translate('GENERAL.DESCRIPTION')}
+              readonly
+              tabindex="-1"
+              always-float-label
+              placeholder="—"
+              .value="${this.data.description}"
+            ></etools-textarea>
+          </div>
         </div>
-
-        <div class="row-padding-v">
-          <paper-textarea
-            id="description"
-            label=${translate('GENERAL.DESCRIPTION')}
-            readonly
-            tabindex="-1"
-            always-float-label
-            placeholder="—"
-            .value="${this.data.description}"
-          ></paper-textarea>
-        </div>
-
-        <div class="layout-horizontal align-items-center padd-bott">
+        <div class="row align-items-center padd-bott">
           ${!this.useInputLevel
-            ? html`
-                  <etools-currency-amount-input
-                    class="col-3"
+            ? html` <div class="col-md-3 col-6">
+                  <etools-currency
                     id="partnerContribution"
                     label=${translate('PARTNER_CASH_BUDGET')}
                     .value="${this.data[this.getPropertyName('partner')]}"
@@ -126,10 +117,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     ?required="${!this.useInputLevel}"
                     auto-validate
                   >
-                  </etools-currency-amount-input>
-
-                  <etools-currency-amount-input
-                    class="col-3"
+                  </etools-currency>
+                </div>
+                <div class="col-md-3 col-6">
+                  <etools-currency
                     id="unicefCash"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     .value="${this.data[this.getPropertyName('unicef')]}"
@@ -139,44 +130,47 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     ?required="${!this.useInputLevel}"
                     auto-validate
                   >
-                  </etools-currency-amount-input>
+                  </etools-currency>
                 </div>`
             : html`
-                <paper-input
-                  readonly
-                  tabindex="-1"
-                  class="col-3 total-input"
-                  label=${translate('PARTNER_CASH_BUDGET')}
-                  .value="${this.getSumValue('cso_cash')}"
-                ></paper-input>
-                <paper-input
-                  readonly
-                  tabindex="-1"
-                  class="col-3 total-input"
-                  label=${translate('UNICEF_CASH_BUDGET')}
-                  .value="${this.getSumValue('unicef_cash')}"
-                ></paper-input>
+                <div class="col-md-3 col-6">
+                  <etools-input
+                    readonly
+                    tabindex="-1"
+                    label=${translate('PARTNER_CASH_BUDGET')}
+                    .value="${this.getSumValue('cso_cash')}"
+                  ></etools-input>
+                </div>
+                <div class="col-md-3 col-6">
+                  <etools-input
+                    readonly
+                    tabindex="-1"
+                    label=${translate('UNICEF_CASH_BUDGET')}
+                    .value="${this.getSumValue('unicef_cash')}"
+                  ></etools-input>
+                </div>
               `}
-          <div class="flex-auto layout-horizontal total">
-            <paper-input
+          <div class="offset-md-3 offset-sm-0 col-md-3 col-12 total">
+            <etools-input
               readonly
               tabindex="-1"
-              class="col-6 general-total"
+              class="general-total"
               label="${translate('GENERAL.TOTAL')} (${this.currency})"
               .value="${this.getTotalValue()}"
-            ></paper-input>
+            ></etools-input>
           </div>
         </div>
 
-        <div class="layout-horizontal input-level">
-          <paper-toggle-button
-            ?checked="${this.useInputLevel}"
-            @checked-changed="${this.inputLevelChange}"
-            class="col-5"
-            ?disabled="${this.readonly}"
-          >
-            ${translate('USE_INPUT_LEVEL')}
-          </paper-toggle-button>
+        <div class="row input-level">
+          <div class="col-12">
+            <sl-switch
+              ?checked="${this.useInputLevel}"
+              @sl-change="${this.inputLevelChange}"
+              ?disabled="${this.readonly}"
+            >
+              ${translate('USE_INPUT_LEVEL')}
+            </sl-switch>
+          </div>
         </div>
         <activity-items-table
           .dialogElement=${this.dialogElement}
@@ -226,8 +220,8 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
 
   valdateNonInputLevFields() {
-    const pCash = this.shadowRoot?.querySelector<EtoolsCurrencyAmountInput>('#partnerContribution')!;
-    const uCash = this.shadowRoot?.querySelector<EtoolsCurrencyAmountInput>('#unicefCash')!;
+    const pCash = this.shadowRoot?.querySelector<EtoolsCurrency>('#partnerContribution')!;
+    const uCash = this.shadowRoot?.querySelector<EtoolsCurrency>('#unicefCash')!;
     return pCash.validate() && uCash.validate();
   }
 
@@ -290,7 +284,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   }
 
   inputLevelChange(e: CustomEvent): void {
-    if (!e.detail) {
+    if (!e.target) {
       return;
     }
     const element = e.currentTarget as HTMLInputElement;

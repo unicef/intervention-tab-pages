@@ -1,23 +1,21 @@
-import {customElement, html, TemplateResult, property, CSSResultArray, css, query, queryAll} from 'lit-element';
+import {html, TemplateResult, CSSResultArray, css} from 'lit';
+import {customElement, query} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import './comment';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentsItemsNameMap} from './comments-items-name-map';
 import {EditComments} from './edit-comments-base';
-import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {removeTrailingIds} from './comments.helpers';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends EditComments {
-  @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
-  @property() dialogOpened = true;
-
   get dialogTitle(): string {
     if (!this.relatedTo) {
       return '';
@@ -43,7 +41,7 @@ export class CommentsDialog extends EditComments {
       getStore().getState().commentsData.collection[interventionId];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
-    this.requestUpdate().then(() => this.scrollDown());
+    this.updateComplete.then(() => this.scrollDown());
   }
 
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
@@ -52,26 +50,13 @@ export class CommentsDialog extends EditComments {
     return html`
       ${sharedStyles}
       <style>
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
-        paper-textarea {
-          outline: none;
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-          }
+        etools-textarea::part(textarea) {
+          max-height: 96px;
+          overflow-y: auto;
         }
       </style>
-      <etools-dialog
-        size="md"
-        keep-dialog-open
-        ?opened="${this.dialogOpened}"
-        dialog-title="${this.dialogTitle}"
-        @close="${this.onClose}"
-        no-padding
-      >
-        <div class="container">
+      <etools-dialog size="md" keep-dialog-open dialog-title="${this.dialogTitle}" @close="${this.onClose}" no-padding>
+        <div class="container-dialog">
           ${this.comments.map(
             (comment: any, index: number) =>
               html`<comment-element
@@ -87,7 +72,7 @@ export class CommentsDialog extends EditComments {
           <div class="no-comments" ?hidden="${this.comments.length}">${translate('NO_COMMENTS')}</div>
         </div>
         <div class="message-input" slot="buttons">
-          <paper-textarea
+          <etools-textarea
             max-rows="3"
             no-label-float
             placeholder="${translate('GENERAL.ENTER_MESSAGE_HERE')}"
@@ -98,9 +83,11 @@ export class CommentsDialog extends EditComments {
             }}"
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
-          ></paper-textarea>
-          <paper-button class="send-btn" @click="${() => this.addComment()}">${translate('POST')}</paper-button>
-          <paper-button class="cancel-btn" @click="${() => this.onClose()}">${translate('CLOSE')}</paper-button>
+          ></etools-textarea>
+          <etools-button variant="primary" @click="${() => this.addComment()}">${translate('POST')}</etools-button>
+          <etools-button variant="text" class="neutral" @click="${() => this.onClose()}"
+            >${translate('CLOSE')}</etools-button
+          >
         </div>
       </etools-dialog>
     `;
@@ -118,7 +105,6 @@ export class CommentsDialog extends EditComments {
 
   _handleEscape(event: KeyboardEvent) {
     if (event.key === 'Escape') {
-      this.dialogOpened = false;
       this.onClose();
     }
   }
@@ -129,13 +115,11 @@ export class CommentsDialog extends EditComments {
 
   onKeyup(event: KeyboardEvent): void {
     if (event.key !== 'Enter') {
-      this.updateHeight();
       return;
     }
     if (event.ctrlKey) {
       this.newMessageText += '\n';
       this.requestUpdate();
-      this.updateHeight();
     } else {
       this.addComment();
     }
@@ -144,13 +128,9 @@ export class CommentsDialog extends EditComments {
   scrollDown(): void {
     if (this.dialogElement) {
       this.dialogElement.scrollDown();
-      this.dialogElement.notifyResize();
     }
   }
 
-  private updateHeight(): void {
-    this.dialogElement.notifyResize();
-  }
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -170,15 +150,9 @@ export class CommentsDialog extends EditComments {
         comment-element[my-comment] {
           align-self: flex-end;
         }
-        .cancel-btn {
-          color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
-        }
-        .send-btn {
-          background: var(--primary-color);
-          color: #ffffff;
-        }
+
         .no-comments {
-          font-size: 15px;
+          font-size: var(--etools-font-size-15, 15px);
           font-style: italic;
           line-height: 16px;
           color: var(--secondary-text-color);

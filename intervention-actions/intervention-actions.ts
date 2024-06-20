@@ -1,14 +1,12 @@
-import {CSSResultArray, LitElement, TemplateResult, html, property, customElement} from 'lit-element';
+import {CSSResultArray, LitElement, TemplateResult, css, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-menu-button/paper-menu-button';
-import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -39,21 +37,39 @@ import {
   SEND_BACK_REVIEW,
   UNLOCK
 } from './intervention-actions.constants';
-import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {
+  defaultKeyTranslate,
+  formatServerErrorAsText
+} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {AnyObject, EtoolsEndpoint, GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
 import {RootState} from '../common/types/store.types';
+
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 @customElement('intervention-actions')
 export class InterventionActions extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
-    return [InterventionActionsStyles];
+    return [
+      InterventionActionsStyles,
+      css`
+        etools-button[slot='trigger'] {
+          min-width: 45px;
+          width: 45px;
+          border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
+          --sl-spacing-medium: 0;
+        }
+      `
+    ];
   }
 
   @property() actions: string[] = [];
@@ -67,7 +83,7 @@ export class InterventionActions extends connectStore(LitElement) {
   @property({type: Number})
   commonDataLoadedTimestamp = 0;
 
-  private isEPDApp = ROOT_PATH === '/epd/';
+  private isEPDApp = Environment.basePath === '/epd/';
 
   connectedCallback() {
     super.connectedCallback();
@@ -112,9 +128,9 @@ export class InterventionActions extends connectStore(LitElement) {
   private renderBackAction(action?: string): TemplateResult {
     return action
       ? html`
-          <paper-button class="main-button back-button" @click="${() => this.processAction(action)}">
+          <etools-button variant="primary" class="back-button" @click="${() => this.processAction(action)}">
             ${arrowLeftIcon} <span>${this.actionsNamesMap[action]}</span>
-          </paper-button>
+          </etools-button>
         `
       : html``;
   }
@@ -125,9 +141,13 @@ export class InterventionActions extends connectStore(LitElement) {
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
       ? html`
-          <paper-button class="${className}" @click="${() => this.processAction(mainAction)}">
-            ${this.getMainActionTranslatedText(mainAction)} ${this.getAdditionalTransitions(actions)}
-          </paper-button>
+          <etools-button
+            variant="primary"
+            class="${className} split-btn"
+            @click="${() => this.processAction(mainAction)}"
+          >
+            <span>${this.getMainActionTranslatedText(mainAction)}</span> ${this.getAdditionalTransitions(actions)}
+          </etools-button>
         `
       : html``;
   }
@@ -147,18 +167,20 @@ export class InterventionActions extends connectStore(LitElement) {
       return html``;
     }
     return html`
-      <paper-menu-button horizontal-align @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
-        <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
-        <div slot="dropdown-content">
+      <sl-dropdown @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
+        <etools-button slot="trigger" variant="primary" size="small">
+          <etools-icon name="expand-more"></etools-icon>
+        </etools-button>
+        <sl-menu>
           ${actions.map(
             (action: string) => html`
-              <div class="other-options" @click="${() => this.processAction(action)}">
+              <sl-menu-item @click="${() => this.processAction(action)}">
                 ${this.actionsNamesMap[action]}
-              </div>
+              </sl-menu-item>
             `
           )}
-        </div>
-      </paper-menu-button>
+        </sl-menu>
+      </sl-dropdown>
     `;
   }
 
@@ -237,7 +259,7 @@ export class InterventionActions extends connectStore(LitElement) {
 
     const loadingMessage = getTranslation(action === AMENDMENT_MERGE ? 'AMENDMENT_MERGE_MESSAGE' : 'GENERAL.LOADING');
 
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionAction, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAction, {
       interventionId: this.interventionPartial.id,
       action
     });
@@ -246,7 +268,6 @@ export class InterventionActions extends connectStore(LitElement) {
       loadingSource: 'intervention-actions',
       message: loadingMessage
     });
-
     sendRequest({
       endpoint,
       body,
@@ -298,7 +319,7 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private redirectToTabPage(id: number | null, tabName: string) {
-    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${id}/${tabName}`);
+    history.pushState(window.history.state, '', `${Environment.basePath}interventions/${id}/${tabName}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
@@ -398,9 +419,9 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private closeDropdown(): void {
-    const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
+    const element: SlDropdown | null = this.shadowRoot!.querySelector('sl-dropdown');
     if (element) {
-      element.close();
+      element.open = false;
     }
   }
 

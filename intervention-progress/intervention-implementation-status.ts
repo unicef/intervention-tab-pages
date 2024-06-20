@@ -1,6 +1,7 @@
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
-import {customElement, html, LitElement, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import {html, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {translate} from 'lit-translate';
 import get from 'lodash-es/get';
 import {RootState} from '../common/types/store.types';
@@ -9,14 +10,14 @@ import './fund-reservations-display.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 
 @customElement('intervention-implementation-status')
 export class InterventionImplementationStatus extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -38,12 +39,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(
-        get(state, 'app.routeDetails'),
-        'interventions',
-        TABS.Progress,
-        TABS.ImplementationStatus
-      )
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.ImplementationStatus)
     ) {
       return;
     }

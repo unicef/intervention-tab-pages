@@ -1,17 +1,8 @@
-import {
-  LitElement,
-  html,
-  TemplateResult,
-  CSSResultArray,
-  css,
-  customElement,
-  property,
-  PropertyValues
-} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/iron-icons';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
@@ -23,16 +14,16 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getIntervention} from '../../common/actions/interventions';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {translate, get as getTranslation} from 'lit-translate';
 import {
   AsyncAction,
@@ -48,7 +39,9 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/ac
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
-import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
+import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -60,8 +53,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Boolean}) showInactiveIndicators!: boolean;
   @property({type: Boolean}) inAmendment!: boolean;
-  @property({type: String})
-  inAmendmentDate!: string;
+  @property({type: String}) inAmendmentDate!: string;
+  @property({type: Boolean}) lowResolutionLayout = false;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -79,18 +72,24 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     // language=HTML
     return html`
       ${sharedStyles}
+
+      <etools-media-query
+        query="(max-width: 767px)"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
       <etools-data-table-row .detailsOpened="${true}" id="indicatorsRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <paper-icon-button
-              icon="add-box"
+            <etools-icon-button
+              name="add-box"
               slot="custom-icon"
               class="add"
-              tabindex="0"
               @click="${() => this.openIndicatorDialog()}"
               ?hidden="${this.readonly}"
-            ></paper-icon-button>
+            ></etools-icon-button>
             <span class="no-wrap" slot="message">${translate('ADD_PD_INDICATOR')}</span>
           </etools-info-tooltip>
           <info-icon-tooltip
@@ -100,7 +99,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           ></info-icon-tooltip>
         </div>
         <div slot="row-data-details">
-          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.indicators)}">
+          <div
+            class="table-row table-head align-items-center"
+            ?hidden="${isEmptyObject(this.indicators) || this.lowResolutionLayout}"
+          >
             <div class="flex-1 left-align">${translate('INDICATOR')}</div>
             <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
             <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
@@ -118,6 +120,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
                     .readonly="${this.readonly}"
                     .inAmendment="${this.inAmendment}"
                     .inAmendmentDate="${this.inAmendmentDate}"
+                    .lowResolutionLayout="${this.lowResolutionLayout}"
                     ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
                     @open-edit-indicator-dialog="${(e: CustomEvent) =>
                       this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
@@ -153,7 +156,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) =>
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, etools-icon-button').forEach((el) =>
       callClickOnSpacePushListener(el)
     );
   }
@@ -220,7 +223,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   deactivateIndicator(indicatorId: string) {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
     fireEvent(this, 'global-loading', {
@@ -269,7 +272,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       active: true,
       loadingSource: 'interv-indicator-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
     sendRequest({
@@ -321,7 +324,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ActivitiesAndIndicatorsStyles,
       css`

@@ -1,18 +1,20 @@
-import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {LitElement, html, TemplateResult} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention} from '../../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import {AsyncAction, ResultIndicator, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -36,10 +38,11 @@ export class CpOutputDialog extends LitElement {
     if (!data) {
       return;
     }
+
     const {cpOutputs, resultLink, interventionId, canChangeCpOp}: any = data;
     if (resultLink) {
       this.cpOutputId = resultLink.cp_output;
-      this.selectedCpOutput = resultLink.cp_output;
+      this.selectedCpOutput = Number(resultLink.cp_output);
       this.cpOutputName = resultLink.cp_output_name;
       this.selectedIndicators = [...(resultLink.ram_indicators || [])];
       this.resultLinkId = resultLink.id;
@@ -62,19 +65,15 @@ export class CpOutputDialog extends LitElement {
     return title;
   }
 
+  static get styles() {
+    return [layoutStyles];
+  }
+
   protected render(): TemplateResult {
     // language=html
     return html`
       ${sharedStyles}
       <style>
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
-
-        etools-dialog::part(ed-button-styles) {
-          margin-top: 0;
-        }
-
         .container {
           padding: 12px 24px;
         }
@@ -82,7 +81,6 @@ export class CpOutputDialog extends LitElement {
       <etools-dialog
         size="md"
         keep-dialog-open
-        ?opened="${this.dialogOpened}"
         dialog-title="${this.dialogTitle} "
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
@@ -90,51 +88,54 @@ export class CpOutputDialog extends LitElement {
         spinner-text="${this.spinnerText}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
-        no-padding
       >
-        <div class="container layout vertical">
+        <div class="row">
           ${!this.cpOutputId || this.canChangeCPOutput
             ? html`
-                <etools-dropdown
-                  class="validate-input flex-1"
-                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                    this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
-                  ?trigger-value-change-event="${!this.loadingInProcess}"
-                  .selected="${this.selectedCpOutput}"
-                  label=${translate('CP_OUTPUT')}
-                  placeholder="&#8212;"
-                  .options="${this.cpOutputs}"
-                  option-label="name"
-                  option-value="id"
-                  allow-outside-scroll
-                  dynamic-align
-                  required
-                  ?invalid="${this.errors.cp_output}"
-                  .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
-                  @focus="${() => this.resetFieldError('cp_output')}"
-                  @click="${() => this.resetFieldError('cp_output')}"
-                ></etools-dropdown>
+                <div class="col-12">
+                  <etools-dropdown
+                    class="validate-input"
+                    @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                      this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
+                    ?trigger-value-change-event="${!this.loadingInProcess}"
+                    .selected="${this.selectedCpOutput}"
+                    label=${translate('CP_OUTPUT')}
+                    placeholder="&#8212;"
+                    .options="${this.cpOutputs}"
+                    option-label="name"
+                    option-value="id"
+                    allow-outside-scroll
+                    dynamic-align
+                    required
+                    ?invalid="${this.errors.cp_output}"
+                    .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
+                    @focus="${() => this.resetFieldError('cp_output')}"
+                    @click="${() => this.resetFieldError('cp_output')}"
+                  ></etools-dropdown>
+                </div>
               `
             : html``}
-          <etools-dropdown-multi
-            class="validate-input disabled-as-readonly flex-1"
-            @etools-selected-items-changed="${({detail}: CustomEvent) =>
-              this.onIndicatorsSelected(detail.selectedItems)}"
-            ?trigger-value-change-event="${!this.loadingInProcess}"
-            .selectedValues="${this.selectedIndicators}"
-            label=${translate('RAM_INDICATORS')}
-            placeholder="&#8212;"
-            .options="${this.indicators}"
-            option-label="name"
-            option-value="id"
-            allow-outside-scroll
-            dynamic-align
-            ?invalid="${this.errors.ram_indicators}"
-            ?disabled="${!this.selectedCpOutput}"
-            .errorMessage="${this.errors.ram_indicators && this.errors.ram_indicators[0]}"
-            @focus="${() => this.resetFieldError('ram_indicators')}"
-            @click="${() => this.resetFieldError('ram_indicators')}"
-          ></etools-dropdown-multi>
+          <div class="col-12">
+            <etools-dropdown-multi
+              class="validate-input disabled-as-readonly"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.onIndicatorsSelected(detail.selectedItems)}"
+              ?trigger-value-change-event="${!this.loadingInProcess}"
+              .selectedValues="${this.selectedIndicators}"
+              label=${translate('RAM_INDICATORS')}
+              placeholder="&#8212;"
+              .options="${this.indicators}"
+              option-label="name"
+              option-value="id"
+              allow-outside-scroll
+              dynamic-align
+              ?invalid="${this.errors.ram_indicators}"
+              ?disabled="${!this.selectedCpOutput}"
+              .errorMessage="${this.errors.ram_indicators && this.errors.ram_indicators[0]}"
+              @focus="${() => this.resetFieldError('ram_indicators')}"
+              @click="${() => this.resetFieldError('ram_indicators')}"
+            ></etools-dropdown-multi>
+          </div>
         </div>
       </etools-dialog>
     `;
@@ -148,9 +149,11 @@ export class CpOutputDialog extends LitElement {
   }
 
   onCpOutputSelected(id: number) {
-    this.selectedCpOutput = id;
-    this.selectedIndicators = [];
-    this.loadRamIndicators(id);
+    if (this.selectedCpOutput !== Number(id)) {
+      this.selectedCpOutput = Number(id);
+      this.selectedIndicators = [];
+      this.loadRamIndicators(id);
+    }
   }
 
   resetFieldError(field: string) {
@@ -170,10 +173,10 @@ export class CpOutputDialog extends LitElement {
     this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
-      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
           result_link: this.resultLinkId
         })
-      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinks, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinks, {
           id: this.interventionId
         });
     const method = this.cpOutputId ? 'PATCH' : 'POST';

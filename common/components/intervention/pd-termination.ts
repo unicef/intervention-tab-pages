@@ -1,23 +1,24 @@
-import {LitElement, html, customElement, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-upload/etools-upload.js';
-import '@unicef-polymer/etools-date-time/datepicker-lite';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
 import '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 /**
  * @LitElement
@@ -26,7 +27,7 @@ declare const dayjs: any;
 @customElement('pd-termination')
 export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -46,18 +47,19 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         no-padding
         keep-dialog-open
         id="pdTermination"
-        ?opened="${this.dialogOpened}"
         size="md"
         ?hidden="${this.warningOpened}"
         ok-btn-text="${translate('TERMINATE')}"
         dialog-title="${translate('TERMINATE_PD_SPD')}"
+        confirmBtnVariant="danger"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
         ?show-spinner="${this.savingInProcess}"
       >
-        <div class="row-h flex-c">
+        <div class="row">
           <datepicker-lite
+            class="col-12"
             id="terminationDate"
             label="${translate('TERMINATION_DATE')}"
             .value="${this.termination.date}"
@@ -71,8 +73,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
           >
           </datepicker-lite>
         </div>
-        <div class="row-h flex-c">
+        <div class="row">
           <etools-upload
+            class="col-12"
             id="terminationNotice"
             label="${translate('TERMINATION_NOTICE')}"
             accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
@@ -84,8 +87,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
             error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
           >
         </div>
-        <div class="row-h flex-c">
+        <div class="row">
           <etools-warn-message-lit
+            class="col-12"
             .messages="${this.warnMessages}"
           >
           </etools-warn-message-lit>
@@ -102,9 +106,6 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   interventionId!: number;
 
   @property({type: Boolean})
-  opened!: boolean;
-
-  @property({type: Boolean})
   warningOpened!: boolean;
 
   @property({type: Object})
@@ -118,9 +119,6 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
 
   @property({type: Boolean})
   uploadInProgress = false;
-
-  @property({type: Boolean})
-  dialogOpened = true;
 
   @property()
   savingInProcess = false;
@@ -152,7 +150,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   }
 
   updateDate(terminationDate: Date) {
-    this.termination.date = formatDate(terminationDate, 'YYYY-MM-DD');
+    this.termination.date = formatDate(terminationDate, 'YYYY-MM-DD')!;
     this.termination = {...this.termination};
   }
 
@@ -166,7 +164,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
     }
     this.envFlagsStateChanged(getStore().getState());
     if (this.environmentFlags && !this.environmentFlags.prp_mode_off && this.environmentFlags.prp_server_on) {
-      this.dialogOpened = false;
+      this.warningOpened = true;
       openDialog({
         dialog: 'are-you-sure',
         dialogData: {
@@ -176,6 +174,8 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
       }).then(({confirmed}) => {
         if (confirmed) {
           this.terminatePD();
+        } else {
+          this.warningOpened = false;
         }
       });
     } else {

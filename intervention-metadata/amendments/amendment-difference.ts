@@ -1,4 +1,5 @@
-import {css, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {css, html, LitElement, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {translate} from 'lit-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
@@ -28,11 +29,11 @@ export class AmendmentDifference extends LitElement {
         }
         .field-name {
           margin: 0 0 10px;
-          font-size: 15px;
+          font-size: var(--etools-font-size-15, 15px);
         }
         .offset span {
           font-style: italic;
-          font-size: 13px;
+          font-size: var(--etools-font-size-13, 13px);
         }
         .action-name {
           display: inline-block;
@@ -40,7 +41,7 @@ export class AmendmentDifference extends LitElement {
           margin-bottom: 10px;
         }
         span.changed-value {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 500;
           font-style: normal;
         }

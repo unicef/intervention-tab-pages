@@ -1,4 +1,5 @@
-import {LitElement, customElement} from 'lit-element';
+import {LitElement} from 'lit';
+import {customElement} from 'lit/decorators.js';
 // eslint-disable-next-line max-len
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';

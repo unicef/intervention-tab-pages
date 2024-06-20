@@ -1,21 +1,22 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@polymer/paper-input/paper-input';
-import '@polymer/paper-input/paper-textarea';
-import '@unicef-polymer/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {EtoolsEndpoint, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
@@ -28,29 +29,16 @@ import {get as getTranslation} from 'lit-translate';
 @customElement('supply-agreement-dialog')
 export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
 
   render() {
     // language=HTML
     return html`
       ${sharedStyles}
-      <style>        
-        paper-textarea {
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-          }
-        }
-        paper-input {
-          width: 100%;
-        }
-      </style>
-
       <etools-dialog
         id="supplyAgreementDialog"
         size="md"
-        ?opened="${this.dialogOpened}"
         ?hide-confirm-btn="${!this.confirmBtnTxt}"
         ?show-spinner="${this.requestInProcess}"
         dialog-title="${this.dialogTitle}"
@@ -61,121 +49,108 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         @confirm-btn-clicked="${this.onSaveClick}"
         @close="${() => this.onClose()}"
       >
+        <div class="row">
+          <div class="col col-12">
+            <etools-input
+              class="w100"
+              value="${this.data.title}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
+              label=${translate(translatesMap.title)}
+              type="text"
+              placeholder="—"
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
+              auto-validate
+              required
+            ></etools-input>
+          </div>
+          <div class="col col-md-4 col-6">
+            <etools-input
+              value="${this.data.unit_number ? this.data.unit_number : ''}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
+              label=${translate(translatesMap.unit_number)}
+              allowed-pattern="[0-9]"
+              placeholder="—"
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
+              required
+              auto-validate
+            >
+            </etools-input>
+          </div>
+          <div class="col col-md-4 col-6">
+            <etools-currency
+              id="unicefCash"
+              label=${translate(translatesMap.unit_price)}
+              placeholder="—"
+              required
+              .value="${this.data.unit_price ? this.data.unit_price : ''}"
+              @focus="${() => (this.autoValidate = true)}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
+              .autoValidate="${this.autoValidate}"
+              .currency="${this.currency}"
+            >
+            </etools-currency>
+          </div>
+          <div class="col col-md-4 col-12">
+            <etools-dropdown
+              label=${translate(translatesMap.provided_by)}
+              placeholder="&#8212;"
+              .options="${this.providers}"
+              option-label="label"
+              option-value="id"
+              .selected="${this.data.provided_by}"
+              required
+              hide-search
+              auto-validate
+              trigger-value-change-event
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                this.selectedItemChanged(detail, 'provided_by');
+              }}"
+            >
+            </etools-dropdown>
+          </div>
+          ${this.isUnicefUser
+            ? html` <div class="col col-md-8 col-12">
+                <etools-dropdown
+                  class="cp-out"
+                  label=${translate(translatesMap.result)}
+                  placeholder="&#8212;"
+                  .options="${this.cpOutputs}"
+                  option-label="cp_output_name"
+                  option-value="id"
+                  .selected="${this.data.result}"
+                  trigger-value-change-event
+                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                    this.selectedItemChanged(detail, 'result');
+                  }}"
+                >
+                </etools-dropdown>
+              </div>`
+            : html``}
 
-      <div class="layout-horizontal">
-        <div class="col col-12">
-          <paper-input
-            class="w100"
-            value="${this.data.title}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            label=${translate(translatesMap.title)}
-            type="text"
-            placeholder="—"
-            error-message=${translate('GENERAL.REQUIRED_FIELD')}
-            auto-validate
-            required
-          >
+          <div class="col col-md-4 col-12" ?hidden="${this.data.provided_by == 'partner'}">
+            <etools-input
+              id="unicefProductNumber"
+              label=${translate(translatesMap.unicef_product_number)}
+              placeholder="—"
+              .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
+            >
+            </etools-input>
+          </div>
+          <div class="col col-12">
+            <etools-textarea
+              id="otherMentions"
+              label=${translate(translatesMap.other_mentions)}
+              always-float-label
+              placeholder="—"
+              .value="${this.data.other_mentions}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_mentions')}"
+            ></etools-textarea>
+          </div>
         </div>
-      </div>
-      <div class="layout-horizontal">
-        <div class="col col-4">
-          <paper-input
-            value="${this.data.unit_number ? this.data.unit_number : ''}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-            label=${translate(translatesMap.unit_number)}
-            allowed-pattern="[0-9]"
-            placeholder="—"
-            error-message=${translate('GENERAL.REQUIRED_FIELD')}
-            required
-            auto-validate
-          >
-          </paper-input>
-        </div>
-        <div class="col col-4">
-          <etools-currency-amount-input
-            id="unicefCash"
-            label=${translate(translatesMap.unit_price)}
-            placeholder="—"
-            required
-            .value="${this.data.unit_price ? this.data.unit_price : ''}"
-            @focus="${() => (this.autoValidate = true)}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
-            .autoValidate="${this.autoValidate}"
-            .currency="${this.currency}"
-          >
-          </etools-currency-amount-input>
-        </div>
-        <div class="col col-4">
-          <etools-dropdown
-            label=${translate(translatesMap.provided_by)}
-            placeholder="&#8212;"
-            .options="${this.providers}"
-            option-label="label"
-            option-value="id"
-            .selected="${this.data.provided_by}"
-            required
-            auto-validate
-            trigger-value-change-event
-            @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'provided_by');
-            }}"
-          >
-          </etools-dropdown>
-        </div>
-      </div>
-      <div class="layout-horizontal">
-      ${
-        this.isUnicefUser
-          ? html` <div class="col col-8">
-              <etools-dropdown
-                class="cp-out"
-                label=${translate(translatesMap.result)}
-                placeholder="&#8212;"
-                .options="${this.cpOutputs}"
-                option-label="cp_output_name"
-                option-value="id"
-                .selected="${this.data.result}"
-                trigger-value-change-event
-                @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                  this.selectedItemChanged(detail, 'result');
-                }}"
-              >
-              </etools-dropdown>
-            </div>`
-          : html``
-      }
-
-        <div class="col col-4" ?hidden="${this.data.provided_by == 'partner'}">
-          <paper-input
-            id="unicefProductNumber"
-            label=${translate(translatesMap.unicef_product_number)}
-            placeholder="—"
-            .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
-          >
-          </paper-input>
-
-        </div>
-
-      </div>
-
-      <div class="layout-horizontal">
-        <div class="col col-12">
-          <paper-textarea
-            id="otherMentions"
-            label=${translate(translatesMap.other_mentions)}
-            always-float-label
-            placeholder="—"
-            .value="${this.data.other_mentions}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_mentions')}"
-          ></paper-textarea>
-        </div>
-      </div>
       </etools-dialog>
     `;
   }
-
-  @property() protected dialogOpened = true;
 
   @property({type: Boolean})
   requestInProcess = false;
@@ -246,10 +221,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     }
     this.requestInProcess = true;
     const endpoint = this.isNewRecord
-      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementAdd, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementAdd, {
           interventionId: this.interventionId
         })
-      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
           interventionId: this.interventionId,
           supplyId: this.data.id
         });

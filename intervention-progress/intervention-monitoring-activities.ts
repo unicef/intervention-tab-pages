@@ -1,6 +1,7 @@
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
-import {customElement, html, LitElement, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import {html, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {translate} from 'lit-translate';
 import get from 'lodash-es/get';
 import {RootState} from '../common/types/store.types';
@@ -9,14 +10,14 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import './monitoring-visits-list';
 import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 
 @customElement('intervention-monitoring-activities')
 export class InterventionMonitoringActivities extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -29,7 +30,6 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
         <monitoring-visits-list
           .interventionId="${this.intervention?.id}"
           .partnerId="${this.intervention?.partner_id}"
-          showTpmVisits
         >
         </monitoring-visits-list>
       </etools-content-panel>
@@ -40,12 +40,7 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(
-        get(state, 'app.routeDetails'),
-        'interventions',
-        TABS.Progress,
-        TABS.MonitoringActivities
-      )
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.MonitoringActivities)
     ) {
       return;
     }

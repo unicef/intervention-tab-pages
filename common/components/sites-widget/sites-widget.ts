@@ -1,19 +1,10 @@
-import {
-  CSSResultArray,
-  customElement,
-  html,
-  LitElement,
-  property,
-  PropertyValues,
-  query,
-  TemplateResult
-} from 'lit-element';
-import {repeat} from 'lit-html/directives/repeat';
+import {CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
+import {repeat} from 'lit/directives/repeat.js';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {LatLngTuple} from 'leaflet';
-import {IMarker, MapHelper, defaultIcon, markedIcon, MarkerDataObj} from './map-mixin';
+import {IMarker, MapHelper, MarkerDataObj} from './map-mixin';
 import {LocationWidgetStyles} from './location-widget.styles';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -23,7 +14,7 @@ import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
-const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
+const DEFAULT_COORDINATES = [-0.09, 51.505];
 
 @customElement('sites-widget')
 export class LocationSitesWidgetComponent extends connectStore(LitElement) {
@@ -37,11 +28,11 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   @property() private mapInitializationProcess = false;
   @query('#map') private mapElement!: HTMLElement;
 
-  protected defaultMapCenter: LatLngTuple = DEFAULT_COORDINATES;
+  protected defaultMapCenter = DEFAULT_COORDINATES;
   private MapHelper!: MapHelper;
 
   static get styles(): CSSResultArray {
-    return [elevationStyles, gridLayoutStylesLit, LocationWidgetStyles, leafletStyles];
+    return [elevationStyles, layoutStyles, LocationWidgetStyles, leafletStyles];
   }
   get itemStyle(): string {
     // language=CSS
@@ -118,7 +109,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         <div class="map-and-list">
           <div id="map"></div>
           <div class="list">
-            <paper-input
+            <etools-input
               class="search-input"
               type="search"
               .value="${this.locationSearch}"
@@ -126,8 +117,8 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               placeholder="${translate('INTERVENTIONS_LIST.SEARCH_RECORDS')}"
               inline
             >
-              <iron-icon icon="search" slot="prefix"></iron-icon>
-            </paper-input>
+              <etools-icon name="search" slot="prefix"></etools-icon>
+            </etools-input>
 
             <div class="locations-list" tabindex="0">
               ${repeat(
@@ -139,14 +130,14 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
                     @keypress="${this.onSiteKeyPress}"
                     tabindex="-1"
                   >
-                    <div class="location-name" tabindex="0" @tap="${() => this.onSiteLineClick(site)}">
+                    <div class="location-name" tabindex="0" @click="${() => this.onSiteLineClick(site)}">
                       <b>${site.name}</b>
                     </div>
                     <div
                       class="deselect-btn"
                       id="deselect_btn_${site.id}"
                       tabindex="${this.isSiteSelected(site.id) ? 0 : -1}"
-                      @tap="${() => this.onRemoveSiteClick(site)}"
+                      @click="${() => this.onRemoveSiteClick(site)}"
                     >
                       <span>&#10008;</span>
                     </div>
@@ -254,6 +245,24 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   setMarkerIcon(id: number, selected: boolean) {
     const marker = this.MapHelper.staticMarkers?.filter((m) => m.staticData.id === id);
     if (marker && marker.length) {
+      const defaultIcon = L.icon({
+        iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        shadowSize: [41, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28]
+      });
+
+      const markedIcon = L.icon({
+        iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        shadowSize: [41, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        className: 'selectedMarker'
+      });
       marker[0].setIcon(selected ? markedIcon : defaultIcon);
     }
   }
@@ -315,9 +324,9 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     setTimeout(
       () => {
         this.MapHelper.map!.invalidateSize();
-        const reversedCoords: LatLngTuple = [...this.defaultMapCenter].reverse() as LatLngTuple;
+        const reversedCoords = [...this.defaultMapCenter].reverse();
         const zoom = 6;
-        this.MapHelper.map!.setView(reversedCoords, zoom);
+        this.MapHelper.map!.setView(reversedCoords as any, zoom);
         this.addClickOnSpaceForSites();
       },
       500,

@@ -1,18 +1,10 @@
-import {
-  LitElement,
-  html,
-  TemplateResult,
-  CSSResultArray,
-  css,
-  property,
-  customElement,
-  PropertyValues
-} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 @customElement('activity-time-frames')
@@ -20,7 +12,7 @@ export class ActivityTimeFrames extends LitElement {
   static get styles(): CSSResultArray {
     // language=css
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: flex;
@@ -32,12 +24,12 @@ export class ActivityTimeFrames extends LitElement {
         }
         .title {
           font-weight: 500;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           line-height: 18px;
           color: var(--primary-text-color);
         }
         .description {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           line-height: 16px;
         }
         .year {
@@ -49,7 +41,6 @@ export class ActivityTimeFrames extends LitElement {
           padding: 5px;
           box-sizing: border-box;
           margin: 5px;
-          height: 42px;
           border-radius: 10px;
         }
         .time-frame.selected {
@@ -73,9 +64,9 @@ export class ActivityTimeFrames extends LitElement {
           max-width: inherit;
         }
         label[required] {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           color: var(--secondary-text-color);
-          background: url('./images/required.svg') no-repeat 99% 20%/5px;
+          background: url('./assets/images/required.svg') no-repeat 99% 20%/5px;
           width: auto !important;
           max-width: 100%;
           right: auto;
@@ -120,7 +111,7 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
+      <label class="label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
         ${translate('ACTIVITY_TIMES')}
       </label>
       <div class="layout-horizontal center-align time-frame-container">
@@ -128,7 +119,7 @@ export class ActivityTimeFrames extends LitElement {
         ${this._timeFrames.map(
           ([year, frames]: any) => html`
             <div class="light-gray-container">
-              <div class="layout-horizontal center-align title year row-h">${year}</div>
+              <div class="layout-horizontal center-align title year">${year}</div>
               <div class="layout-horizontal center-align">
                 ${frames.map(
                   (frame: ActivityTime, index: number) => html`

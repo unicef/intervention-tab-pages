@@ -1,6 +1,6 @@
-import {customElement, LitElement, property, html} from 'lit-element';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icons/image-icons.js';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {listenForLangChanged} from 'lit-translate';
 
@@ -16,32 +16,31 @@ export class InterventionReportStatus extends LitElement {
           display: inline-block;
         }
 
-        iron-icon {
-          --iron-icon-width: 16px;
-          --iron-icon-height: 16px;
+        etools-icon {
+          --etools-icon-font-size: var(--etools-font-size-16, 16px);
           padding-inline-end: 4px;
           margin-top: -2px;
         }
 
-        iron-icon[status-type='default'] {
+        etools-icon[status-type='default'] {
           color: var(--primary-color);
         }
 
-        iron-icon[status-type='submitted'],
-        iron-icon[status-type='success'] {
+        etools-icon[status-type='submitted'],
+        etools-icon[status-type='success'] {
           color: var(--success-color);
         }
 
-        iron-icon[status-type='no-status'],
-        iron-icon[status-type='error'] {
+        etools-icon[status-type='no-status'],
+        etools-icon[status-type='error'] {
           color: var(--dark-error-color);
         }
 
-        iron-icon[status-type='neutral'] {
+        etools-icon[status-type='neutral'] {
           color: var(--secondary-text-color);
         }
 
-        iron-icon[status-type='warning'] {
+        etools-icon[status-type='warning'] {
           color: var(--warning-color);
         }
 
@@ -50,7 +49,7 @@ export class InterventionReportStatus extends LitElement {
         }
       </style>
 
-      <iron-icon ?hidden="${this.noIcon}" status-type="${this.statusType}" .icon="${this.icon}"></iron-icon>
+      <etools-icon ?hidden="${this.noIcon}" status-type="${this.statusType}" .name="${this.icon}"></etools-icon>
       <span id="label" ?hidden="${this.noLabel}">${this.label}</span>
       <slot></slot>
     `;
@@ -222,12 +221,12 @@ export class InterventionReportStatus extends LitElement {
   _computeIcon(type: string) {
     switch (type) {
       case 'success':
-        return (this.icon = 'icons:check-circle');
+        return (this.icon = 'check-circle');
       case 'submitted':
-        return (this.icon = 'icons:assignment-turned-in');
+        return (this.icon = 'assignment-turned-in');
       case 'error':
       case 'warning':
-        return (this.icon = 'icons:error');
+        return (this.icon = 'error');
       default:
         return (this.icon = 'image:lens');
     }

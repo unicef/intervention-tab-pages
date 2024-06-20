@@ -1,12 +1,13 @@
-import {LitElement, customElement, html, property, TemplateResult, css} from 'lit-element';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {LitElement, html, TemplateResult, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {RootState} from '../types/store.types';
 import get from 'lodash-es/get';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
@@ -15,10 +16,9 @@ import {TABS} from '../constants';
 import {isUnicefUser} from '../selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
-import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {getPageDirection} from '../../utils/utils';
 
 /**
@@ -28,7 +28,7 @@ import {getPageDirection} from '../../utils/utils';
 export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(LitElement)) {
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       elevationStyles,
       frWarningsStyles,
       css`
@@ -59,23 +59,50 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           margin-top: 14px;
           margin-inline-start: 30px;
         }
-        .amt-data .paper-label {
+        .mt-6 {
+          margin-block-start: -6px;
+        }
+        .amt-data .label {
           font-weight: 400;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 16px;
           white-space: nowrap;
         }
         .amt-data .input-label {
           align-items: flex-end;
-          font-size: 24px;
+          font-size: var(--etools-font-size-24, 24px);
           font-weight: 900;
           line-height: 28px;
         }
         .amt-data .input-label span {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 25px;
           margin-inline-end: 6px;
+        }
+        @media (max-width: 768px) {
+          section {
+            padding-inline: 15px 15px;
+          }
+          .information-cells {
+            flex-direction: column-reverse;
+          }
+          .amt-data {
+            margin-inline-start: 4px;
+          }
+          .amt-data .input-label span {
+            font-size: var(--etools-font-size-12, 12px);
+            line-height: 20px;
+            margin-inline-end: 2px;
+          }
+          .amt-data .input-label {
+            font-size: var(--etools-font-size-18, 18px);
+            line-height: 24px;
+          }
+          .icon-wrapper {
+            flex-wrap: nowrap;
+            padding-top: 0 !important;
+          }
         }
       `
     ];
@@ -83,19 +110,19 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   render() {
     if (!this.budgetSummary) {
       return html`<style>
-          ${customIcons} ${sharedStyles} ${InfoElementStyles}
+          ${sharedStyles} ${InfoElementStyles}
         </style>
         <etools-loading source="b-s" active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${customIcons}${sharedStyles} ${InfoElementStyles}
+      ${sharedStyles} ${InfoElementStyles}
       <section class="elevation layout-horizontal" elevation="1" comment-element="budget-summary">
         <div class="tooltip">${this.getIconTooltip()}</div>
         <div class="information-cells">
           ${this.getTable()}
           <div class="amt-data">
-            <label class="paper-label">${translate('TOTAL_AMT')}</label>
+            <label class="label">${translate('TOTAL_AMT')}</label>
             <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
               <span>${this.budgetSummary.currency}</span> ${displayCurrencyAmount(
                 String(this.budgetSummary.total_local)
@@ -111,7 +138,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return html`
       <div class="table not-allowed">
         <div class="data-column">
-          <label class="paper-label">${translate('BUDGET_CURRENCY')}</label>
+          <label class="label">${translate('BUDGET_CURRENCY')}</label>
           <div>
             <etools-info-tooltip
               class="fr-nr-warn currency-mismatch"
@@ -122,7 +149,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
               <label class="input-label" ?empty="${!this.budgetSummary.currency}">
                 ${this.budgetSummary.currency}
               </label>
-              <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+              <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
               <span slot="message">${this.getFrsCurrencyTooltipMsg(this.frsDetails.currencies_match)}</span>
             </etools-info-tooltip>
             <div class="input-label" ?empty="${!this.budgetSummary.currency}">${this.budgetSummary.currency}</div>
@@ -130,7 +157,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('CAPACITY_STRENGTHENING_COST_RATE')}</label>
+          <label class="label">${translate('CAPACITY_STRENGTHENING_COST_RATE')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
             ${this.roundPercentage(this.budgetSummary.hq_support_cost)}(${displayCurrencyAmount(
               String(this.budgetSummary.total_hq_cash_local),
@@ -140,21 +167,24 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('PRGM_EFFECTIVENESS')}</label>
+          <div class="icon-wrapper mt-6">
+            <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
+            <info-icon-tooltip .tooltipText="${translate('PRGM_EFFECTIVENESS_TOOLTIP')}"></info-icon-tooltip>
+          </div>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.programme_effectiveness)}">
             ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_UNICEF_CONTRIB')}</label>
+          <label class="label">${translate('TOTAL_UNICEF_CONTRIB')}</label>
           <div class="input-label" ?empty="${!this.budgetSummary.total_unicef_contribution_local}">
             ${displayCurrencyAmount(String(this.budgetSummary.total_unicef_contribution_local), '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_UNICEF_CASH')}</label>
+          <label class="label">${translate('TOTAL_UNICEF_CASH')}</label>
           <div>
             <etools-info-tooltip
               class="fr-nr-warn"
@@ -162,7 +192,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
               custom-icon
               ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsConsistencyWarning)}"
             >
-              <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+              <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
               <span slot="message">${this._frsConsistencyWarning}</span>
             </etools-info-tooltip>
             <div class="input-label" ?empty="${!this.budgetSummary.unicef_cash_local}">
@@ -172,42 +202,42 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_UNICEF_SUPPLY')}</label>
+          <label class="label">${translate('TOTAL_UNICEF_SUPPLY')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.in_kind_amount_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.in_kind_amount_local), '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_CASH_AMT')}</label>
+          <label class="label">${translate('TOTAL_CASH_AMT')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_cash_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.total_cash_local))}
           </div>
         </div>
 
         <div class="data-column amt-column">
-          <label class="paper-label">${translate('TOTAL_AMT')}</label>
+          <label class="label">${translate('TOTAL_AMT')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.total_local))}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_PARTNER_SUPPLY')}</label>
+          <label class="label">${translate('TOTAL_PARTNER_SUPPLY')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_supply_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.partner_supply_local))}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_PARTNER_CASH')}</label>
+          <label class="label">${translate('TOTAL_PARTNER_CASH')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.partner_contribution_local), '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_PARTNER_CONTRIBUTION')}</label>
+          <label class="label">${translate('TOTAL_PARTNER_CONTRIBUTION')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_partner_contribution_local)}">
             ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
             (${displayCurrencyAmount(String(this.budgetSummary.total_partner_contribution_local))})

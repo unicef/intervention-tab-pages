@@ -1,10 +1,10 @@
-import {customElement, html, LitElement, property} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-toggle-button/paper-toggle-button';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@unicef-polymer/etools-loading/etools-loading';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {html, LitElement, PropertyValues} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
+
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -22,10 +22,11 @@ import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import '@polymer/paper-input/paper-textarea';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {PaperInputElement} from '@polymer/paper-input/paper-input';
+import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.component';
+import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
  * @customElement
@@ -33,7 +34,7 @@ import {PaperInputElement} from '@polymer/paper-input/paper-input';
 @customElement('other-metadata')
 export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [layoutStyles];
   }
 
   render() {
@@ -65,7 +66,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           box-sizing: border-box;
         }
 
-        paper-toggle-button {
+        sl-switch#confidential {
           margin-top: 25px;
         }
 
@@ -73,24 +74,16 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           margin-top: 20px;
           margin-inline-start: 8px;
         }
-        paper-textarea {
-          outline: none;
-          --paper-input-container-input: {
-            display: block;
-            text-overflow: hidden;
-          }
 
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            max-height: 96px;
-          }
+        etools-textarea::part(textarea) {
+          max-height: 96px;
+          overflow-y: auto;
         }
         .confidential-row {
           margin-top: -4px;
           padding-bottom: 12px;
         }
-        paper-input {
+        etools-input {
           width: 100%;
         }
       </style>
@@ -98,9 +91,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
       <etools-content-panel show-expand-btn panel-title=${translate('OTHER')} comment-element="other-metadata">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal row-padding-v">
+        <div class="row">
           <!--   Document Type   -->
-          <div class="col col-4">
+          <div class="col-md-4 col-12">
             <etools-dropdown
               id="documentType"
               label=${translate('DOC_TYPE')}
@@ -110,7 +103,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               tabindex="${!this.documentTypes.length ||
               this.isReadonly(this.editMode, this.permissions?.edit.document_type)
                 ? -1
-                : 0}"
+                : undefined}"
               required
               .options="${this.documentTypes}"
               .selected="${this.data.document_type}"
@@ -127,41 +120,39 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             >
             </etools-dropdown>
           </div>
-          <div class="col-8">
-            <div class="row">
-              <!--   SPD is Humanitarian   -->
-              <div ?hidden="${!this.isSPD}">
-                <paper-toggle-button
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
-                  ?checked="${this.data.humanitarian_flag}"
-                  @checked-changed="${({detail}: CustomEvent) => {
-                    this.data.contingency_pd = false;
-                    this.valueChanged(detail, 'humanitarian_flag');
-                  }}"
-                >
-                  ${translate('SPD_HUMANITARIAN')}
-                </paper-toggle-button>
-              </div>
-
-              <!--   Contingency Document   -->
-              <div ?hidden="${!this.data.humanitarian_flag}">
-                <paper-toggle-button
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
-                  ?checked="${this.data.contingency_pd}"
-                  @checked-changed="${({detail}: CustomEvent) => {
-                    this.valueChanged(detail, 'contingency_pd');
-                    this.data.activation_protocol = '';
-                  }}"
-                >
-                  ${translate('CONTINGENCY_DOC')}
-                </paper-toggle-button>
-              </div>
-            </div>
+          <!--   SPD is Humanitarian   -->
+          <div class="col-md-8 col-12">
+            <sl-switch
+              ?hidden="${!this.isSPD}"
+              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
+              ?checked="${this.data.humanitarian_flag}"
+              @sl-change="${(e: CustomEvent) => {
+                this.data.contingency_pd = false;
+                this.valueChanged({value: (e.target as SlSwitch).checked}, 'humanitarian_flag');
+              }}"
+            >
+              ${translate('SPD_HUMANITARIAN')}
+            </sl-switch>
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
-          <div class="col col-10">
-            <paper-textarea
+
+          <!--   Contingency Document   -->
+          <div class="col-md-4 col-12" ?hidden="${!this.data.humanitarian_flag}">
+            <sl-switch
+              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
+              ?checked="${this.data.contingency_pd}"
+              @sl-change="${(e: CustomEvent) => {
+                this.valueChanged({value: (e.target as SlSwitch).checked}, 'contingency_pd');
+                if (!(e.target as SlSwitch).checked) {
+                  this.data.activation_protocol = '';
+                }
+              }}"
+            >
+              ${translate('CONTINGENCY_DOC')}
+            </sl-switch>
+          </div>
+
+          <div class="col-12" ?hidden="${!this.data.contingency_pd}">
+            <etools-textarea
               class="w100"
               label=${translate('ACTIVATION_PROTOCOL')}
               placeholder="&#8212;"
@@ -172,11 +163,10 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               .value="${this.data.activation_protocol}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'activation_protocol')}"
             >
-            </paper-textarea>
+            </etools-textarea>
           </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-4">
+
+          <div class="col-md-4 col-12">
             <etools-dropdown
               id="currencyDd"
               option-value="value"
@@ -186,7 +176,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.document_currency)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.document_currency) ? -1 : 0}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.document_currency) ? -1 : undefined}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (detail === undefined || detail.selectedItem === null) {
                   return;
@@ -198,8 +188,8 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             >
             </etools-dropdown>
           </div>
-          <div class="col col-6" style="padding-inline-start: 40px;">
-            <paper-input
+          <div class="col-md-6 col-12">
+            <etools-input
               id="unppNumber"
               pattern="CEF/[a-zA-Z]{3}/\\d{4}/\\d{3}"
               label=${translate('UNPP_CFEI_DSR_REF_NUM')}
@@ -209,26 +199,25 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               error-message="${translate('CFEI_EXPECTED_FORMAT')}"
               @blur="${(ev: CustomEvent) => this.validateCFEI(ev)}"
               @value-changed="${({detail}: CustomEvent) => this.cfeiValueChanged(detail, 'cfei_number')}"
-            ></paper-input>
+            ></etools-input>
+          </div>
+          <div class="col-12" ?hidden="${!this.permissions?.view?.confidential}">
+            <sl-switch
+              id="confidential"
+              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
+              ?checked="${this.data.confidential}"
+              @sl-change="${(e: CustomEvent) =>
+                this.valueChanged({value: (e.target! as SlSwitch).checked}, 'confidential')}}"
+            >
+              ${translate('CONFIDENTIAL')}
+            </sl-switch>
+            <info-icon-tooltip
+              id="iit-confidential"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
+              .tooltipText="${translate('CONFIDENTIAL_INFO')}"
+            ></info-icon-tooltip>
           </div>
         </div>
-
-        <div class="layout-horizontal confidential-row" ?hidden="${!this.permissions?.view?.confidential}">
-          <paper-toggle-button
-            id="confidential"
-            ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
-            ?checked="${this.data.confidential}"
-            @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}}"
-          >
-            ${translate('CONFIDENTIAL')}
-          </paper-toggle-button>
-          <info-icon-tooltip
-            id="iit-confidential"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
-            .tooltipText="${translate('CONFIDENTIAL_INFO')}"
-          ></info-icon-tooltip>
-        </div>
-
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
@@ -267,6 +256,15 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     listenForLangChanged(this.handleLanguageChanged.bind(this));
   }
 
+  updated(changedProperties: PropertyValues) {
+    if (changedProperties.has('editMode') && !this.editMode) {
+      // reset validation for #unppNumber field
+      const elem = this.shadowRoot?.querySelector<EtoolsInput>('#unppNumber')!;
+      if (elem) {
+        elem.invalid = false;
+      }
+    }
+  }
   stateChanged(state: RootState) {
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
@@ -318,9 +316,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   }
 
   validateCFEI(e?: CustomEvent) {
-    const elem = e
-      ? (e.currentTarget as PaperInputElement)
-      : this.shadowRoot?.querySelector<PaperInputElement>('#unppNumber')!;
+    const elem = e ? (e.currentTarget as EtoolsInput) : this.shadowRoot?.querySelector<EtoolsInput>('#unppNumber')!;
     return elem.validate();
   }
 
