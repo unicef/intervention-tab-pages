@@ -47,7 +47,6 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
     endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId})
   })
     .then((intervention: Intervention) => {
-      intervention.other_info = 'abc';
       dispatch(updateCurrentIntervention(intervention));
     })
     .catch((err: any) => {
