@@ -132,6 +132,7 @@ export class InterventionReportStatus extends LitElement {
       case 'OnT':
       case 'Com':
       case 'Acc':
+      case 'AchievedAsP':
         stat = 'success';
         break;
       case 'Sub':
@@ -151,6 +152,7 @@ export class InterventionReportStatus extends LitElement {
       case 'Rej':
       case 'Con':
       case 'Pla':
+      case 'NotAchievedAsP':
         stat = 'warning';
         break;
       case 'NoS':
@@ -178,6 +180,12 @@ export class InterventionReportStatus extends LitElement {
         break;
       case 'Sub':
         label = 'Submitted';
+        break;
+      case 'AchievedAsP':
+        label = 'Achieved as planned';
+        break;
+      case 'NotAchievedAsP':
+        label = 'Not achieved as planned';
         break;
       case 'Rej':
         label = 'Rejected';
