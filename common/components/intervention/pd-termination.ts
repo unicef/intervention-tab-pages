@@ -42,6 +42,13 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         #pdTerminationConfirmation {
           --etools-dialog-confirm-btn-bg: var(--primary-color);
         }
+      .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      .p-static.col {
+        position: static;
+      }
       </style>
       <etools-dialog
         no-padding
@@ -59,7 +66,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
       >
         <div class="row">
           <datepicker-lite
-            class="col-12"
+            class="col-12 col p-static"
             id="terminationDate"
             label="${translate('TERMINATION_DATE')}"
             .value="${this.termination.date}"
