@@ -42,10 +42,6 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         #pdTerminationConfirmation {
           --etools-dialog-confirm-btn-bg: var(--primary-color);
         }
-      .row {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-      }
       .p-static.col {
         position: static;
       }
@@ -64,43 +60,45 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         ?disable-dismiss-btn="${this.uploadInProgress}"
         ?show-spinner="${this.savingInProcess}"
       >
-        <div class="row">
-          <datepicker-lite
-            class="col-12 col p-static"
-            id="terminationDate"
-            label="${translate('TERMINATION_DATE')}"
-            .value="${this.termination.date}"
-            max-date="${this._getMaxDate()}"
-            error-message="${translate('PLEASE_SELECT_TERMINATION_DATE')}"
-            auto-validate
-            required
-            selected-date-display-format="D MMM YYYY"
-            fire-date-has-changed
-            @date-has-changed="${(e: CustomEvent) => this.updateDate(e.detail.date)}"
-          >
-          </datepicker-lite>
-        </div>
-        <div class="row">
-          <etools-upload
-            class="col-12"
-            id="terminationNotice"
-            label="${translate('TERMINATION_NOTICE')}"
-            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
-            .fileUrl="${this.termination.attachment_notice}"
-            .uploadEndpoint="${this.uploadEndpoint}"
-            @upload-finished="${this._uploadFinished}"
-            required
-            .uploadInProgress="${this.uploadInProgress}"
-            error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
-          >
-        </div>
-        <div class="row">
-          <etools-warn-message-lit
-            class="col-12"
-            .messages="${this.warnMessages}"
-          >
-          </etools-warn-message-lit>
-
+        <div class="container-dialog">
+          <div class="row">
+            <datepicker-lite
+              class="col-12 col p-static"
+              id="terminationDate"
+              label="${translate('TERMINATION_DATE')}"
+              .value="${this.termination.date}"
+              max-date="${this._getMaxDate()}"
+              error-message="${translate('PLEASE_SELECT_TERMINATION_DATE')}"
+              auto-validate
+              required
+              selected-date-display-format="D MMM YYYY"
+              fire-date-has-changed
+              @date-has-changed="${(e: CustomEvent) => this.updateDate(e.detail.date)}"
+            >
+            </datepicker-lite>
+          </div>
+          <div class="row">
+            <etools-upload
+              class="col-12"
+              id="terminationNotice"
+              label="${translate('TERMINATION_NOTICE')}"
+              accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
+              .fileUrl="${this.termination.attachment_notice}"
+              .uploadEndpoint="${this.uploadEndpoint}"
+              @upload-finished="${this._uploadFinished}"
+              required
+              .uploadInProgress="${this.uploadInProgress}"
+              error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
+            >
+          </div>
+          <div class="row">
+            <etools-warn-message-lit
+              class="col-12"
+              .messages="${this.warnMessages}"
+            >
+            </etools-warn-message-lit>
+  
+          </div>
         </div>
       </etools-dialog>
     `;
