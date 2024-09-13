@@ -417,9 +417,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   public stateChanged(state: RootState) {
     const notInterventionTabs: boolean =
-      !['interventions', 'gdd'].includes(currentPage(state)) ||
-      currentSubpage(state) === 'list' ||
-      currentSubpage(state) === 'new';
+      currentPage(state) !== 'interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
     const commentsState = Boolean(state.app?.routeDetails?.queryParams?.comment_mode);
     this.checkCommentsMode(commentsState);
