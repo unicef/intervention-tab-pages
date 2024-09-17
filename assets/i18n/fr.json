@@ -450,6 +450,8 @@
   "PRC_REVIEW_DOC_DESCRIPTION": "Documents d'examen de la CRP d'intervention",
   "PRC_REVIEW_DOC_TITLE": "Document d’examen de la CRP (*Pour les anciens DP uniquement)",
   "PRC_SUBMISSION_DATE": "PRC Date de soumission au CRP",
+  "INTERNAL_REVIEW_DATE": "Date de Révision Interne",
+  "INTERNAL_REVIEW_SUBMISSION_DATE": "Date de Soumission de la Révision Interne",
   "PREVIOUS_VALUE": "Valeur précédente",
   "PRGM_EFFECTIVENESS": "% Efficacité du Prgm",
   "PRGM_EFFECTIVENESS_TOOLTIP": "% E&E calculé sur la base des éléments suivants : <br>% de la contribution de l'UNICEF à l'E&E = contribution de l'UNICEF à la « gestion efficace et efficiente du programme » ÷ Contribution totale en espèces de l'UNICEF au PD (coût du programme de l'UNICEF + coût de l'UNICEF E&E + coût du renforcement des capacités de l'UNICEF)",
