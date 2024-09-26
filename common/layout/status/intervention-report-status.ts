@@ -183,7 +183,7 @@ export class InterventionReportStatus extends LitElement {
         label = 'Rejected';
         break;
       case 'Met':
-        label = final ? 'Met results as planned' : 'Met';
+        label = final ? 'Achieved as planned' : 'Met';
         break;
       case 'OnT':
         label = 'On Track';
@@ -192,7 +192,7 @@ export class InterventionReportStatus extends LitElement {
         label = 'No Progress';
         break;
       case 'Con':
-        label = final ? 'Constrained (partially met result)' : 'Constrained';
+        label = final ? 'Not achieved as planned' : 'Constrained';
         break;
       case 'Ong':
         label = 'Ongoing';

@@ -39,7 +39,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     return [layoutStyles];
   }
   @property() attachments: InterventionAttachment[] = [];
-  @property() showInvalid = true;
+  @property() showInvalid = false;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
   @property({type: String}) deleteConfirmationMessage = translate('DELETE_ATTACHMENTS_PROMPT') as unknown as string;
