@@ -92,8 +92,10 @@ export class OverallApproval extends LitElement {
               <div class="col-12 label">${translate('SIGN_BUDGET_OWNER')}</div>
               <div class="col-12 value">
                 ${typeof this.review.is_recommended_for_approval === 'boolean'
-                    ? html` <etools-icon name="${this.review.is_recommended_for_approval ? 'check' : 'close'}"></etools-icon>`
-                    : '-'}
+                  ? html` <etools-icon
+                      name="${this.review.is_recommended_for_approval ? 'check' : 'close'}"
+                    ></etools-icon>`
+                  : '-'}
               </div>
             </div>
             <div class="row row-padding">
