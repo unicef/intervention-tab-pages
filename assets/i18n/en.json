@@ -451,6 +451,8 @@
   "PRC_REVIEW_DOC_DESCRIPTION": "Intervention PRC Review Documents",
   "PRC_REVIEW_DOC_TITLE": "PRC Review Document (*For legacy PDs only)",
   "PRC_SUBMISSION_DATE": "PRC Submission Date",
+  "INTERNAL_REVIEW_DATE": "Internal Review Date",
+  "INTERNAL_REVIEW_SUBMISSION_DATE": "Internal Review Submission Date",
   "PREVIOUS_VALUE": "Previous value",
   "PRGM_EFFECTIVENESS": "% Prgm Effectiveness",
   "PRGM_EFFECTIVENESS_TOOLTIP": "E&E% calculated based on the following: <br>% of UNICEF’s contribution to E&E = UNICEF contribution to “effective and efficient programme management”  ÷ Total UNICEF cash contribution to PD (UNICEF Prog. cost + UNICEF E&E cost + UNICEF Capacity Strengthing cost)",
