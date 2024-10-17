@@ -20,6 +20,7 @@ import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {PRC_REVIEW} from '../../common/components/intervention/review.const';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import {addItemToListIfMissing} from '../../utils/utils';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 
 @customElement('review-members')
 export class ReviewMembers extends ComponentBaseMixin(LitElement) {
@@ -134,6 +135,21 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             }}"
           >
           </etools-dropdown>
+          <etools-dropdown
+            class="col-md-4 col-sm-12"
+            label=${translate('AUTH_OFFICER')}
+            placeholder="&#8212;"
+            .options="${this.users}"
+            .selected="${this.data?.authorized_officer?.id}"
+            ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
+            option-label="name"
+            option-value="id"
+            ?trigger-value-change-event="${this.users.length}"
+            @etools-selected-item-changed="${({detail}: CustomEvent) => {
+              this.selectedUserChanged(detail, 'authorized_officer');
+            }}"
+          >
+          </etools-dropdown>
         </div>
 
         ${this.renderActions(this.editMode, true)}
@@ -152,6 +168,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
       body: {
         prc_officers: this.data.prc_officers || [],
         overall_approver: this.data.overall_approver?.id || null,
+        authorized_officer: this.data.authorized_officer?.id || null,
         meeting_date: this.data.meeting_date || null
       }
     })
@@ -160,8 +177,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         this.editMode = false;
       })
       .catch((err: any) => {
-        const errorText = err?.response?.detail || getTranslation('TRY_AGAIN_LATER');
-        fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_SAVE_REVIEW')} ${errorText}`});
+        parseRequestErrorsAndShowAsToastMsgs(err, this);
       });
   }
 
