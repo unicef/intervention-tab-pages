@@ -41,16 +41,18 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 
 const customStyles = html`
   <style>
-    .col_title {
-      width: 99%;
-      min-width: 70px;
-    }
-    .col_nowrap {
-      width: 1%;
-      white-space: nowrap;
-    }
-    .word-break {
+    .col_3 {
+      max-width: 25%;
+      width: 25%;
       word-break: break-word;
+    }
+    .col_2 {
+      max-width: 18%;
+      width: 18%;
+      word-break: break-word;
+    }
+    .row-actions {
+      min-width: 94px !important;
     }
     @media (min-width: 760px) and (max-width: 1080px) {
       .row-actions .actions {
@@ -208,30 +210,30 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       label: translate('ITEM_ALL_PRICES') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      cssClass: 'col_title word-break'
+      cssClass: 'col_3'
     },
     {
       label: translate('NUMBER_UNITS') as unknown as string,
       name: 'unit_number',
       type: EtoolsTableColumnType.Number,
-      cssClass: 'col_nowrap'
+      cssClass: 'col_2'
     },
     {
       label: translate('PRICE_UNIT') as unknown as string,
       name: 'unit_price',
       type: EtoolsTableColumnType.Number,
-      cssClass: 'col_nowrap'
+      cssClass: 'col_2'
     },
     {
       label: '',
       name: 'total_price',
-      cssClass: 'col_nowrap',
+      cssClass: 'col_2',
       type: EtoolsTableColumnType.Number
     },
     {
       label: translate('PROVIDED_BY') as unknown as string,
       name: 'provided_by',
-      cssClass: 'col_nowrap',
+      cssClass: 'col_2',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
