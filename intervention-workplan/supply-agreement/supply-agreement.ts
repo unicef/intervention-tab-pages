@@ -52,7 +52,7 @@ const customStyles = html`
     .word-break {
       word-break: break-word;
     }
-    @media (min-width: 760px) and (max-width: 1000px) {
+    @media (min-width: 760px) and (max-width: 1080px) {
       .row-actions .actions {
         left: 0;
       }
