@@ -5,7 +5,7 @@ import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './activi
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {ActivitiesCommonMixin} from '../../mixins/activities-common.mixin';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';

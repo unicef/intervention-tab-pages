@@ -6,7 +6,7 @@ import {property} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
 import {ifDefined} from 'lit/directives/if-defined.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {ProgrammeManagementRowExtended, ProgrammeManagementRowItemExtended} from '../../common/types/editor-page-types';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';

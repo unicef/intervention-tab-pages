@@ -1,13 +1,13 @@
 import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {EtoolsEndpoint, InterventionReview} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../../common/components/intervention/review.const';
-import {get as getTranslation} from 'lit-translate';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {SlSelectEvent} from '@shoelace-style/shoelace/dist/events/sl-select';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';

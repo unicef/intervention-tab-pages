@@ -1,9 +1,9 @@
 import {css, html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
-import {get as getTranslation} from 'lit-translate/util';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 

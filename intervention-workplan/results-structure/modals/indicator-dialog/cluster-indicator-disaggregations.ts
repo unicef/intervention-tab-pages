@@ -4,7 +4,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 /**
  * @customElement

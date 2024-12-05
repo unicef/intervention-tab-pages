@@ -1,7 +1,7 @@
 import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {EtoolsEndpoint, InterventionReview, User} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';

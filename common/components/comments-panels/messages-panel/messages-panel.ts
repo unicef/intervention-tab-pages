@@ -3,7 +3,7 @@ import {customElement, query, property} from 'lit/decorators.js';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import './messages-panel-header';
 import './message-item';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {EditComments} from '../../comments/edit-comments-base';
 import {CommentRelatedItem} from '../../comments/comments-types';
