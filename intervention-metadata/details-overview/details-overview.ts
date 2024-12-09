@@ -155,7 +155,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     if (!this.interventionPartner?.sea_risk_rating_name) {
       return html`${translate('NA')}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
       <strong class="blue">${translateValue(this.interventionPartner.sea_risk_rating_name, 'RISK_RATINGS')}</strong></a
     >`;
@@ -165,7 +165,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     if (!this.interventionPartner?.rating) {
       return html`${translate('NA')}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
       <strong class="blue">${translateValue(this.interventionPartner.rating, 'RISK_RATINGS')}</strong></a
     >`;

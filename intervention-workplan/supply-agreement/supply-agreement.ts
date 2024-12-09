@@ -420,7 +420,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     try {
       const response: AnyObject = JSON.parse(errorResponse);
       return Object.values(response).join('; ');
-    } catch (e) {
+    } catch {
       return defaultMessage;
     }
   }

@@ -97,7 +97,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         }
         .nav-menu-item:focus-visible {
           outline: 0;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+          box-shadow:
+            0 6px 10px 0 rgba(0, 0, 0, 0.14),
+            0 1px 18px 0 rgba(0, 0, 0, 0.12),
             0 3px 5px -1px rgba(0, 0, 0, 0.4);
           background-color: rgba(170, 165, 165, 0.2);
         }

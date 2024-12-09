@@ -440,7 +440,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   private formatUserData(data: ReviewData) {
     const dataToSave: any = cloneDeep(data);
     dataToSave.unicef_signatory = data.unicef_signatory?.id;
-    // eslint-disable-next-line max-len
+
     dataToSave.partner_authorized_officer_signatory = data.partner_authorized_officer_signatory?.id;
     return dataToSave;
   }

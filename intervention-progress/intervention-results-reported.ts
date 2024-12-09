@@ -288,65 +288,67 @@ export class InterventionResultsReported extends connectStore(
               </etools-data-table-header>
 
               ${item.ll_outputs.map(
-                (lowerResult: any) => html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
-                  <div slot="row-data">
-                    <span class="col-data col-9" data-col-header-label="${translate('PD_OUTPUTS')}">
-                      ${lowerResult.title}
-                    </span>
-                    <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
-                      <intervention-report-status
-                        status="${this._getLowerResultStatus(lowerResult.id)}"
-                      ></intervention-report-status>
-                      <span class="lower-result-status-date">${this._getLowerResultStatusDate(lowerResult.id)}</span>
-                    </span>
-                  </div>
-                  <div slot="row-data-details">
-                    <div class="row-details-content">
-                      <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
-                        ${translate('NO_INDICATORS')}
-                      </div>
-                      ${this._getIndicatorsReports(lowerResult.id).map(
-                        (indicatorReport: any) => html`<div class="row indicator-report">
-                            <div class="col-data col-12 col-md-9">
-                              ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
-                              ${indicatorReport.reportable.blueprint.title}
-                            </div>
-                            <div class="col-data col-12 col-md-3 progress-bar">
-                              <etools-progress-bar
-                                class="report-progress-bar"
-                                value="${this.getProgressPercentage(
-                                  indicatorReport.reportable.total_against_target,
-                                  indicatorReport.reportable.blueprint.display_type
-                                )}"
-                              >
-                              </etools-progress-bar>
-                            </div>
-                          </div>
-                          <div class="row progress-details">
-                            <div class="layout-vertical col-12 col-md-5 target-details">
-                              <indicator-report-target
-                                class="print-inline"
-                                .displayType="${indicatorReport.reportable.blueprint.display_type}"
-                                .target="${indicatorReport.reportable.target}"
-                                .cumulativeProgress="${this._ternary(
-                                  indicatorReport.reportable.blueprint.display_type,
-                                  'number',
-                                  indicatorReport.reportable.achieved.v,
-                                  indicatorReport.reportable.achieved.c
-                                )}"
-                                .achievement="${this._ternary(
-                                  indicatorReport.reportable.blueprint.display_type,
-                                  'number',
-                                  indicatorReport.total.v,
-                                  indicatorReport.total.c
-                                )}"
-                              ></indicator-report-target>
-                            </div>
-                          </div>`
-                      )}
+                (lowerResult: any) =>
+                  html`<etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
+                    <div slot="row-data">
+                      <span class="col-data col-9" data-col-header-label="${translate('PD_OUTPUTS')}">
+                        ${lowerResult.title}
+                      </span>
+                      <span class="col-data col-3" data-col-header-label="${translate('CURRENT_PROGRESS')}">
+                        <intervention-report-status
+                          status="${this._getLowerResultStatus(lowerResult.id)}"
+                        ></intervention-report-status>
+                        <span class="lower-result-status-date">${this._getLowerResultStatusDate(lowerResult.id)}</span>
+                      </span>
                     </div>
-                  </div>
-                </etools-data-table-row>`
+                    <div slot="row-data-details">
+                      <div class="row-details-content">
+                        <div class="row padding-row" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
+                          ${translate('NO_INDICATORS')}
+                        </div>
+                        ${this._getIndicatorsReports(lowerResult.id).map(
+                          (indicatorReport: any) =>
+                            html`<div class="row indicator-report">
+                                <div class="col-data col-12 col-md-9">
+                                  ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
+                                  ${indicatorReport.reportable.blueprint.title}
+                                </div>
+                                <div class="col-data col-12 col-md-3 progress-bar">
+                                  <etools-progress-bar
+                                    class="report-progress-bar"
+                                    value="${this.getProgressPercentage(
+                                      indicatorReport.reportable.total_against_target,
+                                      indicatorReport.reportable.blueprint.display_type
+                                    )}"
+                                  >
+                                  </etools-progress-bar>
+                                </div>
+                              </div>
+                              <div class="row progress-details">
+                                <div class="layout-vertical col-12 col-md-5 target-details">
+                                  <indicator-report-target
+                                    class="print-inline"
+                                    .displayType="${indicatorReport.reportable.blueprint.display_type}"
+                                    .target="${indicatorReport.reportable.target}"
+                                    .cumulativeProgress="${this._ternary(
+                                      indicatorReport.reportable.blueprint.display_type,
+                                      'number',
+                                      indicatorReport.reportable.achieved.v,
+                                      indicatorReport.reportable.achieved.c
+                                    )}"
+                                    .achievement="${this._ternary(
+                                      indicatorReport.reportable.blueprint.display_type,
+                                      'number',
+                                      indicatorReport.total.v,
+                                      indicatorReport.total.c
+                                    )}"
+                                  ></indicator-report-target>
+                                </div>
+                              </div>`
+                        )}
+                      </div>
+                    </div>
+                  </etools-data-table-row>`
               )}
             </div>
           `

@@ -1,4 +1,3 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';

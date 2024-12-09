@@ -121,10 +121,11 @@ export class AmendmentDifference extends LitElement {
           <div class="offset">
             <span class="action-name">${translate(ACTIONS[action])}:</span>
             ${value.map(
-              (item: GenericObject) => html`<div class="offset">
-                <div class="field-name"><span class="changed-value">${item.name}</span></div>
-                ${this.displayDifference(item.diff)}
-              </div>`
+              (item: GenericObject) =>
+                html`<div class="offset">
+                  <div class="field-name"><span class="changed-value">${item.name}</span></div>
+                  ${this.displayDifference(item.diff)}
+                </div>`
             )}
           </div>
         `;

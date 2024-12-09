@@ -135,40 +135,45 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         </etools-data-table-header>
 
         ${this.formattedData.map(
-          (item: any) => html` <div comment-element="eepm-${item.index}">
-            <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
-              <div slot="row-data" class="layout-horizontal editable-row">
-                <div class="col-data col-5" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">${item.title}</div>
-                <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
-                  ${item.partner_contribution}
+          (item: any) =>
+            html` <div comment-element="eepm-${item.index}">
+              <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
+                <div slot="row-data" class="layout-horizontal editable-row">
+                  <div class="col-data col-5" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">
+                    ${item.title}
+                  </div>
+                  <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
+                    ${item.partner_contribution}
+                  </div>
+                  <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_CASH')}">
+                    ${item.unicef_cash}
+                  </div>
+                  <div class="col-data col-2 text-right" data-col-header-label="${translate('TOTAL')}">
+                    ${item.total}
+                  </div>
+                  <div class="col-1 actions">
+                    <etools-icon-button
+                      ?hidden="${!this.canEdit}"
+                      name="create"
+                      @click="${() => this.openActivityDialog(item)}"
+                      tabindex="0"
+                    ></etools-icon-button>
+                    <etools-icon-button
+                      ?hidden="${this.canEdit}"
+                      name="visibility"
+                      @click="${() => this.openActivityDialog(item)}"
+                      tabindex="0"
+                    ></etools-icon-button>
+                  </div>
                 </div>
-                <div class="col-data col-2 text-right" data-col-header-label="${translate('PARTNER_CASH')}">
-                  ${item.unicef_cash}
+                <div slot="row-data-details">
+                  <div class="row-details-content">
+                    <label class="label">${translate('GENERAL.DESCRIPTION')}</label><br />
+                    <label>${item.description}</label>
+                  </div>
                 </div>
-                <div class="col-data col-2 text-right" data-col-header-label="${translate('TOTAL')}">${item.total}</div>
-                <div class="col-1 actions">
-                  <etools-icon-button
-                    ?hidden="${!this.canEdit}"
-                    name="create"
-                    @click="${() => this.openActivityDialog(item)}"
-                    tabindex="0"
-                  ></etools-icon-button>
-                  <etools-icon-button
-                    ?hidden="${this.canEdit}"
-                    name="visibility"
-                    @click="${() => this.openActivityDialog(item)}"
-                    tabindex="0"
-                  ></etools-icon-button>
-                </div>
-              </div>
-              <div slot="row-data-details">
-                <div class="row-details-content">
-                  <label class="label">${translate('GENERAL.DESCRIPTION')}</label><br />
-                  <label>${item.description}</label>
-                </div>
-              </div>
-            </etools-data-table-row>
-          </div>`
+              </etools-data-table-row>
+            </div>`
         )}
       </etools-content-panel>
     `;

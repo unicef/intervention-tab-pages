@@ -33,7 +33,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         ${dataTableStylesLit} :host {
           --list-column-label: {
             margin-inline-end: 0;
-          }
+          };
         }
         #totalsRow {
           --list-row-no-collapse-bg-color: var(--light-theme-background-color);

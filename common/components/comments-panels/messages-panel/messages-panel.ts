@@ -36,16 +36,17 @@ export class MessagesPanel extends EditComments {
       <div class="data-container layout-vertical">
         <div class="messages" id="messages-container">
           ${this.comments?.map(
-            (comment, index) => html`<message-item
-              ?my-comment="${comment.user.id === this.currentUser.id}"
-              .resolving="${this.isResolving(comment.id)}"
-              .deleting="${this.isDeleting(comment.id)}"
-              @resolve="${() => this.resolveComment(comment.id, index)}"
-              @delete="${() => this.deleteComment(comment.id, index)}"
-              @retry="${() => this.retry(index)}"
-              .comment="${comment}"
-              my-comment
-            ></message-item>`
+            (comment, index) =>
+              html`<message-item
+                ?my-comment="${comment.user.id === this.currentUser.id}"
+                .resolving="${this.isResolving(comment.id)}"
+                .deleting="${this.isDeleting(comment.id)}"
+                @resolve="${() => this.resolveComment(comment.id, index)}"
+                @delete="${() => this.deleteComment(comment.id, index)}"
+                @retry="${() => this.retry(index)}"
+                .comment="${comment}"
+                my-comment
+              ></message-item>`
           )}
         </div>
 

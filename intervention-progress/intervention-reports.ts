@@ -1,4 +1,3 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
@@ -118,48 +117,49 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                 <etools-data-table-column class="col-2">${translate('REPORTING_PERIOD')}</etools-data-table-column>
               </etools-data-table-header>
               ${this.reports.map(
-                (report: any) => html` <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
-                  <div slot="row-data">
-                    <span class="col-data col-2" data-col-header-label="${translate('REPORT_NUM')}">
-                      <sl-tooltip placement="right" content="${report.programme_document.title}">
-                        <span id="tooltip-trigger-${report.id}" class="tooltip-trigger">
-                          <a
-                            class="view-report"
-                            href="reports/${report.id}/progress"
-                            ?hidden="${!this._canViewReport(report.status)}"
-                          >
-                            ${this._getReportTitle(report)}
-                          </a>
-                          <span ?hidden="${this._canViewReport(report.status)}">${this._getReportTitle(report)}</span>
-                          ${report.is_final ? html`<span class="final-badge">${translate('FINAL')}</span>` : html``}
-                        </span>
-                      </sl-tooltip>
-                    </span>
-                    <span class="col-data col-4" data-col-header-label="${translate('PARTNER')}">
-                      <sl-tooltip placement="right" content="${report.partner_vendor_number}">
-                        <span id="tooltip-partner-${report.id}" class="tooltip-trigger">
-                          ${this._displayOrDefault(report.partner_name)}
-                        </span>
-                      </sl-tooltip>
-                    </span>
-                    <span class="col-data col-2" data-col-header-label="${translate('REPORT_STATUS')}">
-                      <intervention-report-status status="${report.status}"></intervention-report-status>
-                    </span>
-                    <span class="col-data col-2" data-col-header-label="${translate('DUE_DATE')}">
-                      ${this._displayOrDefault(report.due_date)}
-                    </span>
-                    <span class="col-data col-2" data-col-header-label="${translate('REPORTING_PERIOD')}">
-                      ${this.getDisplayValue(report.reporting_period)}
-                    </span>
-                  </div>
-
-                  <div slot="row-data-details">
-                    <div class="row-details-content">
-                      <span class="rdc-title col-12">${translate('UNICEF_FOCAL_POINTS')}</span>
-                      <span>${this.getDisplayValue(report.unicef_focal_points)}</span>
+                (report: any) =>
+                  html` <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
+                    <div slot="row-data">
+                      <span class="col-data col-2" data-col-header-label="${translate('REPORT_NUM')}">
+                        <sl-tooltip placement="right" content="${report.programme_document.title}">
+                          <span id="tooltip-trigger-${report.id}" class="tooltip-trigger">
+                            <a
+                              class="view-report"
+                              href="reports/${report.id}/progress"
+                              ?hidden="${!this._canViewReport(report.status)}"
+                            >
+                              ${this._getReportTitle(report)}
+                            </a>
+                            <span ?hidden="${this._canViewReport(report.status)}">${this._getReportTitle(report)}</span>
+                            ${report.is_final ? html`<span class="final-badge">${translate('FINAL')}</span>` : html``}
+                          </span>
+                        </sl-tooltip>
+                      </span>
+                      <span class="col-data col-4" data-col-header-label="${translate('PARTNER')}">
+                        <sl-tooltip placement="right" content="${report.partner_vendor_number}">
+                          <span id="tooltip-partner-${report.id}" class="tooltip-trigger">
+                            ${this._displayOrDefault(report.partner_name)}
+                          </span>
+                        </sl-tooltip>
+                      </span>
+                      <span class="col-data col-2" data-col-header-label="${translate('REPORT_STATUS')}">
+                        <intervention-report-status status="${report.status}"></intervention-report-status>
+                      </span>
+                      <span class="col-data col-2" data-col-header-label="${translate('DUE_DATE')}">
+                        ${this._displayOrDefault(report.due_date)}
+                      </span>
+                      <span class="col-data col-2" data-col-header-label="${translate('REPORTING_PERIOD')}">
+                        ${this.getDisplayValue(report.reporting_period)}
+                      </span>
                     </div>
-                  </div>
-                </etools-data-table-row>`
+
+                    <div slot="row-data-details">
+                      <div class="row-details-content">
+                        <span class="rdc-title col-12">${translate('UNICEF_FOCAL_POINTS')}</span>
+                        <span>${this.getDisplayValue(report.unicef_focal_points)}</span>
+                      </div>
+                    </div>
+                  </etools-data-table-row>`
               )}
 
               <etools-data-table-footer

@@ -189,8 +189,9 @@ export class ReviewChecklistPopup extends LitElement {
           @sl-change="${(e: any) => this.valueChanged(e.target.value, field)}"
         >
           ${Array.from(REVIEW_ANSVERS.entries()).map(
-            ([key, text]: [string, string]) =>
-              html` <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio> `
+            ([key, text]: [string, string]) => html`
+              <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio>
+            `
           )}
         </etools-radio-group>
       </div>

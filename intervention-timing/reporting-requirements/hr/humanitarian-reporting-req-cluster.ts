@@ -44,12 +44,13 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
           <etools-data-table-column class="col-10">${translate('DUE_DATES')}</etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
-          (item: any) => html` <etools-data-table-row no-collapse>
-            <div slot="row-data">
-              <span class="col-data col-2">${this.getFrequencyForDisplay(item.frequency)}</span>
-              <span class="col-data col-10">${this.getDatesForDisplay(item.cs_dates)}</span>
-            </div>
-          </etools-data-table-row>`
+          (item: any) =>
+            html` <etools-data-table-row no-collapse>
+              <div slot="row-data">
+                <span class="col-data col-2">${this.getFrequencyForDisplay(item.frequency)}</span>
+                <span class="col-data col-10">${this.getDatesForDisplay(item.cs_dates)}</span>
+              </div>
+            </etools-data-table-row>`
         )}
         </div>
 

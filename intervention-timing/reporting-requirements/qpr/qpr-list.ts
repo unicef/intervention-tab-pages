@@ -57,41 +57,40 @@ export class QprList extends PaginationMixin(
       </etools-data-table-header>
 
       ${(this.paginatedData || []).map(
-        (item: any, index: number) =>
-          html`
-            <etools-data-table-row
-              no-collapse
-              ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}"
-              .lowResolutionLayout="${this.lowResolutionLayout}"
-            >
-              <div slot="row-data" class="editable-row">
-                <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
-                  ${this.getIndex(index, this.qprData.length)}
-                </div>
-                <div class="col-data col-3" data-col-header-label="${translate('START_DATE')}">
-                  ${formatDateLocalized(item.start_date)}
-                </div>
-                <div class="col-data col-3" data-col-header-label="${translate('END_DATE')}">
-                  ${formatDateLocalized(item.end_date)}
-                </div>
-                <div class="col-data col-3" data-col-header-label="${translate('DUE_DATE')}">
-                  ${formatDateLocalized(item.due_date)}
-                </div>
-                <div class="col-2 actions">
-                  <etools-icon-button
-                    name="create"
-                    @click="${() => this._editQprReq(index)}"
-                    ?hidden="${!this.editMode}"
-                  ></etools-icon-button>
-                  <etools-icon-button
-                    name="delete"
-                    ?hidden="${!this.editMode}"
-                    @click="${() => this._deleteQprReq(index)}"
-                  ></etools-icon-button>
-                </div>
+        (item: any, index: number) => html`
+          <etools-data-table-row
+            no-collapse
+            ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}"
+            .lowResolutionLayout="${this.lowResolutionLayout}"
+          >
+            <div slot="row-data" class="editable-row">
+              <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
+                ${this.getIndex(index, this.qprData.length)}
               </div>
-            </etools-data-table-row>
-          `
+              <div class="col-data col-3" data-col-header-label="${translate('START_DATE')}">
+                ${formatDateLocalized(item.start_date)}
+              </div>
+              <div class="col-data col-3" data-col-header-label="${translate('END_DATE')}">
+                ${formatDateLocalized(item.end_date)}
+              </div>
+              <div class="col-data col-3" data-col-header-label="${translate('DUE_DATE')}">
+                ${formatDateLocalized(item.due_date)}
+              </div>
+              <div class="col-2 actions">
+                <etools-icon-button
+                  name="create"
+                  @click="${() => this._editQprReq(index)}"
+                  ?hidden="${!this.editMode}"
+                ></etools-icon-button>
+                <etools-icon-button
+                  name="delete"
+                  ?hidden="${!this.editMode}"
+                  @click="${() => this._deleteQprReq(index)}"
+                ></etools-icon-button>
+              </div>
+            </div>
+          </etools-data-table-row>
+        `
       )}
 
       <etools-data-table-footer

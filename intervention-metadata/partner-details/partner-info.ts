@@ -160,8 +160,8 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         !member.active
           ? `[${getTranslation('INACTIVE')}]`
           : member.has_active_realm
-          ? ''
-          : `[${getTranslation('NO_ACCESS')}]`
+            ? ''
+            : `[${getTranslation('NO_ACCESS')}]`
       } ${member.first_name} ${member.last_name} (${member.email})`,
       id: member.id
     }));

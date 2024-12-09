@@ -7,7 +7,6 @@ import {fitCommentsToWindow, makeCommentsDraggable} from '../../comments/comment
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('comments-panel-header')
-/* eslint-disable max-len */
 export class CommentsPanelHeader extends LitElement {
   @property() count = 0;
   @property() isExpanded = false;

@@ -396,7 +396,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     if (!this.isUnicefUser || !this.interventionPartner?.sea_risk_rating_name) {
       return html`${this.interventionPartner?.sea_risk_rating_name || 'N\\A'}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.sea_risk_rating_name}</strong></a
     >`;
@@ -406,7 +406,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     if (!this.isUnicefUser || !this.interventionPartner?.rating) {
       return html`${this.interventionPartner?.rating || 'N\\A'}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.rating}</strong></a
     >`;

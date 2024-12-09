@@ -182,13 +182,12 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         <div class="details-text">
           ${this.locationNames.length
             ? this.locationNames.map(
-                (name) =>
-                  html`
-                    <div class="details-list-item">
-                      <span class="font-bold">${name.name}</span>
-                      ${name.adminLevel}
-                    </div>
-                  `
+                (name) => html`
+                  <div class="details-list-item">
+                    <span class="font-bold">${name.name}</span>
+                    ${name.adminLevel}
+                  </div>
+                `
               )
             : '-'}
         </div>
