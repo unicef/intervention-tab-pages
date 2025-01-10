@@ -9,7 +9,7 @@ import {reportingRequirementsListStyles} from '../styles/reporting-requirements-
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {EtoolsPaginator} from '@unicef-polymer/etools-unicef/src/etools-table/pagination/etools-pagination';
@@ -46,22 +46,20 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
         <etools-data-table-column class="col-2"></etools-data-table-column>
       </etools-data-table-header>
       ${this.hruData.map(
-        (item: any, index) => html` <etools-data-table-row
-          no-collapse
-          ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}"
-        >
-          <div slot="row-data" class="layout-horizontal editable-row">
-            <div class="col-data col-1 index-col">${this._getIndex(index)}</div>
-            <div class="col-data col-9">${this.getDateDisplayValue(item.end_date)}</div>
-            <div class="col-data col-2 actions">
-              <etools-icon-button
-                name="delete"
-                ?hidden="${!this.editMode}"
-                @click="${() => this._deleteHruReq(index)}"
-              ></etools-icon-button>
+        (item: any, index) =>
+          html` <etools-data-table-row no-collapse ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}">
+            <div slot="row-data" class="layout-horizontal editable-row">
+              <div class="col-data col-1 index-col">${this._getIndex(index)}</div>
+              <div class="col-data col-9">${this.getDateDisplayValue(item.end_date)}</div>
+              <div class="col-data col-2 actions">
+                <etools-icon-button
+                  name="delete"
+                  ?hidden="${!this.editMode}"
+                  @click="${() => this._deleteHruReq(index)}"
+                ></etools-icon-button>
+              </div>
             </div>
-          </div>
-        </etools-data-table-row>`
+          </etools-data-table-row>`
       )}
     `;
   }

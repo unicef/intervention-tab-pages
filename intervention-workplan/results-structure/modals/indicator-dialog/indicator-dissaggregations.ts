@@ -11,7 +11,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
@@ -63,48 +63,49 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       </style>
       <div ?hidden="${this._isEmptyList(this.data, this.data.length)}">
         ${this.data.map(
-          (item: any, index: number) => html` <div class="row item-container">
-            <div class="item-actions-container">
-              <div class="actions">
-                <etools-icon-button
-                  class="action delete"
-                  ?disabled="${this.readonly}"
-                  @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
-                  data-args="${index}"
-                  name="cancel"
-                ></etools-icon-button>
-              </div>
-            </div>
-            <div class="item-content">
-              <div class="row m-15">
-                <div class="col-md-4 col-12">
-                  <etools-dropdown
-                    id="disaggregate_by_${index}"
-                    label=${translate('DISAGGREGATE_BY')}
-                    .options="${this.preDefinedDisaggregtions}"
-                    .selected="${item.disaggregId}"
-                    option-value="id"
-                    option-label="name"
-                    trigger-value-change-event
-                    ?readonly="${this.readonly}"
-                    @etools-selected-item-changed="${(event: CustomEvent) =>
-                      this._onDisaggregationSelected(event, index)}"
-                    disable-on-focus-handling
-                  >
-                  </etools-dropdown>
-                </div>
-                <div class="col-md-8 col-12">
-                  <etools-input
-                    id="disaggregationGroups_${index}"
-                    readonly
-                    tabindex="-1"
-                    label=${translate('DISAGGREGATION_GROUPS')}
-                    placeholder="&#8212;"
-                  ></etools-input>
+          (item: any, index: number) =>
+            html` <div class="row item-container">
+              <div class="item-actions-container">
+                <div class="actions">
+                  <etools-icon-button
+                    class="action delete"
+                    ?disabled="${this.readonly}"
+                    @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
+                    data-args="${index}"
+                    name="cancel"
+                  ></etools-icon-button>
                 </div>
               </div>
-            </div>
-          </div>`
+              <div class="item-content">
+                <div class="row m-15">
+                  <div class="col-md-4 col-12">
+                    <etools-dropdown
+                      id="disaggregate_by_${index}"
+                      label=${translate('DISAGGREGATE_BY')}
+                      .options="${this.preDefinedDisaggregtions}"
+                      .selected="${item.disaggregId}"
+                      option-value="id"
+                      option-label="name"
+                      trigger-value-change-event
+                      ?readonly="${this.readonly}"
+                      @etools-selected-item-changed="${(event: CustomEvent) =>
+                        this._onDisaggregationSelected(event, index)}"
+                      disable-on-focus-handling
+                    >
+                    </etools-dropdown>
+                  </div>
+                  <div class="col-md-8 col-12">
+                    <etools-input
+                      id="disaggregationGroups_${index}"
+                      readonly
+                      tabindex="-1"
+                      label=${translate('DISAGGREGATION_GROUPS')}
+                      placeholder="&#8212;"
+                    ></etools-input>
+                  </div>
+                </div>
+              </div>
+            </div>`
         )}
       </div>
 

@@ -2,7 +2,7 @@
 import {css, CSSResult} from 'lit';
 /* tslint:disable:max-file-line-count */
 /* tslint:disable:max-line-length */
-/* eslint-disable no-tabs */
+
 // language=CSS
 export const leafletStyles: CSSResult = css`
   /* required styles */
@@ -328,7 +328,11 @@ export const leafletStyles: CSSResult = css`
 
   /* general typography */
   .leaflet-container {
-    font: 12px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font:
+      12px/1.5 'Helvetica Neue',
+      Arial,
+      Helvetica,
+      sans-serif;
   }
 
   /* general toolbar styles */
@@ -399,7 +403,10 @@ export const leafletStyles: CSSResult = css`
 
   .leaflet-control-zoom-in,
   .leaflet-control-zoom-out {
-    font: bold 18px 'Lucida Console', Monaco, monospace;
+    font:
+      bold 18px 'Lucida Console',
+      Monaco,
+      monospace;
     text-indent: 1px;
   }
 
@@ -603,7 +610,10 @@ export const leafletStyles: CSSResult = css`
     text-align: center;
     width: 18px;
     height: 14px;
-    font: 16px/14px Tahoma, Verdana, sans-serif;
+    font:
+      16px/14px Tahoma,
+      Verdana,
+      sans-serif;
     color: #c3c3c3;
     text-decoration: none;
     font-weight: bold;
@@ -769,22 +779,42 @@ export const leafletStyles: CSSResult = css`
 
     text-align: center;
     border-radius: 15px;
-    font: 12px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font:
+      12px 'Helvetica Neue',
+      Arial,
+      Helvetica,
+      sans-serif;
   }
   .marker-cluster span {
     line-height: 30px;
   }
   .leaflet-cluster-anim .leaflet-marker-icon,
   .leaflet-cluster-anim .leaflet-marker-shadow {
-    -webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-in;
-    -moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-in;
-    -o-transition: -o-transform 0.3s ease-out, opacity 0.3s ease-in;
-    transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+    -webkit-transition:
+      -webkit-transform 0.3s ease-out,
+      opacity 0.3s ease-in;
+    -moz-transition:
+      -moz-transform 0.3s ease-out,
+      opacity 0.3s ease-in;
+    -o-transition:
+      -o-transform 0.3s ease-out,
+      opacity 0.3s ease-in;
+    transition:
+      transform 0.3s ease-out,
+      opacity 0.3s ease-in;
   }
   .leaflet-cluster-spider-leg {
-    -webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out, -webkit-stroke-opacity 0.3s ease-in;
-    -moz-transition: -moz-stroke-dashoffset 0.3s ease-out, -moz-stroke-opacity 0.3s ease-in;
-    -o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
-    transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
+    -webkit-transition:
+      -webkit-stroke-dashoffset 0.3s ease-out,
+      -webkit-stroke-opacity 0.3s ease-in;
+    -moz-transition:
+      -moz-stroke-dashoffset 0.3s ease-out,
+      -moz-stroke-opacity 0.3s ease-in;
+    -o-transition:
+      -o-stroke-dashoffset 0.3s ease-out,
+      -o-stroke-opacity 0.3s ease-in;
+    transition:
+      stroke-dashoffset 0.3s ease-out,
+      stroke-opacity 0.3s ease-in;
   }
 `;

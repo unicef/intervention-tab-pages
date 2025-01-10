@@ -4,7 +4,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './workplan-editor-link';
 import '../common/budget-summary/budget-summary';
 import {TABS} from '../common/constants';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import './editor-table';
 
 /**

@@ -1,9 +1,9 @@
 import {css, html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
-import {get as getTranslation} from 'lit-translate/util';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
@@ -121,10 +121,11 @@ export class AmendmentDifference extends LitElement {
           <div class="offset">
             <span class="action-name">${translate(ACTIONS[action])}:</span>
             ${value.map(
-              (item: GenericObject) => html`<div class="offset">
-                <div class="field-name"><span class="changed-value">${item.name}</span></div>
-                ${this.displayDifference(item.diff)}
-              </div>`
+              (item: GenericObject) =>
+                html`<div class="offset">
+                  <div class="field-name"><span class="changed-value">${item.name}</span></div>
+                  ${this.displayDifference(item.diff)}
+                </div>`
             )}
           </div>
         `;

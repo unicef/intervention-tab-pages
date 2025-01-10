@@ -1,4 +1,4 @@
-import {get as getTranslation} from 'lit-translate/util';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {GenericObject} from '@unicef-polymer/etools-types';
 
 export const translatesMap: GenericObject = {

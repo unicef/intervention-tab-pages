@@ -21,7 +21,7 @@ import {
   InterventionActivityExtended,
   ResultLinkLowerResultExtended
 } from '../../common/types/editor-page-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import {

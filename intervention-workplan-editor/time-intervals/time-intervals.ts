@@ -4,7 +4,7 @@ import {InterventionQuarter} from '@unicef-polymer/etools-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './time-intervals-dialog';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
@@ -25,19 +25,18 @@ export class TimeIntervals extends LitElement {
             }
           </style>
           ${this.quarters.map(
-            (quarter: InterventionQuarter) =>
-              html`
-                <sl-tooltip>
-                  <div slot="content">
-                    <strong>${quarter.name}:</strong>
-                    ${formatDate(quarter.start, 'DD MMM')} - ${formatDate(quarter.end, 'DD MMM')}
-                    ${formatDate(quarter.start, 'YYYY')}
-                  </div>
-                  <div id="quarter_${quarter.id}" class="quarter ${this.isSelected(quarter) ? 'selected' : ''}">
-                    ${quarter.name}
-                  </div>
-                </sl-tooltip>
-              `
+            (quarter: InterventionQuarter) => html`
+              <sl-tooltip>
+                <div slot="content">
+                  <strong>${quarter.name}:</strong>
+                  ${formatDate(quarter.start, 'DD MMM')} - ${formatDate(quarter.end, 'DD MMM')}
+                  ${formatDate(quarter.start, 'YYYY')}
+                </div>
+                <div id="quarter_${quarter.id}" class="quarter ${this.isSelected(quarter) ? 'selected' : ''}">
+                  ${quarter.name}
+                </div>
+              </sl-tooltip>
+            `
           )}
           <div ?hidden="${!this.invalid}" class="invalid">${translate('PLS_SELECT_TIME_PERIODS')}</div>`
       : html`

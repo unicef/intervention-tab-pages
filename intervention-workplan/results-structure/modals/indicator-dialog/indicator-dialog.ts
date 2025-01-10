@@ -20,7 +20,7 @@ import './cluster-indicator-disaggregations';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
@@ -307,8 +307,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     const title = this.readonly
       ? getTranslation('VIEW_INDICATOR')
       : this.isEditRecord
-      ? getTranslation('EDIT_INDICATOR')
-      : getTranslation('ADD_INDICATOR');
+        ? getTranslation('EDIT_INDICATOR')
+        : getTranslation('ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });
