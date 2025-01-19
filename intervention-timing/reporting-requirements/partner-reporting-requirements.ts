@@ -24,7 +24,7 @@ import {AnyObject, Intervention, Permission} from '@unicef-polymer/etools-types'
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
@@ -97,7 +97,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         }
         .nav-menu-item:focus-visible {
           outline: 0;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+          box-shadow:
+            0 6px 10px 0 rgba(0, 0, 0, 0.14),
+            0 1px 18px 0 rgba(0, 0, 0, 0.12),
             0 3px 5px -1px rgba(0, 0, 0, 0.4);
           background-color: rgba(170, 165, 165, 0.2);
         }

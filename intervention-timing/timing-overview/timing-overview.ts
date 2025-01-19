@@ -13,7 +13,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
@@ -60,14 +60,14 @@ export class TimingOverview extends CommentsMixin(LitElement) {
           </div>
 
           <div class="data-column">
-            <label class="label">${translate('PRC_SUBMISSION_DATE')}</label>
+            <label class="label">${translate('INTERNAL_REVIEW_SUBMISSION_DATE')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.submission_date_prc}">
               ${formatDateLocalized(this.timingOverview.submission_date_prc)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="label">${translate('PRC_REVIEW_DATE')}</label>
+            <label class="label">${translate('INTERNAL_REVIEW_DATE')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.review_date_prc}">
               ${formatDateLocalized(this.timingOverview.review_date_prc)}
             </div>

@@ -8,7 +8,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -33,7 +33,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         ${dataTableStylesLit} :host {
           --list-column-label: {
             margin-inline-end: 0;
-          }
+          };
         }
         #totalsRow {
           --list-row-no-collapse-bg-color: var(--light-theme-background-color);

@@ -1,7 +1,7 @@
 import {LitElement} from 'lit';
 import {property} from 'lit/decorators.js';
 import {Constructor} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 interface EtoolsTab {
   tab: string;

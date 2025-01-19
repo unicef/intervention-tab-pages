@@ -9,7 +9,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {addComment, updateComment} from './comments.actions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {get as getTranslation} from 'lit-translate';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 export abstract class EditComments extends connectStore(LitElement) {
   @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];

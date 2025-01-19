@@ -18,7 +18,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import CONSTANTS from '../../common/constants';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {patchIntervention} from '../../common/actions/interventions';

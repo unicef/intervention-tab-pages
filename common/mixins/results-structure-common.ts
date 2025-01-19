@@ -15,7 +15,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import {convertDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {InterventionActivityExtended} from '../types/editor-page-types';
 
 function deactivateActivity(activityId: number, pdOutputId: number, interventionId: number) {
