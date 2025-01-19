@@ -1,7 +1,7 @@
 import {css, LitElement, html, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {CommentRelatedItem} from '../../comments/comments-types';
 import dayjs from 'dayjs';
 

@@ -13,7 +13,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
@@ -75,27 +75,28 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
           <etools-data-table-column class="col-2"></etools-data-table-column>
         </etools-data-table-header>
         ${(this.paginatedReports || []).map(
-          (item: any, index: number) => html` <etools-data-table-row
-            no-collapse
-            secondary-bg-on-hover
-            .lowResolutionLayout="${this.lowResolutionLayout}"
-          >
-            <div slot="row-data" class="layout-horizontal editable-row">
-              <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
-                ${this._getIndex(index)}
+          (item: any, index: number) =>
+            html` <etools-data-table-row
+              no-collapse
+              secondary-bg-on-hover
+              .lowResolutionLayout="${this.lowResolutionLayout}"
+            >
+              <div slot="row-data" class="layout-horizontal editable-row">
+                <div class="col-data col-1 index-col" data-col-header-label="${translate('ID')}">
+                  ${this._getIndex(index)}
+                </div>
+                <div class="col-data col-3 word-break" data-col-header-label="${translate('DUE_DATE')}">
+                  ${this.getDateDisplayValue(item.due_date)}
+                </div>
+                <div class="col-data col-6 word-break" data-col-header-label="${translate('REPORTING_REQUIREMENT')}">
+                  ${item.description}
+                </div>
+                <div class="col-data col-2 actions">
+                  <etools-icon-button name="create" @click="${() => this._onEdit(index)}"></etools-icon-button>
+                  <etools-icon-button name="delete" @click="${() => this._onDelete(index)}"></etools-icon-button>
+                </div>
               </div>
-              <div class="col-data col-3 word-break" data-col-header-label="${translate('DUE_DATE')}">
-                ${this.getDateDisplayValue(item.due_date)}
-              </div>
-              <div class="col-data col-6 word-break" data-col-header-label="${translate('REPORTING_REQUIREMENT')}">
-                ${item.description}
-              </div>
-              <div class="col-data col-2 actions">
-                <etools-icon-button name="create" @click="${() => this._onEdit(index)}"></etools-icon-button>
-                <etools-icon-button name="delete" @click="${() => this._onDelete(index)}"></etools-icon-button>
-              </div>
-            </div>
-          </etools-data-table-row>`
+            </etools-data-table-row>`
         )}
         <etools-data-table-footer
           .pageSize="${this.paginator.page_size}"

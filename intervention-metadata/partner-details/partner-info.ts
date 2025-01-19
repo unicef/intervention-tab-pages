@@ -26,7 +26,7 @@ import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation, langChanged} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 /**
  * @customElement
@@ -160,8 +160,8 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         !member.active
           ? `[${getTranslation('INACTIVE')}]`
           : member.has_active_realm
-          ? ''
-          : `[${getTranslation('NO_ACCESS')}]`
+            ? ''
+            : `[${getTranslation('NO_ACCESS')}]`
       } ${member.first_name} ${member.last_name} (${member.email})`,
       id: member.id
     }));

@@ -30,7 +30,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, EtoolsEndpoint, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -440,7 +440,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   private formatUserData(data: ReviewData) {
     const dataToSave: any = cloneDeep(data);
     dataToSave.unicef_signatory = data.unicef_signatory?.id;
-    // eslint-disable-next-line max-len
+
     dataToSave.partner_authorized_officer_signatory = data.partner_authorized_officer_signatory?.id;
     return dataToSave;
   }

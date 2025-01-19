@@ -32,7 +32,7 @@ import {ProgrammeManagementMixin} from './editor-utils/programme-management-mixi
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
 import {ExpectedResultExtended, ResultLinkLowerResultExtended} from '../common/types/editor-page-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {AsyncAction, EtoolsEndpoint, IdAndName} from '@unicef-polymer/etools-types';
 import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';

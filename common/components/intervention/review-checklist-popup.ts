@@ -5,7 +5,7 @@ import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styl
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
@@ -118,6 +118,14 @@ export class ReviewChecklistPopup extends LitElement {
               this.generateLikertScale(field as keyof InterventionReview, index)
             )}
             <div class="col-12">
+              <etools-checkbox
+                ?checked="${this.review.is_recommended_for_approval}"
+                @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'is_recommended_for_approval')}"
+              >
+                ${translate('SIGN_BUDGET_OWNER')}
+              </etools-checkbox>
+            </div>
+            <div class="col-12">
               <etools-textarea
                 label=${translate('APPROVAL_COMMENT')}
                 always-float-label
@@ -144,12 +152,14 @@ export class ReviewChecklistPopup extends LitElement {
                     </etools-textarea>
                   </div>
                 `
-              : html` <etools-checkbox
-                  ?checked="${this.review?.overall_approval}"
-                  @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
-                >
-                  ${translate('APPROVED_BY_PRC')}
-                </etools-checkbox>`}
+              : html`<div class="col-12">
+                  <etools-checkbox
+                    ?checked="${this.review?.overall_approval}"
+                    @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
+                  >
+                    ${translate('APPROVED_BY_PRC')}
+                  </etools-checkbox>
+                </div>`}
           </div>
         </div>
         <div slot="buttons">
@@ -179,8 +189,9 @@ export class ReviewChecklistPopup extends LitElement {
           @sl-change="${(e: any) => this.valueChanged(e.target.value, field)}"
         >
           ${Array.from(REVIEW_ANSVERS.entries()).map(
-            ([key, text]: [string, string]) =>
-              html` <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio> `
+            ([key, text]: [string, string]) => html`
+              <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio>
+            `
           )}
         </etools-radio-group>
       </div>

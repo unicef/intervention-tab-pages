@@ -17,7 +17,7 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {get as getTranslation, translate} from 'lit-translate';
+import {get as getTranslation, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import dayjs from 'dayjs';
 
 /**

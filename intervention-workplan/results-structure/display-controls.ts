@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {

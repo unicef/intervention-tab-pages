@@ -1,4 +1,3 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -14,7 +13,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import dayjs from 'dayjs';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 

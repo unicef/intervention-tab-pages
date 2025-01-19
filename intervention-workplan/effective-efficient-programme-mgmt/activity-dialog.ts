@@ -13,7 +13,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';

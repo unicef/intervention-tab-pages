@@ -9,7 +9,7 @@ import {RootState} from '../common/types/store.types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-polymer/etools-types';
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
@@ -396,7 +396,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     if (!this.isUnicefUser || !this.interventionPartner?.sea_risk_rating_name) {
       return html`${this.interventionPartner?.sea_risk_rating_name || 'N\\A'}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.sea_risk_rating_name}</strong></a
     >`;
@@ -406,7 +406,7 @@ export class InterventionSummary extends connectStore(LitElement) {
     if (!this.isUnicefUser || !this.interventionPartner?.rating) {
       return html`${this.interventionPartner?.rating || 'N\\A'}`;
     }
-    // eslint-disable-next-line lit/no-invalid-html
+
     return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.rating}</strong></a
     >`;

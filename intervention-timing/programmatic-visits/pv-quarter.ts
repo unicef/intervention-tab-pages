@@ -5,7 +5,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, PlannedVisit, Site} from '@unicef-polymer/etools-types';
 import {css, html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {langChanged, translate} from 'lit-translate';
+import {langChanged, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import dayjs from 'dayjs';

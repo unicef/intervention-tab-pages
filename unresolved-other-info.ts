@@ -3,7 +3,7 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';

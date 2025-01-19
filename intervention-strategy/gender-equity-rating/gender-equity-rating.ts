@@ -19,7 +19,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
