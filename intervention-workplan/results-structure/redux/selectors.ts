@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect';
 import {Disaggregation} from '@unicef-polymer/etools-types';
-import {get as getTranslation} from 'lit-translate';
+import {get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 
 const disaggregationsSelector = (state: any) => state.commonData!.disaggregations;
 

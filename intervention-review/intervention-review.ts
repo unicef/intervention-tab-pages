@@ -11,7 +11,7 @@ import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-disp
 import {NO_REVIEW, PRC_REVIEW} from '../common/components/intervention/review.const';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {cloneDeep} from 'lodash-es';
 
 @customElement('intervention-review')

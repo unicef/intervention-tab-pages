@@ -7,7 +7,7 @@ import './comment';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
-import {get as getTranslation, translate} from 'lit-translate';
+import {get as getTranslation, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentsItemsNameMap} from './comments-items-name-map';
 import {EditComments} from './edit-comments-base';

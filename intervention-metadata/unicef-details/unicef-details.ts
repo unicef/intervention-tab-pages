@@ -25,7 +25,7 @@ import orderBy from 'lodash-es/orderBy';
 import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**

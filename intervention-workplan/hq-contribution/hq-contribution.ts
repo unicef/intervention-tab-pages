@@ -21,7 +21,7 @@ import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.u
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate, translateUnsafeHTML} from 'lit-translate';
+import {translate, translateUnsafeHTML} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {getPageDirection} from '../../utils/utils';

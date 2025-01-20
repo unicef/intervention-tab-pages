@@ -34,29 +34,35 @@ import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {AnyObject, AsyncAction, EtoolsEndpoint, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 const customStyles = html`
   <style>
-    .col_3 {
-      max-width: 25%;
-      width: 25%;
+    .col_30 {
+      width: 30%;
+      min-width: 100px;
+    }
+    .col_20 {
+      width: 20%;
+      min-width: 70px;
+    }
+    .col_nowrap {
+      width: 1%;
+      white-space: nowrap;
+    }
+    .total-cell {
+      min-width: 120px;
+      width: 99%;
+    }
+    .word-break {
       word-break: break-word;
     }
-    .col_2 {
-      max-width: 18%;
-      width: 18%;
-      word-break: break-word;
-    }
-    .row-actions {
-      min-width: 94px !important;
-    }
-    @media (min-width: 760px) and (max-width: 1080px) {
+    @media (min-width: 880px) and (max-width: 980px) {
       .row-actions .actions {
-        left: 0;
+        left: 8px;
       }
       table td,
       table th {
@@ -210,30 +216,30 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       label: translate('ITEM_ALL_PRICES') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      cssClass: 'col_3'
+      cssClass: 'col_30 word-break'
     },
     {
       label: translate('NUMBER_UNITS') as unknown as string,
       name: 'unit_number',
       type: EtoolsTableColumnType.Number,
-      cssClass: 'col_2'
+      cssClass: 'col_20 word-break'
     },
     {
       label: translate('PRICE_UNIT') as unknown as string,
       name: 'unit_price',
       type: EtoolsTableColumnType.Number,
-      cssClass: 'col_2'
+      cssClass: 'col_20 word-break'
     },
     {
       label: '',
       name: 'total_price',
-      cssClass: 'col_2',
+      cssClass: 'col_30 word-break',
       type: EtoolsTableColumnType.Number
     },
     {
       label: translate('PROVIDED_BY') as unknown as string,
       name: 'provided_by',
-      cssClass: 'col_2',
+      cssClass: 'col_20 word-break',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
@@ -422,7 +428,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     try {
       const response: AnyObject = JSON.parse(errorResponse);
       return Object.values(response).join('; ');
-    } catch (e) {
+    } catch {
       return defaultMessage;
     }
   }

@@ -13,7 +13,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {repeat} from 'lit/directives/repeat.js';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 /* eslint-disable max-len */
 import {ProgrammeManagement} from '../../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.models';

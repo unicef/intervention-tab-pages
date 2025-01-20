@@ -11,7 +11,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {leafletStyles} from './leaflet-styles';
 import {Site} from '@unicef-polymer/etools-types';
 import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 const DEFAULT_COORDINATES = [-0.09, 51.505];
