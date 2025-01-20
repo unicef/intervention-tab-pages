@@ -13,7 +13,8 @@ import {
   Section,
   GenericObject,
   EtoolsUser,
-  CountryProgram
+  CountryProgram,
+  EWorkPlan
 } from '@unicef-polymer/etools-types';
 import {CommentsEndpoints} from '../components/comments/comments-types';
 import {UploadStatusState} from '../reducers/upload-status';
@@ -66,6 +67,7 @@ export interface CommonDataState {
   countryProgrammes: CountryProgram[];
   loadedTimestamp: number;
   providedBy: LabelAndValue[];
+  eWorkPlans: EWorkPlan[];
 }
 
 export interface RootState {

@@ -107,7 +107,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     --sl-color-neutral-1000: #e14f4f;
   }
   .item-link {
-    margin-top: 7px;
+    margin-inline-start: 4px;
     font-size: var(--etools-font-size-16, 16px);
     line-height: 26px;
     color: #5c5c5c;

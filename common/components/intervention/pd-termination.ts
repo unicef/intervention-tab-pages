@@ -77,7 +77,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
             >
             </datepicker-lite>
           </div>
-          <div class="row">
+          <div class="row padding-v">
             <etools-upload
               class="col-12"
               id="terminationNotice"
@@ -91,7 +91,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
               error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
             >
           </div>
-          <div class="row">
+          <div class="row padding-v">
             <etools-warn-message-lit
               class="col-12"
               .messages="${this.warnMessages}"
