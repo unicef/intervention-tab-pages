@@ -94,6 +94,12 @@ export class CommentsGroup extends LitElement {
         .description {
           margin-top: 8px;
         }
+        .space-between {
+          justify-content: space-between;
+        }
+        .flex-auto {
+          flex: auto;
+        }
       `
     ];
   }

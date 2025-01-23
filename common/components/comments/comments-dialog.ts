@@ -55,7 +55,7 @@ export class CommentsDialog extends EditComments {
           overflow-y: auto;
         }
       </style>
-      <etools-dialog size="md" keep-dialog-open dialog-title="${this.dialogTitle}" @close="${this.onClose}" no-padding>
+      <etools-dialog size="md" keep-dialog-open dialog-title="${this.dialogTitle}" @close="${this.onClose}">
         <div class="container-dialog">
           ${this.comments.map(
             (comment: any, index: number) =>
