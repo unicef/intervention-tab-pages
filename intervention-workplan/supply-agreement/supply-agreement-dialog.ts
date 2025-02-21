@@ -68,6 +68,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               value="${this.data.unit_number ? this.data.unit_number : ''}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
               label=${translate(translatesMap.unit_number)}
+              maxlength="16"
               allowed-pattern="[0-9]"
               placeholder="—"
               error-message=${translate('GENERAL.REQUIRED_FIELD')}
