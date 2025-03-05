@@ -75,9 +75,9 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         #mitigationMeasures {
           width: 100%;
         }
-        .p-20 {
+        .m-20 {
           overflow: hidden;
-          padding: 20px;
+          margin-inline-start: 20px !important;
         }
         info-icon-tooltip {
           --iit-margin: 0 0 0 4px;
@@ -120,7 +120,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .showDelete=${this.canEditAtLeastOneField}
         >
         </etools-table>
-        <div class="row p-20" ?hidden="${this.data?.length}">
+        <div class="row m-20" ?hidden="${this.data?.length}">
           <p>${translate('NO_RISK_ADDED')}</p>
         </div>
       </etools-content-panel>

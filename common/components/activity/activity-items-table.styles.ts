@@ -91,6 +91,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
   }
   label[required] {
     padding-inline-end: 20px;
+    background: url('./assets/images/required.svg') no-repeat 99% 20%/5px;
   }
   etools-input,
   etools-textarea {

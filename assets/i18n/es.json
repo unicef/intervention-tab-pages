@@ -361,6 +361,7 @@
   "NO_FUND_RESERVATIONS_ADDED": "No se ha añadido ningún número de reserva de fondos.",
   "NO_HUMANITARIAN_REPORT": "No se han establecido requisitos para los informes humanitarios.",
   "NO_INDICATORS": "No hay indicadores en este PD Salida",
+  "GDD_NO_INDICATORS": "No hay indicadores en este GPD Salida",
   "NO_OVERALL_APPROVAL": "Aún no hay aprobación general",
   "NO_PDS_ADDED": "No se ha añadido ningún Documento de Programa.",
   "NO_PD_OUTPUTS": "No hay salidas PD.",
