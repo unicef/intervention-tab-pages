@@ -279,7 +279,7 @@ export class InterventionActions extends connectStore(LitElement) {
         if (action === AMENDMENT_MERGE) {
           setTimeout(() => {
             this.redirectToTabPage(intervention.id, 'metadata');
-          });
+          }, 300);
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
         }
@@ -287,7 +287,7 @@ export class InterventionActions extends connectStore(LitElement) {
         if (action === REVIEW) {
           setTimeout(() => {
             this.redirectToTabPage(intervention.id, REVIEW);
-          });
+          }, 300);
         }
       })
       .finally(() => {

@@ -144,6 +144,9 @@ export class MessageItem extends LitElement {
           width: 83%;
           box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12);
         }
+        .flex-c {
+          flex: 1;
+        }
         :host([my-comment]) {
           align-self: flex-end;
         }
